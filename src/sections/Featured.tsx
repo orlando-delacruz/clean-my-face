@@ -4,10 +4,10 @@ import { ProductCard } from '../components/ProductCard';
 import { StarIcon } from '../components/icons';
 import {
   Container,
-  Emblem,
-  Eyebrow,
+  EyebrowRow,
   Lead,
   Reveal,
+  SectionRule,
   SectionTitle,
 } from '../components/primitives';
 
@@ -47,10 +47,6 @@ const Header = styled.div`
   align-items: center;
 `;
 
-const GoldEyebrow = styled(Eyebrow)`
-  color: ${({ theme }) => theme.colors.gold};
-`;
-
 const DarkTitle = styled(SectionTitle)`
   color: #fffdf8;
   text-wrap: balance;
@@ -58,15 +54,7 @@ const DarkTitle = styled(SectionTitle)`
 
 const DarkLead = styled(Lead)`
   color: rgba(255, 253, 248, 0.82);
-`;
-
-const Rule = styled.span`
-  display: block;
-  width: 3.5rem;
-  height: 2px;
-  border-radius: 2px;
-  background: ${({ theme }) => theme.colors.gold};
-  margin-block: 1.5rem;
+  max-width: 58ch;
 `;
 
 const Grid = styled.div`
@@ -87,12 +75,12 @@ export function Featured() {
       <Container>
         <Reveal>
           <Header>
-            <Emblem aria-hidden="true" $onDark>
-              <StarIcon size={18} />
-            </Emblem>
-            <GoldEyebrow>{featured.eyebrow}</GoldEyebrow>
+            <EyebrowRow $onDark>
+              <StarIcon size={14} aria-hidden="true" />
+              {featured.eyebrow}
+            </EyebrowRow>
             <DarkTitle id="featured-title">{featured.title}</DarkTitle>
-            <Rule aria-hidden="true" />
+            <SectionRule aria-hidden="true" />
             <DarkLead>{featured.lead}</DarkLead>
           </Header>
           <Grid>

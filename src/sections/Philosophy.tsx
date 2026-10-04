@@ -3,8 +3,7 @@ import { brand } from '../data/content';
 import { DropletIcon } from '../components/icons';
 import {
   Container,
-  Emblem,
-  Eyebrow,
+  EyebrowRow,
   Lead,
   Reveal,
   Section,
@@ -14,7 +13,7 @@ import {
 const Grid = styled.div`
   display: grid;
   gap: 2.5rem;
-  margin-top: 2rem;
+  margin-top: ${({ theme }) => theme.spacing.sm};
 
   @media (min-width: ${({ theme }) => theme.breakpoints.lg}) {
     grid-template-columns: 5fr 7fr;
@@ -28,15 +27,6 @@ const Intro = styled.div`
     position: sticky;
     top: 7rem;
   }
-`;
-
-const IntroRule = styled.span`
-  display: block;
-  width: 3.5rem;
-  height: 2px;
-  border-radius: 2px;
-  background: ${({ theme }) => theme.colors.plumpDeep};
-  margin-bottom: 1.5rem;
 `;
 
 const PillarList = styled.ol`
@@ -91,13 +81,12 @@ export function Philosophy() {
     <Section id="philosophy" aria-labelledby="philosophy-title">
       <Container>
         <Reveal>
-          <Emblem aria-hidden="true">
-            <DropletIcon size={18} />
-          </Emblem>
-          <Eyebrow>{brand.pillarsEyebrow}</Eyebrow>
+          <EyebrowRow $tight>
+            <DropletIcon size={14} aria-hidden="true" />
+            {brand.pillarsEyebrow}
+          </EyebrowRow>
           <Grid>
             <Intro>
-              <IntroRule aria-hidden="true" />
               <SectionTitle id="philosophy-title">
                 {brand.pillarsTitle}
               </SectionTitle>

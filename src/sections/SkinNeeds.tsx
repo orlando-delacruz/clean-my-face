@@ -5,11 +5,11 @@ import { Link } from '../router';
 import { ArrowRightIcon, LayersIcon } from '../components/icons';
 import {
   Container,
-  Emblem,
-  Eyebrow,
+  EyebrowRow,
   Lead,
   Reveal,
   Section,
+  SectionRule,
   SectionTitle,
   TextAction,
 } from '../components/primitives';
@@ -23,16 +23,8 @@ const Header = styled.div`
   align-items: center;
 `;
 
-const Rule = styled.span`
-  display: block;
-  width: 3.5rem;
-  height: 1px;
-  background: ${({ theme }) => theme.colors.gold};
-  margin-top: 1.5rem;
-`;
-
 const CenteredLead = styled(Lead)`
-  max-width: 52ch;
+  max-width: 58ch;
 `;
 
 const Cards = styled.div`
@@ -162,13 +154,13 @@ export function SkinNeeds() {
       <Container>
         <Reveal>
           <Header>
-            <Emblem aria-hidden="true">
-              <LayersIcon size={18} />
-            </Emblem>
-            <Eyebrow>{skinNeeds.eyebrow}</Eyebrow>
+            <EyebrowRow>
+              <LayersIcon size={14} aria-hidden="true" />
+              {skinNeeds.eyebrow}
+            </EyebrowRow>
             <SectionTitle id="ranges-title">{skinNeeds.title}</SectionTitle>
+            <SectionRule aria-hidden="true" />
             <CenteredLead>{skinNeeds.lead}</CenteredLead>
-            <Rule aria-hidden="true" />
           </Header>
           <Cards>
             {skinNeeds.cards.map((card) => (

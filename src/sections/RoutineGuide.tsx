@@ -6,11 +6,11 @@ import { img } from '../data/images';
 import { ListIcon } from '../components/icons';
 import {
   Container,
-  Emblem,
-  Eyebrow,
+  EyebrowRow,
   Lead,
   Reveal,
   Section,
+  SectionRule,
   SectionTitle,
 } from '../components/primitives';
 
@@ -36,14 +36,7 @@ const CenteredLead = styled(Lead)`
   max-width: 58ch;
 `;
 
-const GoldRule = styled.span`
-  display: block;
-  width: 3.5rem;
-  height: 2px;
-  border-radius: 2px;
-  background: ${({ theme }) => theme.colors.gold};
-  margin-block: 1.5rem;
-`;
+
 
 const TabsWrap = styled.div`
   display: flex;
@@ -60,7 +53,7 @@ const TabList = styled.div`
   padding: 0.25rem;
   background: ${({ theme }) => theme.colors.surface};
   border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.radius.sm};
+  border-radius: 999px;
 `;
 
 const Tab = styled.button<{ $active: boolean }>`
@@ -74,7 +67,7 @@ const Tab = styled.button<{ $active: boolean }>`
   min-height: 3.5rem;
   padding: 0.625rem 1rem;
   border: 1px solid transparent;
-  border-radius: ${({ theme }) => theme.radius.sm};
+  border-radius: 999px;
   background: ${({ theme, $active }) =>
     $active ? theme.colors.text : 'transparent'};
   color: ${({ theme, $active }) =>
@@ -363,14 +356,14 @@ export function RoutineGuide() {
       <Container>
         <Reveal>
           <Header>
-            <Emblem aria-hidden="true">
-              <ListIcon size={18} />
-            </Emblem>
-            <Eyebrow>{routineGuide.eyebrow}</Eyebrow>
+            <EyebrowRow>
+              <ListIcon size={14} aria-hidden="true" />
+              {routineGuide.eyebrow}
+            </EyebrowRow>
             <CenteredTitle id="routine-title">
               {routineGuide.title}
             </CenteredTitle>
-            <GoldRule aria-hidden="true" />
+            <SectionRule aria-hidden="true" />
             <CenteredLead>{routineGuide.lead}</CenteredLead>
           </Header>
           <TabsWrap>

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { brand } from '../data/content';
 import { img } from '../data/images';
-import { ArrowRightIcon, DropletIcon, LayersIcon, LeafIcon, ListIcon } from '../components/icons';
+import { ArrowRightIcon, ChatIcon, DropletIcon, LayersIcon, LeafIcon, ListIcon } from '../components/icons';
 import { Container, Reveal } from '../components/primitives';
 
 const HeroSection = styled.section`
@@ -142,6 +142,10 @@ const Rule = styled.span`
   height: 2px;
   border-radius: 2px;
   background: ${({ theme }) => theme.colors.gold};
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
+    order: -1;
+  }
 `;
 
 const Title = styled.h1`
@@ -190,7 +194,7 @@ const HeroPrimary = styled.a`
   font-weight: 600;
   letter-spacing: 0.01em;
   text-decoration: none;
-  border-radius: ${({ theme }) => theme.radius.sm};
+  border-radius: 999px;
   border: 1px solid #fffdf8;
   background: #fffdf8;
   color: #1b231e;
@@ -226,7 +230,7 @@ const HeroSecondary = styled.a`
   font-weight: 600;
   letter-spacing: 0.01em;
   text-decoration: none;
-  border-radius: ${({ theme }) => theme.radius.sm};
+  border-radius: 999px;
   background: transparent;
   color: #fffdf8;
   border: 1px solid rgba(255, 253, 248, 0.48);
@@ -277,7 +281,7 @@ const StatMark = styled.span`
   height: 2.125rem;
   flex: none;
   border: 1px solid rgba(255, 253, 248, 0.35);
-  border-radius: ${({ theme }) => theme.radius.sm};
+  border-radius: 50%;
   color: ${({ theme }) => theme.colors.gold};
 
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
@@ -338,7 +342,6 @@ export function Hero() {
         <Reveal>
           <Copy>
             <TopRow>
-              <Rule aria-hidden="true" />
               <BadgeRow aria-label="Product ranges">
                 <Badge $tone="plump">
                   <DropletIcon size={13} aria-hidden="true" />
@@ -349,6 +352,7 @@ export function Hero() {
                   Stay Clear
                 </Badge>
               </BadgeRow>
+              <Rule aria-hidden="true" />
             </TopRow>
             <Title id="hero-title">
               Skincare that <em>gets to the point.</em>
@@ -361,6 +365,7 @@ export function Hero() {
               </HeroPrimary>
               <HeroSecondary href={brand.heroSecondaryCta.href}>
                 {brand.heroSecondaryCta.label}
+                <ChatIcon size={16} />
               </HeroSecondary>
             </CtaRow>
             <Stats aria-label="CleanMyFace at a glance">

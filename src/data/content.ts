@@ -788,7 +788,7 @@ export const closing = {
     concernOptions: ['Dryness and tightness', 'Excess oil and shine', 'Blemishes and marks', 'Not sure yet'],
     messageLabel: 'Anything we should know? (optional)',
     messagePlaceholder: 'Tell us about your current routine…',
-    submitLabel: 'Get my recommendation',
+    submitLabel: 'Submit',
     previewNotice:
       'This concept preview does not send inquiries yet. Once connected, your message would go to the Peerpharm team.',
   },
@@ -856,7 +856,7 @@ export const PLACEHOLDER_INVENTORY: string[] = [
   'Packaging-only names (Cream Cleanser, Moisture Essence, Hydrating Blemish Spot Treatment, Moisture Barrier Clay Mask) have no confirmed products. Kept out.',
   'Featured picks: Cleansing Balm / Rice Barrier Cream Mask / 2% BHA Gel Cleanser (design recommendation).',
   'Inquiry form labels, options, and behavior (visual-only mock; no backend).',
-  'Theme palette values, Fraunces + Inter pairing, spacing/type scale (TBD per OQ-6).',
+  'Theme palette values, Garamond + Inter pairing, spacing/type scale (TBD per OQ-6).',
   'Decorative image assignments (additional-*, bg-*, system images): placement is a design decision.',
   'SOFT PEELING GEL visual uses purpose-1.png: no product hero asset supplied.',
   'Model and lifestyle imagery (additional-img-2 to additional-img-5) left unmapped: product assignment unconfirmed.',

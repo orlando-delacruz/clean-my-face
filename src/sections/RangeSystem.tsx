@@ -6,11 +6,11 @@ import { RoutineStep } from '../components/RoutineStep';
 import { DropletIcon, LeafIcon } from '../components/icons';
 import {
   Container,
-  Emblem,
-  Eyebrow,
+  EyebrowRow,
   Lead,
   Reveal,
   Section,
+  SectionRule,
   SectionTitle,
 } from '../components/primitives';
 
@@ -27,7 +27,7 @@ const Tinted = styled.div<{ $tint: string; $bg: string }>`
 
   /* Muted secondary text fails contrast on the pastel tints, so labels and
      supporting copy inside range sections use the dark ink instead. */
-  ${Eyebrow}, ${Lead} {
+  ${EyebrowRow}, ${Lead} {
     color: ${({ theme }) => theme.colors.text};
   }
 `;
@@ -41,23 +41,10 @@ const Header = styled.div`
   align-items: center;
 `;
 
-const CenteredTitle = styled(SectionTitle)`
-  margin-inline: auto;
-`;
-
 const CenteredLead = styled(Lead)`
   margin-inline: auto;
   text-align: center;
   max-width: 58ch;
-`;
-
-const CenterRule = styled.span`
-  display: block;
-  width: 3.5rem;
-  height: 2px;
-  border-radius: 2px;
-  background: ${({ theme }) => theme.colors.gold};
-  margin-block: 1.5rem;
 `;
 
 const Promise = styled.p`
@@ -83,8 +70,9 @@ const BenefitList = styled.ul`
 
 const Benefit = styled.li`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
+  justify-content: center;
   gap: 0.8rem;
   font-size: 1.0625rem;
   font-weight: 500;
@@ -125,9 +113,12 @@ const HeroCard = styled.figure`
   box-shadow: 0 28px 60px -28px rgba(33, 26, 19, 0.45);
 `;
 
+// Reserve space before load (1136x592 and 1126x587, same aspect) so late
+// image loads don't shift the layout under an anchor jump landing here.
 const HeroImage = styled.img`
   width: 100%;
   height: auto;
+  aspect-ratio: 1136 / 592;
   display: block;
 `;
 
@@ -212,15 +203,19 @@ export function RangeSystem({ range, tint }: { range: RangeContent; tint: string
         <Container>
           <Reveal>
             <Header>
-              <Emblem aria-hidden="true" $ink={ink}>
-                {range.id === 'plump' ? <DropletIcon size={18} /> : <LeafIcon size={18} />}
-              </Emblem>
-              <Eyebrow>{range.eyebrow}</Eyebrow>
-              <CenteredTitle id={`range-${range.id}-title`}>
+              <EyebrowRow $iconColor={ink}>
+                {range.id === 'plump' ? (
+                  <DropletIcon size={14} aria-hidden="true" />
+                ) : (
+                  <LeafIcon size={14} aria-hidden="true" />
+                )}
+                {range.eyebrow}
+              </EyebrowRow>
+              <SectionTitle id={`range-${range.id}-title`}>
                 {range.name}
-              </CenteredTitle>
+              </SectionTitle>
               <Promise>{range.promise}</Promise>
-              <CenterRule aria-hidden="true" />
+              <SectionRule aria-hidden="true" />
               <CenteredLead>{range.description}</CenteredLead>
               <BenefitList>
                 {range.benefits.map((benefit) => (

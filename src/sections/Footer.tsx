@@ -86,7 +86,7 @@ const SocialButton = styled(Link)`
   width: 2.75rem;
   height: 2.75rem;
   border: 1px solid rgba(250, 247, 241, 0.28);
-  border-radius: ${({ theme }) => theme.radius.sm};
+  border-radius: 50%;
   color: ${({ theme }) => theme.colors.background};
   transition: color 160ms ease, border-color 160ms ease;
 

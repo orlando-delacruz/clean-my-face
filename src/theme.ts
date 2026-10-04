@@ -71,7 +71,7 @@ export const theme: CmfTheme = {
     gold: '#C9A96A',
   },
   fonts: {
-    display: "'Fraunces', Georgia, 'Times New Roman', serif",
+    display: "Garamond, Georgia, 'Times New Roman', serif",
     body: "'Inter', -apple-system, 'Segoe UI', sans-serif",
   },
   spacing: {
@@ -84,7 +84,7 @@ export const theme: CmfTheme = {
     sectionMobile: '4rem',
   },
   radius: {
-    sm: '0.25rem',
+    sm: '0.5rem',
     md: '0.75rem',
   },
   breakpoints: {

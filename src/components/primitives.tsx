@@ -3,22 +3,43 @@ import type { ReactNode } from 'react';
 import styled, { css } from 'styled-components';
 
 /**
- * Small section emblem: bordered mark above a section eyebrow.
- * Pass $ink to tint it (e.g. range inks) or $onDark on dark surfaces.
+ * Section pre-title: icon inline to the left of the eyebrow text.
+ * Pass $iconColor to tint the icon (e.g. range inks), $color for the text,
+ * or $onDark on dark surfaces (gold icon + gold text).
  */
-export const Emblem = styled.span<{ $ink?: string; $onDark?: boolean }>`
+export const EyebrowRow = styled.p<{
+  $color?: string;
+  $iconColor?: string;
+  $onDark?: boolean;
+  /** Tight rhythm: no bottom margin (the following block owns the spacing). */
+  $tight?: boolean;
+}>`
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  width: 2.75rem;
-  height: 2.75rem;
-  margin-bottom: 1.25rem;
-  border: 1px solid
-    ${({ theme, $onDark }) =>
-      $onDark ? 'rgba(201, 169, 106, 0.55)' : theme.colors.border};
-  border-radius: ${({ theme }) => theme.radius.sm};
-  color: ${({ theme, $ink, $onDark }) =>
-    $ink ?? ($onDark ? theme.colors.gold : theme.colors.plumpDeep)};
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: ${({ theme, $color, $onDark }) =>
+    $color ?? ($onDark ? theme.colors.gold : theme.colors.muted)};
+  margin: ${({ theme, $tight }) => ($tight ? '0' : `0 0 ${theme.spacing.sm}`)};
+
+  svg {
+    flex: none;
+    color: ${({ theme, $iconColor, $onDark }) =>
+      $iconColor ?? ($onDark ? theme.colors.gold : theme.colors.plumpDeep)};
+  }
+`;
+
+/** Shared section heading divider: gold hairline between title and lead. */
+export const SectionRule = styled.span`
+  display: block;
+  width: 3.5rem;
+  height: 2px;
+  border-radius: 2px;
+  background: ${({ theme }) => theme.colors.gold};
+  margin-block: 1.5rem;
 `;
 
 export const SkipLink = styled.a`
@@ -180,6 +201,10 @@ export function Reveal({
     }
     const el = ref.current;
     if (!el) return;
+    // Threshold 0 (not a ratio): section wrappers can be taller than the
+    // viewport, so a ratio threshold may never be reached after an instant
+    // anchor jump, leaving the section stuck invisible. Any visibility
+    // reveals; content above the fold stays hidden until scrolled into view.
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0]?.isIntersecting) {
@@ -187,7 +212,7 @@ export function Reveal({
           observer.disconnect();
         }
       },
-      { threshold: 0.12 },
+      { threshold: 0 },
     );
     observer.observe(el);
     return () => observer.disconnect();

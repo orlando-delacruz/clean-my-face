@@ -153,7 +153,7 @@ const HeaderCta = styled(Link)<{ $onDark: boolean }>`
   text-decoration: none;
   white-space: nowrap;
   border: 1px solid transparent;
-  border-radius: ${({ theme }) => theme.radius.sm};
+  border-radius: 999px;
   background: ${({ theme, $onDark }) =>
     $onDark ? theme.colors.surface : theme.colors.plumpDeep};
   color: ${({ theme, $onDark }) =>
@@ -290,7 +290,7 @@ const MobileCta = styled(Link)`
   letter-spacing: 0.11em;
   text-transform: uppercase;
   text-decoration: none;
-  border-radius: ${({ theme }) => theme.radius.sm};
+  border-radius: 999px;
   background: ${({ theme }) => theme.colors.plumpDeep};
   color: ${({ theme }) => theme.colors.surface};
 

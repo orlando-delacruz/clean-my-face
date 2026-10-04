@@ -5,13 +5,14 @@ import { closing, footer, skinNeeds } from '../data/content';
 import { img } from '../data/images';
 import { Link } from '../router';
 import { ArrowRightIcon, ChatIcon, CheckIcon, socialIcons } from '../components/icons';
+import { theme } from '../theme';
 import {
   Container,
-  Emblem,
-  Eyebrow,
+  EyebrowRow,
   Lead,
   Reveal,
   Section,
+  SectionRule,
   SectionTitle,
 } from '../components/primitives';
 
@@ -44,24 +45,11 @@ const Intro = styled.div`
   max-width: 34rem;
 `;
 
-const InkEyebrow = styled(Eyebrow)`
-  color: ${({ theme }) => theme.colors.plumpDeep};
-`;
-
 const ClosingTitle = styled(SectionTitle)`
   font-size: clamp(2rem, 4.5vw, 3.25rem);
   line-height: 1.08;
   letter-spacing: -0.015em;
   text-wrap: balance;
-`;
-
-const Rule = styled.span`
-  display: block;
-  width: 3.5rem;
-  height: 2px;
-  border-radius: 2px;
-  background: ${({ theme }) => theme.colors.gold};
-  margin-block: 1.5rem;
 `;
 
 const ClosingLead = styled(Lead)`
@@ -152,7 +140,7 @@ const SocialButton = styled(Link)`
   width: 2.75rem;
   height: 2.75rem;
   border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.radius.sm};
+  border-radius: 50%;
   color: ${({ theme }) => theme.colors.text};
   background: ${({ theme }) => theme.colors.surface};
   transition: color 160ms ease, border-color 160ms ease;
@@ -266,7 +254,7 @@ const Submit = styled.button`
   font-weight: 600;
   letter-spacing: 0.01em;
   border: none;
-  border-radius: ${({ theme }) => theme.radius.sm};
+  border-radius: 999px;
   background: ${({ theme }) => theme.colors.plumpDeep};
   color: ${({ theme }) => theme.colors.surface};
   cursor: pointer;
@@ -391,12 +379,12 @@ export function Closing() {
         <Reveal>
           <Grid>
             <Intro>
-              <Emblem aria-hidden="true">
-                <ChatIcon size={18} />
-              </Emblem>
-              <InkEyebrow>{closing.eyebrow}</InkEyebrow>
+              <EyebrowRow $color={theme.colors.plumpDeep}>
+                <ChatIcon size={14} aria-hidden="true" />
+                {closing.eyebrow}
+              </EyebrowRow>
               <ClosingTitle id="contact-title">{closing.title}</ClosingTitle>
-              <Rule aria-hidden="true" />
+              <SectionRule aria-hidden="true" />
               <ClosingLead>{closing.lead}</ClosingLead>
               <Assurance>
                 {imageSrc !== '' && (
