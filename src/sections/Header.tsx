@@ -340,6 +340,33 @@ export function Header() {
     };
   }, []);
 
+  // Scroll-spy: highlight the nav link for the section currently in view.
+  // Visual only: the URL hash is left untouched so scrolling never pollutes
+  // history. Untacked sections (philosophy, ranges detail, featured) keep
+  // the last active link instead of clearing it.
+  useEffect(() => {
+    if (path !== '/') {
+      setHash('');
+      return;
+    }
+    const ids = navigation.links
+      .map((link) => hashOf(link.href))
+      .filter((id) => id !== '');
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) setHash(entry.target.id);
+        }
+      },
+      { rootMargin: '-40% 0px -55% 0px' },
+    );
+    for (const id of ids) {
+      const section = document.getElementById(id);
+      if (section !== null) observer.observe(section);
+    }
+    return () => observer.disconnect();
+  }, [path]);
+
   useEffect(() => {
     if (!open) return;
     function onKeyDown(event: KeyboardEvent) {
