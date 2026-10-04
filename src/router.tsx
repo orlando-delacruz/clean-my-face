@@ -54,33 +54,40 @@ export function navigate(to: string): void {
   if (pageChanged) root.style.scrollBehavior = 'auto';
   window.history.pushState({}, '', target + (hash !== '' ? `#${hash}` : ''));
   window.dispatchEvent(new PopStateEvent('popstate'));
+  // Double rAF: let the new page commit AND paint (attaching scroll
+  // observers with correct pre-scroll geometry) before jumping. Jumping in
+  // the first frame can leave IntersectionObservers with a stale
+  // not-intersecting delivery that never updates, sticking reveals
+  // invisible until the next manual scroll.
   requestAnimationFrame(() => {
-    if (!pageChanged) {
-      if (hash !== '') scrollToHash(hash);
-      return;
-    }
-    window.scrollTo({ top: 0, left: 0 });
-    if (hash === '') {
-      requestAnimationFrame(() => {
-        root.style.scrollBehavior = previous;
-      });
-      return;
-    }
-    // The new page may not have committed yet, so retry until the anchor
-    // exists. Smooth stays suppressed throughout: cross-page landings are
-    // always instant jumps, never sweeps.
-    let attempts = 0;
-    const tryHash = () => {
-      if (document.getElementById(hash) !== null) {
-        scrollToHash(hash);
-        root.style.scrollBehavior = previous;
-      } else if (attempts++ < 8) {
-        requestAnimationFrame(tryHash);
-      } else {
-        root.style.scrollBehavior = previous;
+    requestAnimationFrame(() => {
+      if (!pageChanged) {
+        if (hash !== '') scrollToHash(hash);
+        return;
       }
-    };
-    requestAnimationFrame(tryHash);
+      window.scrollTo({ top: 0, left: 0 });
+      if (hash === '') {
+        requestAnimationFrame(() => {
+          root.style.scrollBehavior = previous;
+        });
+        return;
+      }
+      // The new page may not have committed yet, so retry until the anchor
+      // exists. Smooth stays suppressed throughout: cross-page landings are
+      // always instant jumps, never sweeps.
+      let attempts = 0;
+      const tryHash = () => {
+        if (document.getElementById(hash) !== null) {
+          scrollToHash(hash);
+          root.style.scrollBehavior = previous;
+        } else if (attempts++ < 8) {
+          requestAnimationFrame(tryHash);
+        } else {
+          root.style.scrollBehavior = previous;
+        }
+      };
+      requestAnimationFrame(tryHash);
+    });
   });
 }
 
