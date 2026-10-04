@@ -215,7 +215,21 @@ export function Reveal({
       { threshold: 0 },
     );
     observer.observe(el);
-    return () => observer.disconnect();
+    // Safety net: a programmatic scroll landing in the same frame as the
+    // first observation can leave the observer with a stale not-intersecting
+    // delivery that never updates, sticking the section invisible. Re-check
+    // synchronously once settled; this only ever reveals, never hides.
+    const fallback = window.setTimeout(() => {
+      const rect = el.getBoundingClientRect();
+      if (rect.bottom > 0 && rect.top < window.innerHeight) {
+        setVisible(true);
+        observer.disconnect();
+      }
+    }, 500);
+    return () => {
+      observer.disconnect();
+      window.clearTimeout(fallback);
+    };
   }, []);
 
   return (

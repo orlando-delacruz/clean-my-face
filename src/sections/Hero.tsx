@@ -173,12 +173,15 @@ const HeroLead = styled.p`
 
 const CtaRow = styled.div`
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   justify-content: center;
-  gap: 0.875rem;
+  gap: 0.625rem;
+  width: 100%;
 
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
     justify-content: flex-start;
+    gap: 0.875rem;
+    width: auto;
   }
 `;
 
@@ -188,9 +191,9 @@ const HeroPrimary = styled.a`
   justify-content: center;
   gap: 0.5rem;
   min-height: 3.25rem;
-  padding: 0.875rem 2rem;
+  padding: 0.875rem 1rem;
   font-family: ${({ theme }) => theme.fonts.body};
-  font-size: 0.9375rem;
+  font-size: 0.875rem;
   font-weight: 600;
   letter-spacing: 0.01em;
   text-decoration: none;
@@ -199,6 +202,19 @@ const HeroPrimary = styled.a`
   background: #fffdf8;
   color: #1b231e;
   cursor: pointer;
+  flex: 1 1 0;
+  min-width: 0;
+  white-space: nowrap;
+
+  svg {
+    flex: none;
+  }
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
+    flex: none;
+    padding: 0.875rem 2rem;
+    font-size: 0.9375rem;
+  }
   transition:
     background-color 180ms ease,
     border-color 180ms ease,
@@ -224,9 +240,9 @@ const HeroSecondary = styled.a`
   justify-content: center;
   gap: 0.5rem;
   min-height: 3.25rem;
-  padding: 0.875rem 2rem;
+  padding: 0.875rem 1rem;
   font-family: ${({ theme }) => theme.fonts.body};
-  font-size: 0.9375rem;
+  font-size: 0.875rem;
   font-weight: 600;
   letter-spacing: 0.01em;
   text-decoration: none;
@@ -235,6 +251,19 @@ const HeroSecondary = styled.a`
   color: #fffdf8;
   border: 1px solid rgba(255, 253, 248, 0.48);
   cursor: pointer;
+  flex: 1 1 0;
+  min-width: 0;
+  white-space: nowrap;
+
+  svg {
+    flex: none;
+  }
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
+    flex: none;
+    padding: 0.875rem 2rem;
+    font-size: 0.9375rem;
+  }
   transition:
     background-color 180ms ease,
     border-color 180ms ease,

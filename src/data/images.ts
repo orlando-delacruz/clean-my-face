@@ -12,6 +12,10 @@ import additional3 from '../../images/additional-img-3.png';
 import additional6 from '../../images/additional-img-6.jpg';
 import additional7 from '../../images/additional-img-7.png';
 import systemPlump from '../../images/6 products system.jpg';
+import milkyCushionCleanser from '../../images/milky-cushion-cleanser.jpg';
+import softPeelingGel from '../../images/soft-peeling-gel.jpg';
+import heartleafCleansingOil from '../../images/heartleaf-cleansing-oil.jpg';
+import balancingDailyToner from '../../images/balancing-daily-toner.jpg';
 import systemClear from '../../images/6 products system-2.jpg';
 import bgImage2 from '../../images/bg-image-2.png';
 import bgImage3 from '../../images/bg-image-3.png';
@@ -26,7 +30,6 @@ import cleansingBalmStep1 from '../../images/CLEANSING BALM/step-1.png';
 import cleansingBalmStep2 from '../../images/CLEANSING BALM/step-2.png';
 import cleansingBalmStep3 from '../../images/CLEANSING BALM/step-3.png';
 
-import gelCleanser from '../../images/GEL CLEANSER/GEL CLEANSER.png';
 import gelCleanserIng1 from '../../images/GEL CLEANSER/ingredients-1.png';
 import gelCleanserIng2 from '../../images/GEL CLEANSER/ingredients-2.png';
 import gelCleanserIng3 from '../../images/GEL CLEANSER/ingredients-3.png';
@@ -72,7 +75,6 @@ import rescueBalmStep1 from '../../images/dry spot rescue balm/step-1.png';
 import rescueBalmStep2 from '../../images/dry spot rescue balm/step-2.png';
 import rescueBalmStep3 from '../../images/dry spot rescue balm/step-3.png';
 
-import heartleafOil from '../../images/HEARTLEAF CLEANSING OI/HEARTLEAF CLEANSING OI.png';
 import heartleafOilIng1 from '../../images/HEARTLEAF CLEANSING OI/ingredient-1.png';
 import heartleafOilIng2 from '../../images/HEARTLEAF CLEANSING OI/ingredient-2.png';
 import heartleafOilIng3 from '../../images/HEARTLEAF CLEANSING OI/ingredient-3.png';
@@ -82,7 +84,6 @@ import bhaCleanserIng1 from '../../images/2-bha-gel-cleanser/ingredient-1.png';
 import bhaCleanserIng2 from '../../images/2-bha-gel-cleanser/ingredient-2.png';
 import bhaCleanserIng3 from '../../images/2-bha-gel-cleanser/ingredient-3.png';
 
-import balancingToner from '../../images/BALANCING DAILY TONER/BALANCING DAILY TONER.png';
 import balancingTonerIng1 from '../../images/BALANCING DAILY TONER/ingredient-1.png';
 import balancingTonerIng2 from '../../images/BALANCING DAILY TONER/ingredient-2.png';
 import balancingTonerIng3 from '../../images/BALANCING DAILY TONER/ingredient-3.png';
@@ -113,6 +114,10 @@ const byPath: Record<string, string> = {
   'additional-img-6.jpg': additional6,
   'additional-img-7.png': additional7,
   '6 products system.jpg': systemPlump,
+  'milky-cushion-cleanser.jpg': milkyCushionCleanser,
+  'soft-peeling-gel.jpg': softPeelingGel,
+  'heartleaf-cleansing-oil.jpg': heartleafCleansingOil,
+  'balancing-daily-toner.jpg': balancingDailyToner,
   '6 products system-2.jpg': systemClear,
   'bg-image-2.png': bgImage2,
   'bg-image-3.png': bgImage3,
@@ -127,7 +132,6 @@ const byPath: Record<string, string> = {
   'CLEANSING BALM/step-2.png': cleansingBalmStep2,
   'CLEANSING BALM/step-3.png': cleansingBalmStep3,
 
-  'GEL CLEANSER/GEL CLEANSER.png': gelCleanser,
   'GEL CLEANSER/ingredients-1.png': gelCleanserIng1,
   'GEL CLEANSER/ingredients-2.png': gelCleanserIng2,
   'GEL CLEANSER/ingredients-3.png': gelCleanserIng3,
@@ -173,7 +177,6 @@ const byPath: Record<string, string> = {
   'dry spot rescue balm/step-2.png': rescueBalmStep2,
   'dry spot rescue balm/step-3.png': rescueBalmStep3,
 
-  'HEARTLEAF CLEANSING OI/HEARTLEAF CLEANSING OI.png': heartleafOil,
   'HEARTLEAF CLEANSING OI/ingredient-1.png': heartleafOilIng1,
   'HEARTLEAF CLEANSING OI/ingredient-2.png': heartleafOilIng2,
   'HEARTLEAF CLEANSING OI/ingredient-3.png': heartleafOilIng3,
@@ -183,7 +186,6 @@ const byPath: Record<string, string> = {
   '2-bha-gel-cleanser/ingredient-2.png': bhaCleanserIng2,
   '2-bha-gel-cleanser/ingredient-3.png': bhaCleanserIng3,
 
-  'BALANCING DAILY TONER/BALANCING DAILY TONER.png': balancingToner,
   'BALANCING DAILY TONER/ingredient-1.png': balancingTonerIng1,
   'BALANCING DAILY TONER/ingredient-2.png': balancingTonerIng2,
   'BALANCING DAILY TONER/ingredient-3.png': balancingTonerIng3,

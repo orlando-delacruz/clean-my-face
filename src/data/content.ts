@@ -205,9 +205,9 @@ const plumpProducts: ProductContent[] = [
       'Gentle gel cleanser with a cushioned feel',
       'pH-balanced, low-stripping cleanse',
     ],
-    image: 'GEL CLEANSER/GEL CLEANSER.png',
+    image: 'milky-cushion-cleanser.jpg',
     gallery: [
-      'GEL CLEANSER/GEL CLEANSER.png',
+      'milky-cushion-cleanser.jpg',
       'GEL CLEANSER/step-1.png',
       'GEL CLEANSER/step-2.png',
       'GEL CLEANSER/step-3.png',
@@ -293,10 +293,9 @@ const plumpProducts: ProductContent[] = [
       'Gently massage to roll away dead skin cells.',
       'Rinse to reveal smoother, brighter skin.',
     ],
-    // Design note: SOFT PEELING GEL/ has no product hero shot in images/;
-    // the purpose tile leads the gallery until a hero asset is supplied.
-    image: 'SOFT PEELING GEL/purpose-1.png',
+    image: 'soft-peeling-gel.jpg',
     gallery: [
+      'soft-peeling-gel.jpg',
       'SOFT PEELING GEL/purpose-1.png',
       'SOFT PEELING GEL/purpose-2.png',
       'SOFT PEELING GEL/purpose-3.png',
@@ -430,9 +429,9 @@ const clearProducts: ProductContent[] = [
     ],
     complex: 'Clearleaf Complex',
     textureNotes: ['Lightweight, non-greasy oil'],
-    image: 'HEARTLEAF CLEANSING OI/HEARTLEAF CLEANSING OI.png',
+    image: 'heartleaf-cleansing-oil.jpg',
     gallery: [
-      'HEARTLEAF CLEANSING OI/HEARTLEAF CLEANSING OI.png',
+      'heartleaf-cleansing-oil.jpg',
       'HEARTLEAF CLEANSING OI/ingredient-1.png',
       'HEARTLEAF CLEANSING OI/ingredient-2.png',
       'HEARTLEAF CLEANSING OI/ingredient-3.png',
@@ -505,9 +504,9 @@ const clearProducts: ProductContent[] = [
     ],
     complex: 'CicaBalance Complex',
     textureNotes: ['Lightweight hydration', 'Alcohol-free'],
-    image: 'BALANCING DAILY TONER/BALANCING DAILY TONER.png',
+    image: 'balancing-daily-toner.jpg',
     gallery: [
-      'BALANCING DAILY TONER/BALANCING DAILY TONER.png',
+      'balancing-daily-toner.jpg',
       'BALANCING DAILY TONER/ingredient-1.png',
       'BALANCING DAILY TONER/ingredient-2.png',
       'BALANCING DAILY TONER/ingredient-3.png',
@@ -826,7 +825,7 @@ export const footer = {
       ],
     },
   ],
-  legal: '© 2026 CleanMyFace by Peerpharm. Concept preview.',
+  legal: '© 2026 CleanMyFace by Peerpharm. Concept by Orlando Dela Cruz.',
   legalLinks: [
     { label: 'Privacy Policy', href: '/privacy-policy' },
     { label: 'Terms and Conditions', href: '/terms-and-conditions' },
@@ -858,7 +857,7 @@ export const PLACEHOLDER_INVENTORY: string[] = [
   'Inquiry form labels, options, and behavior (visual-only mock; no backend).',
   'Theme palette values, Garamond + Inter pairing, spacing/type scale (TBD per OQ-6).',
   'Decorative image assignments (additional-*, bg-*, system images): placement is a design decision.',
-  'SOFT PEELING GEL visual uses purpose-1.png: no product hero asset supplied.',
+  'SOFT PEELING GEL hero now uses soft-peeling-gel.jpg; purpose tiles retained in gallery.',
   'Model and lifestyle imagery (additional-img-2 to additional-img-5) left unmapped: product assignment unconfirmed.',
   'Privacy Policy and Terms and Conditions drafts (legal.ts), including all [bracketed] placeholders.',
 ];
