@@ -1,7 +1,7 @@
 # Architecture — CleanMyFace
 
 > Current-state architecture for the CleanMyFace website.
-> Verified against repository files, the local production build, and a comparison of the live `index.html` and JavaScript bundle.
+> Verified against repository files, the local production build, and a comparison of the live `index.html` and JavaScript bundle (Phase 1: Brand System V2, 2026-10-26).
 > Stack: React 19, TypeScript, Vite 8, styled-components 6, Motion for React, npm.
 > There is no backend, database, authentication, CMS, ecommerce, analytics, or email integration.
 
@@ -9,9 +9,10 @@
 
 CleanMyFace is a client-side single-page application. Vercel serves `index.html` for all routes, and the browser router resolves the route.
 
-- Frontend: React 19 with TypeScript and Vite 8.
-- Styling: styled-components 6, with theme tokens in `src/theme.ts` and global styles in `src/GlobalStyle.ts`.
-- Motion: Motion for React, used through `src/components/primitives.tsx` and selected sections.
+- Frontend: React 19 with TypeScript (app config; tests/scripts/configs type-checked in strict mode via `tsconfig.tests.json`) and Vite 8.
+- Styling: styled-components 6, with Brand System V2 tokens in `src/theme.ts` and global styles plus self-hosted `@font-face` rules in `src/GlobalStyle.ts`.
+- Fonts: self-hosted via `@fontsource-variable/inter` and `@fontsource/cormorant-garamond` (`src/styles/fonts.ts`); no Google Fonts requests.
+- Motion: Motion for React, used through `src/components/ui/Reveal` and selected sections; presets in `theme.motion`.
 - Routing: custom history-based router in `src/router.tsx`.
 - Content: centralized in `src/data/content.ts`.
 - Images: explicit static imports mapped in `src/data/images.ts`.
@@ -19,11 +20,13 @@ CleanMyFace is a client-side single-page application. Vercel serves `index.html`
 
 ## Repository Conventions
 
-- `src/components/` — shared UI components, icons, primitives, product cards, galleries, and routine steps.
-- `src/sections/` — homepage section components.
-- `src/pages/` — route-level page components.
+- `src/components/ui/` — shared UI primitives, one folder per component (`<Name>.tsx` + `index.ts`, test colocated where logic exists), re-exported from `src/components/ui/index.ts`.
+- `src/components/` — `icons.tsx`, `ProductCard.tsx`, `ProductGallery.tsx`, `RoutineStep.tsx` (unchanged this phase; placement to review later).
+- `src/styles/` — `fonts.ts` (Fontsource `?url` imports, `fontFaces` CSS), `media.ts` (`up()` breakpoint helper).
+- `src/sections/` — homepage section components (structure unchanged this phase).
+- `src/pages/` — route-level page components, plus dev-only `SystemPage` (eliminated from production).
 - `src/data/` — content model, image map, and legal copy.
-- `tests/` — Vitest and Playwright tests.
+- `tests/` — Vitest (incl. `tests/e2e/` Playwright) tests.
 - `scripts/` — helper scripts.
 - `docs/` — project documentation.
 - `images/` — supplied raster assets.
@@ -31,13 +34,14 @@ CleanMyFace is a client-side single-page application. Vercel serves `index.html`
 
 ## Folder Structure
 
-- `src/App.tsx` — route matching and app shell
+- `src/App.tsx` — route matching and app shell (dev-only `/_system` lazy route)
 - `src/main.tsx` — React root
 - `src/router.tsx` — custom router and `Link`
-- `src/theme.ts`, `src/GlobalStyle.ts`
-- `src/components/` — shared UI components and icons
+- `src/theme.ts`, `src/GlobalStyle.ts`, `src/styles/`
+- `src/components/ui/` — shared primitives (Container, Section, EyebrowRow, SectionRule, SectionTitle, Lead, Button*, TextAction, SkipLink, Reveal, Heading, Text, Eyebrow, Chip, Divider, TextureSwatch, MediaFrame, Parallax, RangeTheme)
+- `src/components/` — icons and product components
 - `src/sections/` — homepage sections
-- `src/pages/` — Home, ProductPage, LegalPage, NotFound
+- `src/pages/` — Home, ProductPage, LegalPage, NotFound, SystemPage (dev-only)
 - `src/data/` — content, image map, legal copy
 - `images/` — supplied raster assets
 - `public/` — static files served at site root
@@ -84,12 +88,12 @@ Asset filenames contain spaces and mixed casing. They are filesystem labels, not
 
 ## Theme and Global Styles
 
-`src/theme.ts` defines a provisional token set: colors, fonts, spacing, radius, and breakpoints. `src/GlobalStyle.ts` sets base reset, typography, image, link, selection, focus, and reduced-motion behavior.
+`src/theme.ts` defines the Brand System V2 tokens: colors (base/inverse/range/feedback/overlay roles), fonts (self-hosted Inter + Cormorant Garamond), fluid `fontSizes`, `lineHeights`, `letterSpacings`, `fontWeights`, `layout` (containers, gutter, section rhythm), extended breakpoints (sm/md/lg/xl/xxl), `radius`, `shadows`, `zIndex`, `motion` presets, and `rangeThemes` + current `range`. `src/GlobalStyle.ts` sets base reset, typography, image, link, selection, focus (from `theme.colors.focus`), the self-hosted `@font-face` rules, and reduced-motion behavior. The fluid type scale is consumed only by new primitives; existing sections keep their sizes.
 
 ## Component Inventory
 
 Shared components:
-- `primitives.tsx` — Container, Section, EyebrowRow, SectionRule, SectionTitle, Lead, buttons, TextAction, SkipLink, Reveal
+- `ui/` primitives — Container, Section, EyebrowRow, SectionRule, SectionTitle, Lead, ButtonPrimary/ButtonSecondary, TextAction, SkipLink, Reveal, Heading, Text, Eyebrow, Chip, Divider, TextureSwatch, MediaFrame, Parallax, RangeTheme (+ `getRangeTheme`)
 - `icons.tsx` — single-stroke SVG icons
 - `ProductCard.tsx` — product link card
 - `RoutineStep.tsx` — routine step card
@@ -99,7 +103,7 @@ Sections:
 - Header, Hero, Philosophy, SkinNeeds, RangeSystem, Featured, RoutineGuide, Closing, Footer
 
 Pages:
-- Home, ProductPage, LegalPage, NotFound
+- Home, ProductPage, LegalPage, NotFound, SystemPage (dev-only, `/_system`)
 
 ## Styling Approach
 
@@ -122,11 +126,12 @@ styled-components 6 is the only styling system. Theme tokens are provided throug
 
 ## Testing
 
-- Vitest with jsdom and Testing Library for unit/integration tests.
-- Playwright with Chromium for smoke and responsive tests.
+- Vitest with jsdom and Testing Library for unit/integration tests (colocated primitive tests included).
+- Playwright with Chromium for smoke, responsive, font-loading (`tests/e2e/fonts.spec.ts`), and `/_system` 404 (`tests/e2e/system.spec.ts`) tests.
+- Guard tests: `tests/tokens.test.ts` (zero hardcoded colors outside `theme.ts`), `tests/contrast.test.ts` (WCAG ratios), `tests/theme.test.ts` (frozen legacy values + new groups).
 - Test setup is in `tests/setup.ts`.
 - Vitest config is in `vite.config.ts`.
-- Playwright config is in `playwright.config.ts`.
+- Playwright config is in `playwright.config.ts` (port 4174, `reuseExistingServer: false`).
 
 ## Known Limitations
 

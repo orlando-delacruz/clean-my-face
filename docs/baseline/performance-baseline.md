@@ -1,6 +1,6 @@
 # Baseline Performance Measurements
 
-Generated: 2026-10-25
+Generated: 2026-10-25 (Phase 0). Phase 1 comparison appended 2026-10-26.
 
 ## Lighthouse — Local Preview (http://localhost:4173/)
 
@@ -76,10 +76,10 @@ See `docs/baseline/asset-inventory.md` for the complete sorted list. The largest
 7. `images/CLEANSING BALM/CLEANSING BALM.png` — 236,354 bytes — 1536x1024
 8. `images/dry spot rescue balm/dry spot rescue balm.png` — 188,073 bytes — 1536x1024
 9. `images/blemish-mark-spot-treatment/blemish-mark-spot-treatment.png` — 189,023 bytes — 1536x1024
-10. `images/CLARIFYING CLAY MASK/CLARIFYING CLAY MASK.png` — 177,084 bytes — 1536x1024
-11. `images/ESSENCE TONER/ESSENCE TONER.png` — 155,585 bytes — 1536x1024
+10. `images/CLARIFYING CLAY MASK/CLARIFYING CLAY MASK.png` — 177,081 bytes — 1536x1024
+11. `images/ESSENCE TONER/ESSENCE TONER.png` — 155,590 bytes — 1536x1024
 12. `images/EXFOLIATING TONER/EXFOLIATING TONER.png` — 144,266 bytes — 1536x1024
-13. `images/additional-img-3.png` — 146,793 bytes — 283x325
+13. `images/additional-img-3.png` — 146,799 bytes — 283x325
 14. `images/additional-img-7.png` — 126,674 bytes — 229x225
 15. `images/bg-mage-1.jpg` — 91,842 bytes — 1416x794
 16. `images/6 products system.jpg` — 85,908 bytes — 1136x592
@@ -94,3 +94,42 @@ See `docs/baseline/asset-inventory.md` for the complete sorted list. The largest
 25. `images/RICE BARRIER CREAM MASK/RICE BARRIER CREAM MASK.png` duplicate entry? No. (See full inventory.)
 
 Note: bytes are raw file sizes from disk.
+
+## Phase 1 comparison (2026-10-26, local preview http://localhost:4175/)
+
+Same Lighthouse method as Phase 0 (`npx lighthouse <url> --quiet --output=json ... --chrome-flags="--headless=new"`, plus `--preset=desktop` for desktop). Lighthouse 12.8.2, Chrome 155.0.0.0. Measured on the final Phase 1 tree (bundle `index-CXSlCcAj.js`; an earlier mid-phase run produced `index-BRLYSh0B.js` at 517,495 raw / 152,442 gzip — same content class, hash moved with final tree).
+
+### Mobile
+
+- Performance: 0.51 (was 0.51, unchanged)
+- Accessibility: 1.00, Best Practices: 1.00, SEO: 0.92 (unchanged)
+- First Contentful Paint: 0.7 s
+- Largest Contentful Paint: 18.7 s (was 18.6 s; hero image, unoptimized until Phase 2)
+- Total Blocking Time: 1,260 ms (noisy across local runs: 870 ms / 1,730 ms / 1,260 ms)
+- Cumulative Layout Shift: 0 (unchanged, budget 0.05 met)
+- Speed Index: 2.4 s, Time to Interactive: 19.5 s
+- LCP element: hero `img` (`main#main-content > section#hero > div.sc-bBHFiM > img.sc-cNKpwA`, `/assets/hero-*.png`, fetchpriority high)
+
+### Desktop
+
+- Performance: 0.76 (was 0.79; run-to-run noise, same asset weight)
+- Accessibility: 1.00, Best Practices: 1.00, SEO: 0.92 (unchanged)
+- First Contentful Paint: 0.4 s
+- Largest Contentful Paint: 3.2 s (was 3.1 s; hero image, unoptimized until Phase 2)
+- Total Blocking Time: 200 ms
+- Cumulative Layout Shift: 0.006 (was 0; budget 0.05 met, no font-swap regression)
+- Speed Index: 0.9 s, Time to Interactive: 3.4 s
+- LCP element: hero `img`
+
+### Bundle (both methods, final tree)
+
+| Method | Main JS | Raw | Gzip |
+|---|---|---:|---:|
+| Vite table | `dist/assets/index-CXSlCcAj.js` | 517.13 kB | 153.92 kB |
+| Node (`fs.statSync` + `zlib.gzipSync` default level) | `dist/assets/index-CXSlCcAj.js` | 517,137 bytes | 152,688 bytes |
+
+Phase 0: 508,156 raw / 150,252 gzip. Delta: +8,981 raw (+1.8%), +2,436 gzip. Sources: V2 tokens, new primitives, fonts wiring, App lazy wrapper. Self-hosted woff2 ships as separate files (118,368 bytes total), not in JS. `CMF_SYSTEM_PAGE_MARKER` and `data-placeholder` absent from `dist/` (dev-only split confirmed; remaining `placeholder` strings are pre-existing form copy).
+
+### Third-party requests on `/`
+
+Playwright collection of all request hosts on `/`: only the preview origin (`localhost:4174`). Zero third-party hosts. No requests to `fonts.googleapis.com` or `fonts.gstatic.com`.
