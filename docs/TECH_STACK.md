@@ -84,6 +84,9 @@ Do not introduce pnpm, yarn, Bun, or another package manager.
 | TypeScript        | Type safety | Required                        | Safer and clearer component/data contracts                        |
 | Vite              | Build tool  | Required                        | Fast and simple React development/build environment               |
 | Styled Components | Styling     | Required                        | Strong control over the premium visual system                     |
+| Motion for React  | Animation   | Required                        | Declarative reveals and entrances (installed Phase 0 baseline)    |
+| Fontsource Inter  | Fonts       | Required                        | Self-hosted Inter variable latin subset (Phase 1, no Google Fonts request) |
+| Fontsource Cormorant Garamond | Fonts | Required                | Self-hosted Cormorant Garamond latin 400/500/500-italic for display type (Phase 1, TBD per OQ-6) |
 | GSAP              | Animation   | Optional — add only when needed | Advanced animation control when CSS/browser APIs are insufficient |
 | Zod               | Validation  | Optional — add only when needed | Runtime validation for structured user input                      |
 

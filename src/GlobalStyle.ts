@@ -1,6 +1,9 @@
 import { createGlobalStyle } from 'styled-components';
+import { fontFaces } from './styles/fonts';
 
 export const GlobalStyle = createGlobalStyle`
+  ${fontFaces}
+
   *, *::before, *::after {
     box-sizing: border-box;
   }
@@ -18,18 +21,16 @@ export const GlobalStyle = createGlobalStyle`
     color: ${({ theme }) => theme.colors.text};
     font-family: ${({ theme }) => theme.fonts.body};
     font-size: 1rem;
-    line-height: 1.65;
+    line-height: ${({ theme }) => theme.lineHeights.body};
     -webkit-font-smoothing: antialiased;
-    /* Safety net: no stray wide child may push the page sideways on small
-       screens. Clip (unlike hidden) keeps sticky positioning working. */
     overflow-x: clip;
   }
 
   h1, h2, h3 {
     font-family: ${({ theme }) => theme.fonts.display};
-    font-weight: 500;
-    line-height: 1.12;
-    letter-spacing: -0.01em;
+    font-weight: ${({ theme }) => theme.fontWeights.medium};
+    line-height: ${({ theme }) => theme.lineHeights.heading};
+    letter-spacing: ${({ theme }) => theme.letterSpacings.heading};
   }
 
   img {
@@ -47,7 +48,7 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   :focus-visible {
-    outline: 3px solid ${({ theme }) => theme.colors.plumpDeep};
+    outline: 3px solid ${({ theme }) => theme.colors.focus};
     outline-offset: 3px;
   }
 
