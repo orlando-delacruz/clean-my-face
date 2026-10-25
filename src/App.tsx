@@ -1,3 +1,4 @@
+import { Suspense, lazy } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { theme } from './theme';
 import { GlobalStyle } from './GlobalStyle';
@@ -12,11 +13,16 @@ import { ProductPage } from './pages/ProductPage';
 import { privacyPolicy, termsConditions } from './data/legal';
 import { findProductBySlug } from './data/content';
 
+const SystemPage = import.meta.env.DEV
+  ? lazy(() => import('./pages/SystemPage'))
+  : null;
+
 function App() {
   const path = usePathname();
   const productMatch = path.startsWith('/products/')
     ? findProductBySlug(path.slice('/products/'.length))
     : null;
+  const showSystem = path === '/_system' && import.meta.env.DEV && SystemPage !== null;
 
   return (
     <ThemeProvider theme={theme}>
@@ -25,6 +31,11 @@ function App() {
         <SkipLink href="#main-content">Skip to content</SkipLink>
         <Header />
         {path === '/' && <Home />}
+        {showSystem && SystemPage !== null && (
+          <Suspense fallback={null}>
+            <SystemPage />
+          </Suspense>
+        )}
         {path === privacyPolicy.slug && <LegalPage doc={privacyPolicy} />}
         {path === termsConditions.slug && <LegalPage doc={termsConditions} />}
         {productMatch !== null && (
@@ -35,6 +46,7 @@ function App() {
           />
         )}
         {path !== '/' &&
+          !showSystem &&
           path !== privacyPolicy.slug &&
           path !== termsConditions.slug &&
           productMatch === null && <NotFound />}
