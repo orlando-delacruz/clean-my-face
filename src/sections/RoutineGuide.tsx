@@ -169,6 +169,10 @@ const Groups = styled.div<{ $count: number }>`
   gap: 2.25rem;
   margin-top: 2rem;
 
+  > * {
+    min-width: 0;
+  }
+
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
     grid-template-columns: repeat(2, 1fr);
     gap: 2.5rem;

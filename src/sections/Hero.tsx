@@ -2,7 +2,8 @@ import styled from 'styled-components';
 import { brand } from '../data/content';
 import { img } from '../data/images';
 import { ArrowRightIcon, ChatIcon, DropletIcon, LayersIcon, LeafIcon, ListIcon } from '../components/icons';
-import { Container, Reveal } from '../components/primitives';
+import { Container } from '../components/primitives';
+import { motion, useReducedMotion } from 'motion/react';
 
 const HeroSection = styled.section`
   position: relative;
@@ -283,12 +284,12 @@ const HeroSecondary = styled.a`
 
 const Stats = styled.ul`
   list-style: none;
-  margin: 2rem 0 0;
+  margin: 1.5rem 0 0;
   padding: 0;
   display: flex;
   flex-wrap: nowrap;
   justify-content: center;
-  gap: 1rem 1.25rem;
+  gap: 0.75rem 1rem;
 
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
     justify-content: flex-start;
@@ -356,6 +357,8 @@ const statIcons = {
 };
 
 export function Hero() {
+  const reduceMotion = useReducedMotion();
+
   return (
     <HeroSection id="hero" aria-labelledby="hero-title">
       <HeroBg aria-hidden="true">
@@ -368,53 +371,100 @@ export function Hero() {
       </HeroBg>
       <Overlay aria-hidden="true" />
       <Content>
-        <Reveal>
+        <motion.div
+          initial={reduceMotion ? false : { opacity: 0, y: 18 }}
+          animate={reduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
+          transition={{
+            duration: reduceMotion ? 0 : 0.62,
+            ease: [0.22, 1, 0.36, 1],
+          }}
+        >
           <Copy>
-            <TopRow>
-              <BadgeRow aria-label="Product ranges">
-                <Badge $tone="plump">
-                  <DropletIcon size={13} aria-hidden="true" />
-                  Plump It Up
-                </Badge>
-                <Badge $tone="clear">
-                  <LeafIcon size={13} aria-hidden="true" />
-                  Stay Clear
-                </Badge>
-              </BadgeRow>
-              <Rule aria-hidden="true" />
-            </TopRow>
-            <Title id="hero-title">
-              Skincare that <em>gets to the point.</em>
-            </Title>
-            <HeroLead>{brand.heroLead}</HeroLead>
-            <CtaRow>
-              <HeroPrimary href={brand.heroPrimaryCta.href}>
-                {brand.heroPrimaryCta.label}
-                <ArrowRightIcon size={16} />
-              </HeroPrimary>
-              <HeroSecondary href={brand.heroSecondaryCta.href}>
-                {brand.heroSecondaryCta.label}
-                <ChatIcon size={16} />
-              </HeroSecondary>
-            </CtaRow>
-            <Stats aria-label="CleanMyFace at a glance">
-              {brand.stats.map((stat) => {
-                const Icon = statIcons[stat.icon];
-                return (
-                  <Stat key={stat.label}>
-                    <StatMark aria-hidden="true">
-                      <Icon size={17} />
-                    </StatMark>
-                    <StatText>
-                      <StatValue>{stat.value}</StatValue>
-                      <StatLabel>{stat.label}</StatLabel>
-                    </StatText>
-                  </Stat>
-                );
-              })}
-            </Stats>
+            <motion.div
+              initial={reduceMotion ? false : { opacity: 0, y: 10 }}
+              animate={reduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
+              transition={{
+                duration: reduceMotion ? 0 : 0.42,
+                delay: reduceMotion ? 0 : 0.08,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+            >
+              <TopRow>
+                <BadgeRow aria-label="Product ranges">
+                  <Badge $tone="plump">
+                    <DropletIcon size={13} aria-hidden="true" />
+                    Plump It Up
+                  </Badge>
+                  <Badge $tone="clear">
+                    <LeafIcon size={13} aria-hidden="true" />
+                    Stay Clear
+                  </Badge>
+                </BadgeRow>
+                <Rule aria-hidden="true" />
+              </TopRow>
+            </motion.div>
+            <motion.div
+              initial={reduceMotion ? false : { opacity: 0, y: 16 }}
+              animate={reduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
+              transition={{
+                duration: reduceMotion ? 0 : 0.5,
+                delay: reduceMotion ? 0 : 0.16,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+            >
+              <Title id="hero-title">
+                Skincare that <em>gets to the point.</em>
+              </Title>
+              <HeroLead>{brand.heroLead}</HeroLead>
+            </motion.div>
+            <motion.div
+              initial={reduceMotion ? false : { opacity: 0, y: 12 }}
+              animate={reduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
+              transition={{
+                duration: reduceMotion ? 0 : 0.42,
+                delay: reduceMotion ? 0 : 0.28,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+            >
+              <CtaRow>
+                <HeroPrimary href={brand.heroPrimaryCta.href}>
+                  {brand.heroPrimaryCta.label}
+                  <ArrowRightIcon size={16} />
+                </HeroPrimary>
+                <HeroSecondary href={brand.heroSecondaryCta.href}>
+                  {brand.heroSecondaryCta.label}
+                  <ChatIcon size={16} />
+                </HeroSecondary>
+              </CtaRow>
+            </motion.div>
+            <motion.div
+              initial={reduceMotion ? false : { opacity: 0, y: 8 }}
+              animate={reduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
+              transition={{
+                duration: reduceMotion ? 0 : 0.36,
+                delay: reduceMotion ? 0 : 0.38,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+            >
+              <Stats aria-label="CleanMyFace at a glance">
+                {brand.stats.map((stat) => {
+                  const Icon = statIcons[stat.icon];
+                  return (
+                    <Stat key={stat.label}>
+                      <StatMark aria-hidden="true">
+                        <Icon size={17} />
+                      </StatMark>
+                      <StatText>
+                        <StatValue>{stat.value}</StatValue>
+                        <StatLabel>{stat.label}</StatLabel>
+                      </StatText>
+                    </Stat>
+                  );
+                })}
+              </Stats>
+            </motion.div>
           </Copy>
-        </Reveal>
+        </motion.div>
       </Content>
     </HeroSection>
   );

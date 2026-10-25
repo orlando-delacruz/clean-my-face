@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { skinNeeds } from '../data/content';
 import { img } from '../data/images';
 import { Link } from '../router';
+import { motion, useReducedMotion } from 'motion/react';
 import { ArrowRightIcon, LayersIcon } from '../components/icons';
 import {
   Container,
@@ -31,6 +32,10 @@ const Cards = styled.div`
   display: grid;
   gap: 1.5rem;
   margin-top: 3rem;
+
+  > * {
+    min-width: 0;
+  }
 
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
     grid-template-columns: 1fr 1fr;
@@ -73,7 +78,7 @@ const Media = styled.div`
 
 const CardImage = styled.img`
   width: 100%;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 16 / 9;
   object-fit: contain;
   transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
 
@@ -149,6 +154,8 @@ const CardAction = styled.div`
 `;
 
 export function SkinNeeds() {
+  const reduceMotion = useReducedMotion();
+
   return (
     <Section id="ranges" aria-labelledby="ranges-title">
       <Container>
@@ -163,30 +170,42 @@ export function SkinNeeds() {
             <CenteredLead>{skinNeeds.lead}</CenteredLead>
           </Header>
           <Cards>
-            {skinNeeds.cards.map((card) => (
-              <Card key={card.rangeId}>
-                <Media>
-                  <CardImage
-                    src={img(card.image)}
-                    alt={card.imageAlt}
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </Media>
-                <CardBody>
-                  <SkinType $range={card.rangeId}>{card.skinType}</SkinType>
-                  <CardTitle>{card.title}</CardTitle>
-                  <Promise>{card.promise}</Promise>
-                  <Divider aria-hidden="true" />
-                  <CardText>{card.text}</CardText>
-                  <CardAction>
-                    <TextAction as={Link} to={`/#range-${card.rangeId}`}>
-                      Explore {card.title}
-                      <ArrowRightIcon size={15} />
-                    </TextAction>
-                  </CardAction>
-                </CardBody>
-              </Card>
+            {skinNeeds.cards.map((card, index) => (
+              <motion.div
+                key={card.rangeId}
+                initial={reduceMotion ? false : { opacity: 0, y: 18 }}
+                whileInView={reduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{
+                  duration: reduceMotion ? 0 : 0.45,
+                  delay: reduceMotion ? 0 : index * 0.1,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+              >
+                <Card>
+                  <Media>
+                    <CardImage
+                      src={img(card.image)}
+                      alt={card.imageAlt}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </Media>
+                  <CardBody>
+                    <SkinType $range={card.rangeId}>{card.skinType}</SkinType>
+                    <CardTitle>{card.title}</CardTitle>
+                    <Promise>{card.promise}</Promise>
+                    <Divider aria-hidden="true" />
+                    <CardText>{card.text}</CardText>
+                    <CardAction>
+                      <TextAction as={Link} to={`/#range-${card.rangeId}`}>
+                        Explore {card.title}
+                        <ArrowRightIcon size={15} />
+                      </TextAction>
+                    </CardAction>
+                  </CardBody>
+                </Card>
+              </motion.div>
             ))}
           </Cards>
         </Reveal>

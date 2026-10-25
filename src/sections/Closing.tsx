@@ -34,6 +34,10 @@ const Grid = styled.div`
   gap: 2.5rem;
   align-items: start;
 
+  > * {
+    min-width: 0;
+  }
+
   @media (min-width: ${({ theme }) => theme.breakpoints.lg}) {
     grid-template-columns: 1fr 1fr;
     gap: 4rem;

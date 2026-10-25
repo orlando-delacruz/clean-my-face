@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { featured, findProduct, ranges } from '../data/content';
 import { ProductCard } from '../components/ProductCard';
 import { StarIcon } from '../components/icons';
+import { motion, useReducedMotion } from 'motion/react';
 import {
   Container,
   EyebrowRow,
@@ -69,6 +70,8 @@ const Grid = styled.div`
 `;
 
 export function Featured() {
+  const reduceMotion = useReducedMotion();
+
   return (
     <DarkSection id="featured" aria-labelledby="featured-title">
       <Glow aria-hidden="true" />
@@ -84,17 +87,28 @@ export function Featured() {
             <DarkLead>{featured.lead}</DarkLead>
           </Header>
           <Grid>
-            {featured.picks.map((pick) => {
+            {featured.picks.map((pick, index) => {
               const product = findProduct(pick.rangeId, pick.step);
               const rangeName =
                 ranges.find((r) => r.id === pick.rangeId)?.name ?? '';
               return (
-                <ProductCard
+                <motion.div
                   key={`${pick.rangeId}-${pick.step}`}
-                  product={product}
-                  rangeName={rangeName}
-                  tone="dark"
-                />
+                  initial={reduceMotion ? false : { opacity: 0, y: 18 }}
+                  whileInView={reduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.2 }}
+                  transition={{
+                    duration: reduceMotion ? 0 : 0.45,
+                    delay: reduceMotion ? 0 : index * 0.08,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
+                >
+                  <ProductCard
+                    product={product}
+                    rangeName={rangeName}
+                    tone="dark"
+                  />
+                </motion.div>
               );
             })}
           </Grid>

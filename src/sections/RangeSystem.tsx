@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import type { RangeContent } from '../data/content';
 import { img } from '../data/images';
 import { theme } from '../theme';
-import { RoutineStep } from '../components/RoutineStep';
+import { Link } from '../router';
 import { DropletIcon, LeafIcon } from '../components/icons';
 import {
   Container,
@@ -101,6 +101,10 @@ const Body = styled.div`
   display: grid;
   gap: 2rem;
   margin-top: 2.25rem;
+
+  > * {
+    min-width: 0;
+  }
 `;
 
 const HeroCard = styled.figure`
@@ -120,6 +124,8 @@ const HeroImage = styled.img`
   height: auto;
   aspect-ratio: 1136 / 592;
   display: block;
+  object-fit: cover;
+  object-position: center;
 `;
 
 const HeroScrim = styled.div`
@@ -176,21 +182,52 @@ const HeroDesc = styled.p`
   }
 `;
 
-const Steps = styled.ol`
+const RoutineList = styled.ol`
   list-style: none;
   padding: 0;
   margin: 0;
   display: grid;
-  gap: 1.25rem;
-  grid-template-columns: 1fr;
+  gap: 0.5rem;
+`;
 
-  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
-    grid-template-columns: repeat(2, 1fr);
-  }
+const RoutineRow = styled.li`
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.625rem 0.75rem;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: ${({ theme }) => theme.radius.sm};
+  background: color-mix(in srgb, ${({ theme }) => theme.colors.surface} 72%, transparent);
+`;
 
-  @media (min-width: ${({ theme }) => theme.breakpoints.lg}) {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
+const StepTag = styled.span`
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: ${({ theme }) => theme.colors.muted};
+`;
+
+const RoleTag = styled.span`
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.text};
+`;
+
+const RoutineLink = styled(Link)`
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.plumpDeep};
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 0.125rem;
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.text};
   }
 `;
 
@@ -243,11 +280,17 @@ export function RangeSystem({ range, tint }: { range: RangeContent; tint: string
                   </HeroContent>
                 </HeroCard>
               )}
-              <Steps>
+              <RoutineList aria-label={`${range.name} routine steps`}>
                 {range.products.map((product) => (
-                  <RoutineStep key={product.step} product={product} />
+                  <RoutineRow key={product.slug}>
+                    <StepTag>Step {product.step}</StepTag>
+                    <RoleTag>{product.role} · {product.name}</RoleTag>
+                    <RoutineLink to={`/products/${product.slug}`}>
+                      View
+                    </RoutineLink>
+                  </RoutineRow>
                 ))}
-              </Steps>
+              </RoutineList>
             </Body>
           </Reveal>
         </Container>

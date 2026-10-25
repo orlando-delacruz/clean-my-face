@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
+import { useReducedMotion } from 'motion/react';
+import { motion } from 'motion/react';
 import styled, { css } from 'styled-components';
 
 /**
@@ -173,16 +174,13 @@ export const TextAction = styled.a`
   }
 `;
 
-const RevealWrapper = styled.div<{ $visible: boolean }>`
-  opacity: ${({ $visible }) => ($visible ? 1 : 0)};
-  transform: ${({ $visible }) => ($visible ? 'none' : 'translateY(14px)')};
-  transition: opacity 520ms cubic-bezier(0.22, 1, 0.36, 1),
-    transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
+const RevealWrapper = styled(motion.div)`
+  will-change: transform, opacity;
 `;
 
 /**
- * Single quiet entrance per section. Used once per section, never per item.
- * Renders visible immediately for reduced motion.
+ * Single quiet entrance per section. Uses Motion for React while preserving
+ * the existing reduced-motion behavior.
  */
 export function Reveal({
   children,
@@ -191,49 +189,19 @@ export function Reveal({
   children: ReactNode;
   className?: string;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setVisible(true);
-      return;
-    }
-    const el = ref.current;
-    if (!el) return;
-    // Threshold 0 (not a ratio): section wrappers can be taller than the
-    // viewport, so a ratio threshold may never be reached after an instant
-    // anchor jump, leaving the section stuck invisible. Any visibility
-    // reveals; content above the fold stays hidden until scrolled into view.
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0]?.isIntersecting) {
-          setVisible(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0 },
-    );
-    observer.observe(el);
-    // Safety net: a programmatic scroll landing in the same frame as the
-    // first observation can leave the observer with a stale not-intersecting
-    // delivery that never updates, sticking the section invisible. Re-check
-    // synchronously once settled; this only ever reveals, never hides.
-    const fallback = window.setTimeout(() => {
-      const rect = el.getBoundingClientRect();
-      if (rect.bottom > 0 && rect.top < window.innerHeight) {
-        setVisible(true);
-        observer.disconnect();
-      }
-    }, 500);
-    return () => {
-      observer.disconnect();
-      window.clearTimeout(fallback);
-    };
-  }, []);
+  const reduceMotion = useReducedMotion();
 
   return (
-    <RevealWrapper ref={ref} $visible={visible} className={className}>
+    <RevealWrapper
+      className={className}
+      initial={reduceMotion ? false : { opacity: 0, y: 14 }}
+      whileInView={reduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.12 }}
+      transition={{
+        duration: reduceMotion ? 0 : 0.52,
+        ease: [0.22, 1, 0.36, 1],
+      }}
+    >
       {children}
     </RevealWrapper>
   );

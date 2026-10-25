@@ -1,6 +1,8 @@
 import styled from 'styled-components';
-import { brand } from '../data/content';
+import { brand, findProduct } from '../data/content';
+import { Link } from '../router';
 import { DropletIcon } from '../components/icons';
+import { motion, useReducedMotion } from 'motion/react';
 import {
   Container,
   EyebrowRow,
@@ -14,6 +16,10 @@ const Grid = styled.div`
   display: grid;
   gap: 2.5rem;
   margin-top: ${({ theme }) => theme.spacing.sm};
+
+  > * {
+    min-width: 0;
+  }
 
   @media (min-width: ${({ theme }) => theme.breakpoints.lg}) {
     grid-template-columns: 5fr 7fr;
@@ -76,7 +82,79 @@ const PillarText = styled.p`
   max-width: 52ch;
 `;
 
+const FormulationBlock = styled.div`
+  margin-top: ${({ theme }) => theme.spacing.lg};
+  padding-top: ${({ theme }) => theme.spacing.lg};
+  border-top: 1px solid ${({ theme }) => theme.colors.border};
+`;
+
+const FormulationGrid = styled.div`
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.25rem;
+
+  > * {
+    min-width: 0;
+  }
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+`;
+
+const FormulationCard = styled.article`
+  padding: 1.25rem;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: ${({ theme }) => theme.radius.sm};
+  background: ${({ theme }) => theme.colors.surface};
+`;
+
+const FormulationName = styled.h3`
+  font-size: 1.0625rem;
+  margin-bottom: 0.25rem;
+`;
+
+const FormulationComplex = styled.p`
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: ${({ theme }) => theme.colors.plumpDeep};
+  margin-bottom: 0.5rem;
+`;
+
+const FormulationText = styled.p`
+  font-size: 0.9375rem;
+  color: ${({ theme }) => theme.colors.muted};
+  line-height: 1.6;
+`;
+
+const FormulationLink = styled(Link)`
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  margin-top: 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.plumpDeep};
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 0.125rem;
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.text};
+  }
+`;
+
 export function Philosophy() {
+  const reduceMotion = useReducedMotion();
+  const formulations = [
+    findProduct('clear', '01'),
+    findProduct('clear', '03'),
+    findProduct('clear', '04'),
+    findProduct('clear', '06'),
+  ].filter((product) => product.complex !== undefined);
   return (
     <Section id="philosophy" aria-labelledby="philosophy-title">
       <Container>
@@ -106,6 +184,43 @@ export function Philosophy() {
               ))}
             </PillarList>
           </Grid>
+          <FormulationBlock>
+            <EyebrowRow $tight>
+              <DropletIcon size={14} aria-hidden="true" />
+              Purposeful formulations
+            </EyebrowRow>
+            <SectionTitle as="h3">Actives chosen with intent.</SectionTitle>
+            <Lead>
+              Selected complexes from the CleanMyFace systems, shown with their
+              approved product context.
+            </Lead>
+            <FormulationGrid>
+              {formulations.map((product, index) => (
+                <motion.div
+                  key={product.slug}
+                  initial={reduceMotion ? false : { opacity: 0, y: 14 }}
+                  whileInView={reduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.2 }}
+                  transition={{
+                    duration: reduceMotion ? 0 : 0.4,
+                    delay: reduceMotion ? 0 : index * 0.06,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
+                >
+                  <FormulationCard>
+                    <FormulationName>{product.name}</FormulationName>
+                    {product.complex !== undefined && (
+                      <FormulationComplex>{product.complex}</FormulationComplex>
+                    )}
+                    <FormulationText>{product.positioningLong}</FormulationText>
+                    <FormulationLink to={`/products/${product.slug}`}>
+                      View product
+                    </FormulationLink>
+                  </FormulationCard>
+                </motion.div>
+              ))}
+            </FormulationGrid>
+          </FormulationBlock>
         </Reveal>
       </Container>
     </Section>

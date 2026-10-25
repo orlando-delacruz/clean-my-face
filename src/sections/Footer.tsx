@@ -20,6 +20,10 @@ const Grid = styled(Container)`
   gap: 2.75rem;
   align-items: start;
 
+  > * {
+    min-width: 0;
+  }
+
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
     grid-template-columns: 1.6fr 1fr 1fr;
     gap: 3rem;
