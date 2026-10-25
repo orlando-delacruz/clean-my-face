@@ -1,0 +1,1 @@
+export { TextureSwatch } from './TextureSwatch';
