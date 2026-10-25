@@ -13,14 +13,14 @@ const Step = styled.li<{ $ink: string }>`
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.radius.sm};
   overflow: hidden;
-  box-shadow: 0 18px 40px -24px rgba(33, 26, 19, 0.28);
+  box-shadow: 0 18px 40px -24px ${({ theme }) => theme.colors.text28};
   cursor: pointer;
   transition: box-shadow 220ms cubic-bezier(0.22, 1, 0.36, 1),
     border-color 220ms ease;
 
   &:hover {
     border-color: ${({ $ink }) => $ink};
-    box-shadow: 0 26px 54px -24px rgba(33, 26, 19, 0.38);
+    box-shadow: 0 26px 54px -24px ${({ theme }) => theme.colors.text38};
   }
 
   &:focus-within {

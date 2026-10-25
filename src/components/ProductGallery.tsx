@@ -9,12 +9,12 @@ const Figure = styled.figure<{ $tint: string }>`
     radial-gradient(
       120% 90% at 50% 0%,
       ${({ $tint }) => $tint} 0%,
-      rgba(255, 255, 255, 0) 62%
+      transparent 62%
     ),
     ${({ theme }) => theme.colors.surface};
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.radius.sm};
-  box-shadow: 0 32px 64px -40px rgba(33, 26, 19, 0.28);
+  box-shadow: 0 32px 64px -40px ${({ theme }) => theme.colors.text28};
   aspect-ratio: 1 / 1;
   display: flex;
   align-items: center;
@@ -25,7 +25,7 @@ const Figure = styled.figure<{ $tint: string }>`
     content: '';
     position: absolute;
     inset: 0.625rem;
-    border: 1px solid rgba(201, 169, 106, 0.35);
+    border: 1px solid ${({ theme }) => theme.colors.gold35};
     border-radius: ${({ theme }) => theme.radius.sm};
     pointer-events: none;
   }

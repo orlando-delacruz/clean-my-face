@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { brand } from '../data/content';
 import { img } from '../data/images';
 import { ArrowRightIcon, ChatIcon, DropletIcon, LayersIcon, LeafIcon, ListIcon } from '../components/icons';
-import { Container } from '../components/primitives';
+import { Container } from '../components/ui';
 import { motion, useReducedMotion } from 'motion/react';
 
 const HeroSection = styled.section`
@@ -17,7 +17,7 @@ const HeroSection = styled.section`
   margin-top: calc(-4rem - 1px);
   padding-block: calc(6rem + 4rem + 1px) 4.5rem;
   overflow: hidden;
-  background-color: #121814;
+  background-color: ${({ theme }) => theme.colors.surfaceInverse};
   color: ${({ theme }) => theme.colors.surface};
 
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
@@ -51,23 +51,23 @@ const Overlay = styled.div`
   background:
     linear-gradient(
       180deg,
-      rgba(14, 19, 16, 0.6) 0%,
-      rgba(14, 19, 16, 0.78) 52%,
-      rgba(14, 19, 16, 0.88) 100%
+      ${({ theme }) => theme.colors.heroScrim60} 0%,
+      ${({ theme }) => theme.colors.heroScrim78} 52%,
+      ${({ theme }) => theme.colors.heroScrim88} 100%
     );
 
   @media (min-width: ${({ theme }) => theme.breakpoints.lg}) {
     background:
       linear-gradient(
         100deg,
-        rgba(14, 19, 16, 0.92) 0%,
-        rgba(14, 19, 16, 0.78) 34%,
-        rgba(14, 19, 16, 0.44) 62%,
-        rgba(14, 19, 16, 0.18) 100%
+        ${({ theme }) => theme.colors.heroScrim92} 0%,
+        ${({ theme }) => theme.colors.heroScrim78} 34%,
+        ${({ theme }) => theme.colors.heroScrim44} 62%,
+        ${({ theme }) => theme.colors.heroScrim18} 100%
       ),
       linear-gradient(
         to top,
-        rgba(14, 19, 16, 0.6) 0%,
+        ${({ theme }) => theme.colors.heroScrim60} 0%,
         transparent 30%
       );
   }
@@ -154,7 +154,7 @@ const Title = styled.h1`
   line-height: 1.04;
   letter-spacing: -0.02em;
   text-wrap: balance;
-  color: #fffdf8;
+  color: ${({ theme }) => theme.colors.textInverse};
   margin-bottom: 1.25rem;
   max-width: 12ch;
 
@@ -167,7 +167,7 @@ const Title = styled.h1`
 const HeroLead = styled.p`
   font-size: clamp(1.0625rem, 1.4vw, 1.25rem);
   line-height: 1.6;
-  color: rgba(255, 253, 248, 0.88);
+  color: ${({ theme }) => theme.colors.textInverse88};
   max-width: 38ch;
   margin-bottom: 2.25rem;
 `;
@@ -199,9 +199,9 @@ const HeroPrimary = styled.a`
   letter-spacing: 0.01em;
   text-decoration: none;
   border-radius: 999px;
-  border: 1px solid #fffdf8;
-  background: #fffdf8;
-  color: #1b231e;
+  border: 1px solid ${({ theme }) => theme.colors.textInverse};
+  background: ${({ theme }) => theme.colors.textInverse};
+  color: ${({ theme }) => theme.colors.inkDark};
   cursor: pointer;
   flex: 1 1 0;
   min-width: 0;
@@ -223,10 +223,10 @@ const HeroPrimary = styled.a`
     box-shadow 180ms ease;
 
   &:hover {
-    background: #ede4d3;
-    border-color: #ede4d3;
+    background: ${({ theme }) => theme.colors.surfaceWarm};
+    border-color: ${({ theme }) => theme.colors.surfaceWarm};
     transform: translateY(-1px);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+    box-shadow: 0 12px 32px ${({ theme }) => theme.colors.black35};
   }
 
   &:focus-visible {
@@ -249,8 +249,8 @@ const HeroSecondary = styled.a`
   text-decoration: none;
   border-radius: 999px;
   background: transparent;
-  color: #fffdf8;
-  border: 1px solid rgba(255, 253, 248, 0.48);
+  color: ${({ theme }) => theme.colors.textInverse};
+  border: 1px solid ${({ theme }) => theme.colors.textInverse48};
   cursor: pointer;
   flex: 1 1 0;
   min-width: 0;
@@ -271,8 +271,8 @@ const HeroSecondary = styled.a`
     transform 180ms ease;
 
   &:hover {
-    border-color: #fffdf8;
-    background: rgba(255, 253, 248, 0.1);
+    border-color: ${({ theme }) => theme.colors.textInverse};
+    background: ${({ theme }) => theme.colors.textInverse10};
     transform: translateY(-1px);
   }
 
@@ -310,7 +310,7 @@ const StatMark = styled.span`
   width: 2.125rem;
   height: 2.125rem;
   flex: none;
-  border: 1px solid rgba(255, 253, 248, 0.35);
+  border: 1px solid ${({ theme }) => theme.colors.textInverse35};
   border-radius: 50%;
   color: ${({ theme }) => theme.colors.gold};
 
@@ -330,7 +330,7 @@ const StatText = styled.span`
 const StatValue = styled.span`
   font-family: ${({ theme }) => theme.fonts.display};
   font-size: 1.125rem;
-  color: #fffdf8;
+  color: ${({ theme }) => theme.colors.textInverse};
 
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
     font-size: 1.375rem;
@@ -342,7 +342,7 @@ const StatLabel = styled.span`
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(255, 253, 248, 0.72);
+  color: ${({ theme }) => theme.colors.textInverse72};
 
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
     font-size: 0.6875rem;

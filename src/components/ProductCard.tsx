@@ -10,10 +10,10 @@ const CardLink = styled(Link)<{ $tone: 'light' | 'dark' }>`
   flex-direction: column;
   height: 100%;
   background: ${({ $tone, theme }) =>
-    $tone === 'dark' ? 'rgba(255, 253, 248, 0.03)' : theme.colors.surface};
+    $tone === 'dark' ? theme.colors.textInverse03 : theme.colors.surface};
   border: 1px solid
     ${({ $tone, theme }) =>
-      $tone === 'dark' ? 'rgba(201, 169, 106, 0.32)' : theme.colors.border};
+      $tone === 'dark' ? theme.colors.gold32 : theme.colors.border};
   border-radius: ${({ theme }) => theme.radius.sm};
   overflow: hidden;
   text-decoration: none;
@@ -27,13 +27,13 @@ const CardLink = styled(Link)<{ $tone: 'light' | 'dark' }>`
   &:hover {
     transform: translateY(-4px);
     border-color: ${({ $tone, theme }) =>
-      $tone === 'dark' ? 'rgba(201, 169, 106, 0.68)' : theme.colors.text};
+      $tone === 'dark' ? theme.colors.gold68 : theme.colors.text};
     background: ${({ $tone, theme }) =>
-      $tone === 'dark' ? 'rgba(255, 253, 248, 0.05)' : theme.colors.surface};
+      $tone === 'dark' ? theme.colors.textInverse05 : theme.colors.surface};
     box-shadow: ${({ $tone }) =>
       $tone === 'dark'
-        ? '0 28px 56px -24px rgba(0, 0, 0, 0.6)'
-        : '0 26px 54px -26px rgba(33, 26, 19, 0.35)'};
+        ? '0 28px 56px -24px ${({ theme }) => theme.colors.black60}'
+        : '0 26px 54px -26px ${({ theme }) => theme.colors.text35}'};
   }
 
   &:focus-visible {
@@ -50,7 +50,7 @@ const ImageWrap = styled.div<{ $tone: 'light' | 'dark' }>`
     $tone === 'dark' ? theme.colors.surface : theme.colors.background};
   border-bottom: 1px solid
     ${({ $tone, theme }) =>
-      $tone === 'dark' ? 'rgba(201, 169, 106, 0.28)' : theme.colors.border};
+      $tone === 'dark' ? theme.colors.gold28 : theme.colors.border};
 `;
 
 const GhostStep = styled.span`
@@ -61,7 +61,7 @@ const GhostStep = styled.span`
   font-style: italic;
   font-size: 2.5rem;
   line-height: 1;
-  color: rgba(33, 26, 19, 0.12);
+  color: ${({ theme }) => theme.colors.text12};
   pointer-events: none;
   user-select: none;
 `;
@@ -115,7 +115,7 @@ const Title = styled.h3<{ $tone: 'light' | 'dark' }>`
   font-size: 1.375rem;
   line-height: 1.2;
   letter-spacing: -0.01em;
-  color: ${({ $tone }) => ($tone === 'dark' ? '#FFFDF8' : 'inherit')};
+  color: ${({ $tone }) => ($tone === 'dark' ? theme.colors.textInverse : 'inherit')};
 `;
 
 const Text = styled.p<{ $tone: 'light' | 'dark' }>`
@@ -123,7 +123,7 @@ const Text = styled.p<{ $tone: 'light' | 'dark' }>`
   line-height: 1.6;
   flex: 1;
   color: ${({ $tone, theme }) =>
-    $tone === 'dark' ? 'rgba(255, 253, 248, 0.82)' : theme.colors.muted};
+    $tone === 'dark' ? theme.colors.textInverse82 : theme.colors.muted};
 `;
 
 const Foot = styled.span<{ $tone: 'light' | 'dark' }>`
@@ -135,11 +135,11 @@ const Foot = styled.span<{ $tone: 'light' | 'dark' }>`
   padding-top: 0.9rem;
   border-top: 1px solid
     ${({ $tone, theme }) =>
-      $tone === 'dark' ? 'rgba(255, 253, 248, 0.14)' : theme.colors.border};
+      $tone === 'dark' ? theme.colors.textInverse14 : theme.colors.border};
   font-size: 0.875rem;
   font-weight: 600;
   color: ${({ $tone, theme }) =>
-    $tone === 'dark' ? '#FFFDF8' : theme.colors.text};
+    $tone === 'dark' ? theme.colors.textInverse : theme.colors.text};
 
   ${CardLink}:hover & {
     color: ${({ $tone, theme }) =>
@@ -166,7 +166,7 @@ const CircleArrow = styled.span<{ $arrow: string; $tone: 'light' | 'dark' }>`
   ${CardLink}:hover & {
     background: ${({ $tone, theme }) =>
       $tone === 'dark' ? theme.colors.gold : theme.colors.text};
-    color: ${({ $tone }) => ($tone === 'dark' ? '#211A13' : '#FFFDF8')};
+    color: ${({ $tone }) => ($tone === 'dark' ? theme.colors.text : theme.colors.textInverse)};
     transform: translateX(3px);
   }
 `;

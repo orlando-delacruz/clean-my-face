@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Link } from '../router';
-import { Container, Section } from '../components/primitives';
+import { Container, Section } from '../components/ui';
 import { ArrowRightIcon } from '../components/icons';
 
 const Wrap = styled.div`

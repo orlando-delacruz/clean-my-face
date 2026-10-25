@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { footer } from '../data/content';
 import { Link } from '../router';
-import { Container } from '../components/primitives';
+import { Container } from '../components/ui';
 import { socialIcons } from '../components/icons';
 
 const Bar = styled.footer`
@@ -89,7 +89,7 @@ const SocialButton = styled(Link)`
   justify-content: center;
   width: 2.75rem;
   height: 2.75rem;
-  border: 1px solid rgba(250, 247, 241, 0.28);
+  border: 1px solid ${({ theme }) => theme.colors.background28};
   border-radius: 50%;
   color: ${({ theme }) => theme.colors.background};
   transition: color 160ms ease, border-color 160ms ease;
@@ -161,7 +161,7 @@ const FooterLink = styled(Link)`
 const Legal = styled(Container)`
   margin-top: 3rem;
   padding-top: 1.5rem;
-  border-top: 1px solid rgba(250, 247, 241, 0.16);
+  border-top: 1px solid ${({ theme }) => theme.colors.background16};
   display: flex;
   flex-wrap: wrap;
   align-items: center;

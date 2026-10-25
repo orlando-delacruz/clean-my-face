@@ -13,7 +13,7 @@ import {
   SectionRule,
   SectionTitle,
   TextAction,
-} from '../components/primitives';
+} from '../components/ui';
 
 const Header = styled.div`
   max-width: 44rem;
@@ -58,7 +58,7 @@ const Card = styled.article`
   &:hover {
     transform: translateY(-4px);
     border-color: ${({ theme }) => theme.colors.gold};
-    box-shadow: 0 28px 56px -28px rgba(33, 26, 19, 0.32);
+    box-shadow: 0 28px 56px -28px ${({ theme }) => theme.colors.text32};
   }
 
   &:focus-within {

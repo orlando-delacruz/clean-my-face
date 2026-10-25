@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import type { LegalDocument } from '../data/legal';
 import { Link } from '../router';
-import { Container, Section } from '../components/primitives';
+import { Container, Section } from '../components/ui';
 import { ArrowRightIcon } from '../components/icons';
 
 const Article = styled.article`

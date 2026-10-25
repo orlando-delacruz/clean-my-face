@@ -14,7 +14,7 @@ import {
   Section,
   SectionRule,
   SectionTitle,
-} from '../components/primitives';
+} from '../components/ui';
 
 const ClosingSection = styled(Section)<{ $bg: string }>`
   background-color: ${({ theme }) => theme.colors.background};
@@ -85,7 +85,7 @@ const SmallImage = styled.img`
   border-radius: ${({ theme }) => theme.radius.sm};
   border: 1px solid ${({ theme }) => theme.colors.gold};
   background: ${({ theme }) => theme.colors.surface};
-  box-shadow: 0 24px 48px -28px rgba(33, 26, 19, 0.4);
+  box-shadow: 0 24px 48px -28px ${({ theme }) => theme.colors.text40};
 `;
 
 const Cues = styled.ul`
@@ -160,7 +160,7 @@ const FormCard = styled.form`
   color: ${({ theme }) => theme.colors.text};
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.radius.md};
-  box-shadow: 0 28px 56px -28px rgba(33, 26, 19, 0.25);
+  box-shadow: 0 28px 56px -28px ${({ theme }) => theme.colors.text25};
   padding: 1.75rem;
   display: grid;
   gap: 1.125rem;
@@ -245,7 +245,7 @@ const Textarea = styled.textarea`
 
 const Error = styled.p`
   font-size: 0.8125rem;
-  color: #9c2b2b;
+  color: ${({ theme }) => theme.colors.error};
   font-weight: 500;
 `;
 
@@ -272,7 +272,7 @@ const Submit = styled.button`
       ${({ theme }) => theme.colors.plumpDeep} 82%,
       ${({ theme }) => theme.colors.text}
     );
-    box-shadow: 0 14px 28px -18px rgba(33, 26, 19, 0.7);
+    box-shadow: 0 14px 28px -18px ${({ theme }) => theme.colors.text70};
   }
 `;
 
@@ -281,7 +281,7 @@ const SuccessCard = styled.div`
   color: ${({ theme }) => theme.colors.text};
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.radius.md};
-  box-shadow: 0 28px 56px -28px rgba(33, 26, 19, 0.25);
+  box-shadow: 0 28px 56px -28px ${({ theme }) => theme.colors.text25};
   padding: 2.5rem 1.75rem;
   display: grid;
   gap: 1rem;

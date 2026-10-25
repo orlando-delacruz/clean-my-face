@@ -7,7 +7,7 @@ import { img } from '../data/images';
 import { ProductGallery } from '../components/ProductGallery';
 import { ProductCard } from '../components/ProductCard';
 import { ArrowRightIcon, CheckIcon } from '../components/icons';
-import { Container, Reveal, Section } from '../components/primitives';
+import { Container, Reveal, Section } from '../components/ui';
 
 const TopRow = styled.div`
   display: flex;
@@ -189,7 +189,7 @@ const StepLink = styled(Link)<{ $active: boolean; $ink: string }>`
     font-size: 0.6875rem;
     font-weight: 600;
     color: ${({ theme, $active }) =>
-      $active ? 'rgba(255,255,255,0.75)' : theme.colors.muted};
+      $active ? theme.colors.surface75 : theme.colors.muted};
   }
 `;
 
@@ -300,7 +300,7 @@ const CircleFallback = styled.span<{ $tint: string }>`
   font-family: ${({ theme }) => theme.fonts.display};
   font-style: italic;
   font-size: 1.25rem;
-  border: 1px solid rgba(201, 169, 106, 0.55);
+  border: 1px solid ${({ theme }) => theme.colors.gold55};
   background: ${({ $tint }) => $tint};
   color: ${({ theme }) => theme.colors.text};
 `;

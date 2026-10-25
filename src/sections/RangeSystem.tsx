@@ -12,7 +12,7 @@ import {
   Section,
   SectionRule,
   SectionTitle,
-} from '../components/primitives';
+} from '../components/ui';
 
 const Tinted = styled.div<{ $tint: string; $bg: string }>`
   background-color: ${({ $tint }) => $tint};
@@ -113,8 +113,8 @@ const HeroCard = styled.figure`
   overflow: hidden;
   border-radius: ${({ theme }) => theme.radius.sm};
   border: 1px solid ${({ theme }) => theme.colors.border};
-  background: #17110b;
-  box-shadow: 0 28px 60px -28px rgba(33, 26, 19, 0.45);
+  background: ${({ theme }) => theme.colors.cardDark};
+  box-shadow: 0 28px 60px -28px ${({ theme }) => theme.colors.text45};
 `;
 
 // Reserve space before load (1136x592 and 1126x587, same aspect) so late
@@ -133,9 +133,9 @@ const HeroScrim = styled.div`
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(12, 9, 6, 0.04) 28%,
-    rgba(12, 9, 6, 0.52) 62%,
-    rgba(12, 9, 6, 0.84) 100%
+    ${({ theme }) => theme.colors.rangeScrim04} 28%,
+    ${({ theme }) => theme.colors.rangeScrim52} 62%,
+    ${({ theme }) => theme.colors.rangeScrim84} 100%
   );
 `;
 
@@ -144,7 +144,7 @@ const HeroContent = styled.figcaption`
   inset-inline: 0;
   bottom: 0;
   padding: 1.5rem 1.5rem 1.625rem;
-  color: #fff;
+  color: ${({ theme }) => theme.colors.surface};
 
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
     padding: 2.5rem 2.75rem 2.5rem;
@@ -165,7 +165,7 @@ const HeroTitle = styled.p`
   font-size: clamp(1.65rem, 3.4vw, 2.5rem);
   line-height: 1.08;
   letter-spacing: -0.01em;
-  color: #fff;
+  color: ${({ theme }) => theme.colors.surface};
   margin-bottom: 0.6rem;
   text-wrap: balance;
 `;
@@ -174,7 +174,7 @@ const HeroDesc = styled.p`
   display: none;
   font-size: 1rem;
   line-height: 1.6;
-  color: rgba(255, 255, 255, 0.88);
+  color: ${({ theme }) => theme.colors.surface88};
   max-width: 56ch;
 
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
@@ -198,7 +198,7 @@ const RoutineRow = styled.li`
   padding: 0.625rem 0.75rem;
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.radius.sm};
-  background: color-mix(in srgb, ${({ theme }) => theme.colors.surface} 72%, transparent);
+  background: ${({ theme }) => theme.colors.surface72};
 `;
 
 const StepTag = styled.span`

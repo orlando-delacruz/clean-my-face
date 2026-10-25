@@ -12,7 +12,7 @@ import {
   Section,
   SectionRule,
   SectionTitle,
-} from '../components/primitives';
+} from '../components/ui';
 
 type RangeId = 'plump' | 'clear';
 
@@ -118,7 +118,7 @@ const Panel = styled.div`
   background: ${({ theme }) => theme.colors.surface};
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.radius.sm};
-  box-shadow: 0 28px 56px -28px rgba(33, 26, 19, 0.22);
+  box-shadow: 0 28px 56px -28px ${({ theme }) => theme.colors.text22};
   padding: 1.75rem 1.5rem;
 
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
@@ -277,7 +277,7 @@ const GuideImage = styled.img`
   border-radius: ${({ theme }) => theme.radius.sm};
   border: 1px solid ${({ theme }) => theme.colors.border};
   background: ${({ theme }) => theme.colors.surface};
-  box-shadow: 0 18px 36px -20px rgba(33, 26, 19, 0.35);
+  box-shadow: 0 18px 36px -20px ${({ theme }) => theme.colors.text35};
 `;
 
 const MessageWrap = styled.div`

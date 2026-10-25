@@ -2,7 +2,7 @@ import { ThemeProvider } from 'styled-components';
 import { theme } from './theme';
 import { GlobalStyle } from './GlobalStyle';
 import { usePathname } from './router';
-import { SkipLink } from './components/primitives';
+import { SkipLink } from './components/ui';
 import { Header } from './sections/Header';
 import { Footer } from './sections/Footer';
 import { Home } from './pages/Home';

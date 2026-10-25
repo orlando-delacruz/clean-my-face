@@ -10,7 +10,7 @@ import {
   Reveal,
   Section,
   SectionTitle,
-} from '../components/primitives';
+} from '../components/ui';
 
 const Grid = styled.div`
   display: grid;

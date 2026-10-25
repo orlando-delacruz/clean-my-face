@@ -10,14 +10,14 @@ import {
   Reveal,
   SectionRule,
   SectionTitle,
-} from '../components/primitives';
+} from '../components/ui';
 
 const DarkSection = styled.section`
   scroll-margin-top: 5rem;
   padding-block: ${({ theme }) => theme.spacing.sectionMobile};
   background-color: ${({ theme }) => theme.colors.text};
-  color: #fffdf8;
-  border-block: 1px solid rgba(201, 169, 106, 0.32);
+  color: ${({ theme }) => theme.colors.textInverse};
+  border-block: 1px solid ${({ theme }) => theme.colors.gold32};
   position: relative;
   isolation: isolate;
   overflow: hidden;
@@ -33,7 +33,7 @@ const Glow = styled.div`
   z-index: -1;
   background: radial-gradient(
     58rem 26rem at 50% -8%,
-    rgba(201, 169, 106, 0.14),
+    ${({ theme }) => theme.colors.gold14},
     transparent 70%
   );
   pointer-events: none;
@@ -49,12 +49,12 @@ const Header = styled.div`
 `;
 
 const DarkTitle = styled(SectionTitle)`
-  color: #fffdf8;
+  color: ${({ theme }) => theme.colors.textInverse};
   text-wrap: balance;
 `;
 
 const DarkLead = styled(Lead)`
-  color: rgba(255, 253, 248, 0.82);
+  color: ${({ theme }) => theme.colors.textInverse82};
   max-width: 58ch;
 `;
 

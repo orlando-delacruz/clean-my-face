@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { navigation } from '../data/content';
 import { Link, usePathname } from '../router';
-import { Container } from '../components/primitives';
+import { Container } from '../components/ui';
 import { ArrowRightIcon, CloseIcon, MenuIcon } from '../components/icons';
 
 const Bar = styled.header<{ $scrolled: boolean; $open: boolean; $transparent: boolean }>`
@@ -32,7 +32,7 @@ const Bar = styled.header<{ $scrolled: boolean; $open: boolean; $transparent: bo
     !$transparent &&
     css`
       box-shadow: 0 1px 0 ${theme.colors.border},
-        0 18px 36px -24px rgba(33, 26, 19, 0.28);
+        0 18px 36px -24px ${({ theme }) => theme.colors.text28};
     `}
 `;
 
@@ -77,7 +77,7 @@ const BrandSub = styled.span<{ $onDark: boolean }>`
   letter-spacing: 0.24em;
   text-transform: uppercase;
   color: ${({ theme, $onDark }) =>
-    $onDark ? 'rgba(255, 253, 248, 0.72)' : theme.colors.muted};
+    $onDark ? theme.colors.textInverse72 : theme.colors.muted};
   transition: color 220ms cubic-bezier(0.22, 1, 0.36, 1);
 `;
 
@@ -170,13 +170,13 @@ const HeaderCta = styled(Link)<{ $onDark: boolean }>`
   &:hover {
     background: ${({ theme, $onDark }) =>
       $onDark
-        ? '#ede4d3'
+        ? theme.colors.surfaceWarm
         : `color-mix(in srgb, ${theme.colors.plumpDeep} 82%, ${theme.colors.text})`};
     transform: translateY(-1px);
-    box-shadow: ${({ $onDark }) =>
+    box-shadow: ${({ theme, $onDark }) =>
       $onDark
-        ? '0 12px 32px rgba(0, 0, 0, 0.35)'
-        : '0 14px 26px -18px rgba(33, 26, 19, 0.5)'};
+        ? `0 12px 32px ${theme.colors.black35}`
+        : `0 14px 26px -18px ${theme.colors.text50}`};
   }
 
   &:active {
@@ -200,7 +200,7 @@ const MenuButton = styled.button<{ $onDark: boolean }>`
     $onDark ? 'transparent' : theme.colors.surface};
   border: 1px solid
     ${({ theme, $onDark }) =>
-      $onDark ? 'rgba(255, 253, 248, 0.4)' : theme.colors.border};
+      $onDark ? theme.colors.textInverse40 : theme.colors.border};
   border-radius: ${({ theme }) => theme.radius.sm};
   cursor: pointer;
   color: ${({ theme, $onDark }) =>
