@@ -4,6 +4,10 @@ import type { ReactNode } from 'react';
 /**
  * MediaFrame: layout wrapper for child media.
  * Reserves space via aspect-ratio to prevent layout shift.
+ *
+ * standIn marks Picsum/temporary imagery. The data-stand-in attribute is
+ * emitted only for dev builds; production builds omit the attribute and the
+ * bundler drops the marker string entirely (verified by check:bundle).
  */
 export type MediaRatio = '1/1' | '4/5' | '3/4' | '16/9' | '21/9' | 'auto';
 export type MediaRadius = 'sm' | 'md' | 'lg' | 'pill';
@@ -55,7 +59,7 @@ export function MediaFrame({
   focal = 'center',
   overlay = 'none',
   caption,
-  placeholder = false,
+  standIn = false,
   children,
   className,
 }: {
@@ -65,10 +69,12 @@ export function MediaFrame({
   focal?: string;
   overlay?: MediaOverlay;
   caption?: string;
-  placeholder?: boolean;
+  standIn?: boolean;
   children: ReactNode;
   className?: string;
 }) {
+  const markerProps =
+    standIn === true && import.meta.env.DEV ? { 'data-stand-in': 'true' as const } : null;
   return (
     <figure className={className} style={{ margin: 0 }}>
       <StyledFrame
@@ -77,7 +83,7 @@ export function MediaFrame({
         $overlay={overlay}
         $fit={fit}
         $focal={focal}
-        data-placeholder={placeholder ? 'true' : undefined}
+        {...(markerProps ?? {})}
       >
         {children}
       </StyledFrame>

@@ -422,7 +422,7 @@ export default function SystemPage() {
               <MediaFrame
                 key={r}
                 ratio={r}
-                placeholder
+                standIn
                 caption={`Ratio ${r}`}
               >
                 <img

@@ -1,0 +1,19 @@
+# Normalize line endings to LF in the repository for cross-platform consistency.
+* text=auto eol=lf
+
+# Binary assets: never convert line endings.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.avif binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.otf binary
+*.eot binary
+*.mp4 binary
+*.webm binary
+*.node binary

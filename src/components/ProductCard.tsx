@@ -32,8 +32,8 @@ const CardLink = styled(Link)<{ $tone: 'light' | 'dark' }>`
       $tone === 'dark' ? theme.colors.textInverse05 : theme.colors.surface};
     box-shadow: ${({ $tone }) =>
       $tone === 'dark'
-        ? '0 28px 56px -24px ${({ theme }) => theme.colors.black60}'
-        : '0 26px 54px -26px ${({ theme }) => theme.colors.text35}'};
+        ? `0 28px 56px -24px ${theme.colors.black60}`
+        : `0 26px 54px -26px ${theme.colors.text35}`};
   }
 
   &:focus-visible {
