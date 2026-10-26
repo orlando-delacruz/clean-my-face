@@ -5,8 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "npm run build:images && tsc -b && vite build",
+    "build": "npm run build:images && tsc -b && vite build && npm run build:preload",
     "build:images": "node scripts/optimize-images.mjs",
+    "build:preload": "node scripts/inject-hero-preload.mjs",
     "images:optimize": "node scripts/optimize-images.mjs",
     "lint": "oxlint",
     "preview": "vite preview",
