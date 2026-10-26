@@ -178,3 +178,49 @@ Date: 2026-10-26
 
 - Historical Playwright references in earlier REBUILD_LOG entries are retained as project history.
 - Automated browser testing must not be re-added without an explicit requirement and a `docs/TECH_STACK.md` row in the same commit.
+
+## Phase 2: Image pipeline
+
+Date: 2026-10-26
+
+### Commits (on rebuild/brand-experience, on top of phase-1-fixed)
+
+- d30e2ca feat(images): add sharp devDependency and TECH_STACK row
+- 3aa231e feat(images): build-time optimizer, derivative manifest, generated output ignored
+- c1509b7 feat(ui): ResponsiveImage and ResponsiveBackground primitives with tests
+- 7a3e65a feat(images): migrate hero, sections and cards to responsive images
+- 0c33f62 perf(lcp): hero preload with generated variants
+- 3bfffc8 feat(phase-2): tests, geometry snapshot script, ResponsiveBackground tag prop
+- 5e9b1a3 chore(test): remove Playwright e2e setup and snapshot scripts
+- cc2101b chore(test): update check script, Vitest config, tsconfig references
+- 49bd086 docs: manual QA checklist and docs update for Playwright removal
+
+### Derivative totals (measured with fs.statSync in scripts/optimize-images.mjs)
+
+- Original source files referenced by the manifest: 86 files, 11,971,798 bytes on disk.
+- Delivered variants in public/img/: 84 files, 1,167,717 bytes. (manifest.json itself is 24,821 bytes and is not counted in the variant total.)
+- The manifest excludes 9 files (additional-img-1/2/4/5/6, two unreferenced product PNGs, three unreferenced HEARTLEAF/GEL/BALANCING PNGs, and public/og-image.png). No files were deleted.
+- Quality settings: AVIF quality 55, effort 4; WebP quality 75. Metadata stripped. Never upscale: 26 requested widths were skipped because they exceeded their source width, and 0 derivatives were larger than their original.
+
+### Audit findings and fixes in this pass
+
+- The first Phase 2 audit found 13 declared widths that exceeded their source width. These were never produced (the optimizer skips them), but they remained listed in scripts/image-manifest.mjs and in VARIANT_WIDTHS in src/data/images.ts. This pass removed them: CLEANSING BALM/CLEANSING BALM.png (640), ESSENCE TONER/ESSENCE TONER.png (480, 640), dry spot rescue balm/dry spot rescue balm.png (480, 640), 2-bha-gel-cleanser/2-bha-gel-cleanser.png (480, 640), EXFOLIATING TONER/EXFOLIATING TONER.png (480, 640), CLARIFYING CLAY MASK/CLARIFYING CLAY MASK.png (480, 640), and blemish-mark-spot-treatment/blemish-mark-spot-treatment.png (480, 640).
+- The default Vitest run timed out on two suites under parallel jsdom load. Capped maxWorkers to 2 in vite.config.ts. The default run now passes three consecutive times (21 files, 88 tests).
+- Playwright and all browser-based e2e tests were removed (see the Playwright Removal entry above). Manual QA is now the project owner's responsibility.
+
+### Known limitations
+
+The supplied images are used at their current sizes. Some will look soft on high-density (retina) screens, and larger source files are not planned for this prototype. See docs/IMAGE_LIMITATIONS.md.
+
+### UNVERIFIED (owner's manual checks)
+
+- Real browser bytes on first load for / at 390 and 1440 (expect roughly 350 KB at 390 and 450 KB at 1440, down from about 9.4 MB before).
+- Hero crop on desktop and mobile, including object-position and the 1.02 scale.
+- The preload link for the hero image in dist/index.html.
+- Any 404 responses in the Network tab.
+- Reduced motion behavior.
+
+### Notes
+
+- docs/baseline/image-usage.md is retained. A byte-identical copy exists at docs/baseline/image-usage-phase-1.md for Phase 1 reference.
+- Automated browser testing must not be re-added without an explicit requirement and a docs/TECH_STACK.md row in the same commit.
