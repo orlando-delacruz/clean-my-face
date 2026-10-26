@@ -49,6 +49,16 @@ describe('ResponsiveBackground', () => {
     expect(css).toContain('url("/assets/bg-mage-1-test.jpg")');
   });
 
+  it('renders as a section when tag="section" is passed', () => {
+    const { container } = render(
+      <ResponsiveBackground image={metaWithVariants} tint="red" tag="section">
+        <span>section child</span>
+      </ResponsiveBackground>,
+    );
+    expect(container.querySelector('section')).not.toBeNull();
+    expect(container.querySelector('div')).toBeNull();
+  });
+
   it('throws when image is missing', () => {
     expect(() =>
       render(

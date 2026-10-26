@@ -273,6 +273,7 @@ const Figure = styled.figure`
 
 const GuideImage = styled(ResponsiveImage)`
   width: 100%;
+  height: auto;
   aspect-ratio: 1 / 1;
   object-fit: cover;
   border-radius: ${({ theme }) => theme.radius.sm};

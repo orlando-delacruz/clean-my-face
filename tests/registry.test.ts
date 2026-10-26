@@ -106,6 +106,18 @@ describe('image registry consistency', () => {
     );
   });
 
+  it('returns empty variants in DEV so the generated folder is never required locally', () => {
+    // Vitest runs with import.meta.env.DEV === true, so this executes the
+    // dev branch: originals render, no /img/ file is ever requested.
+    // Production (preview/Vercel) takes the other branch; Playwright
+    // tests/e2e/images.spec.ts covers the prod branch in a real browser.
+    expect(import.meta.env.DEV).toBe(true);
+    const meta = imageMeta('hero.png');
+    expect(meta).not.toBeNull();
+    expect(meta?.variants).toEqual([]);
+    expect(meta?.src).not.toBe('');
+  });
+
   it('returns null for unmapped keys and throws for registry gaps', () => {
     expect(imageMeta('does-not-exist.png')).toBeNull();
     expect(() => imageMeta('additional-img-1.jpg')).toThrow(

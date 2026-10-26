@@ -79,6 +79,7 @@ const Media = styled.div`
 
 const CardImage = styled(ResponsiveImage)`
   width: 100%;
+  height: auto;
   aspect-ratio: 16 / 9;
   object-fit: contain;
   transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);

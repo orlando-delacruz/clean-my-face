@@ -42,6 +42,7 @@ const ThumbLink = styled.div<{ $tint: string }>`
 
 const Thumb = styled(ResponsiveImage)`
   width: 100%;
+  height: auto;
   aspect-ratio: 4 / 3;
   object-fit: contain;
 `;

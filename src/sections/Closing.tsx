@@ -13,12 +13,17 @@ import {
   ResponsiveBackground,
   ResponsiveImage,
   Reveal,
-  Section,
   SectionRule,
   SectionTitle,
 } from '../components/ui';
 
 const ClosingBackdrop = styled(ResponsiveBackground)`
+  scroll-margin-top: 5rem;
+  padding-block: ${({ theme }) => theme.spacing.sectionMobile};
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
+    padding-block: ${({ theme }) => theme.spacing.section};
+  }
   color: ${({ theme }) => theme.colors.text};
   border-top: 1px solid ${({ theme }) => theme.colors.border};
 `;
@@ -74,6 +79,7 @@ const Figure = styled.figure`
 
 const SmallImage = styled(ResponsiveImage)`
   width: 100%;
+  height: auto;
   aspect-ratio: 4 / 5;
   object-fit: cover;
   border-radius: ${({ theme }) => theme.radius.sm};
@@ -377,11 +383,12 @@ export function Closing() {
 
   return (
     <ClosingBackdrop
+      tag="section"
       image={bgMeta}
       tint={theme.colors.background}
       id="contact"
+      aria-labelledby="contact-title"
     >
-      <Section aria-labelledby="contact-title">
       <Container>
         <Reveal>
           <Grid>
@@ -525,7 +532,6 @@ export function Closing() {
           </Grid>
         </Reveal>
       </Container>
-      </Section>
     </ClosingBackdrop>
   );
 }

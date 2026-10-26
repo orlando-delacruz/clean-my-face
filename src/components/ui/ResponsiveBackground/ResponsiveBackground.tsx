@@ -6,6 +6,13 @@ import { buildImageSet } from '../../../data/images';
 export interface ResponsiveBackgroundProps {
   image: ImageMeta;
   tint: string;
+  /**
+   * Element tag for the backdrop. Named `tag` (not `as`) on purpose: the
+   * styled-components `as` prop on a styled(CustomComponent) wrapper would
+   * bypass this component entirely. `tag` is forwarded to the inner
+   * styled.div Layer, where `as` switching works as documented.
+   */
+  tag?: 'div' | 'section';
   size?: string;
   position?: string;
   className?: string;
@@ -20,8 +27,7 @@ const Layer = styled.div<{
   $tint: string;
   $size: string;
   $position: string;
-}>`
-  background-color: ${({ $tint }) => $tint};
+}>`  background-color: ${({ $tint }) => $tint};
   background-image: ${({ $tint, $src }) =>
     `linear-gradient(color-mix(in srgb, ${$tint} 86%, transparent), color-mix(in srgb, ${$tint} 86%, transparent)), url("${$src}")`};
   ${({ $tint, $set }) =>
@@ -46,6 +52,7 @@ const Layer = styled.div<{
 export function ResponsiveBackground({
   image,
   tint,
+  tag = 'div',
   size = 'cover',
   position = 'center',
   className,
@@ -60,6 +67,7 @@ export function ResponsiveBackground({
   }
   return (
     <Layer
+      as={tag}
       $src={image.src}
       $set={buildImageSet(image)}
       $tint={tint}
