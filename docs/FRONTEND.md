@@ -98,13 +98,14 @@ All primitives live in `src/components/ui/<Name>/` and are re-exported from `src
 | `Chip` | `variant` (neutral/plump/clear/inverse), `onClick?` | non-interactive span by default; button with 44px hit area when interactive |
 | `Divider` | `variant` (line/short/dot), `label?` | decorative, aria-hidden unless labeled |
 | `TextureSwatch` | `color`, `size?`, `label?`, `ariaLabel?` | circular swatch; always exposes an accessible name |
-| `MediaFrame` | `ratio` (1/1, 4/5, 3/4, 16/9, 21/9, auto), `radius`, `fit`, `focal?`, `overlay` (none/soft/strong), `caption?`, `placeholder?` | reserves space via aspect-ratio; never loads images itself |
+| `MediaFrame` | `ratio` (1/1, 4/5, 3/4, 16/9, 21/9, auto), `radius`, `fit`, `focal?`, `overlay` (none/soft/strong), `caption?`, `standIn?` (dev-only marker, absent from production) | reserves space via aspect-ratio; never loads images itself |
 | `Parallax` | `distance?`, `children`, `className?` | Motion scroll transform; renders children untouched under reduced motion |
 | `RangeTheme` | `id` (plump/clear) | nested ThemeProvider overriding `theme.range`; `getRangeTheme(id)` helper |
 
 ## Rules
 
-- **No hardcoded colors**: no hex, rgb()/rgba(), hsl()/hsla() literals in `src/` outside `src/theme.ts`. Enforced by `tests/tokens.test.ts` (prints match count; allowlist is empty).
+- **No hardcoded colors**: no hex, rgb()/rgba(), hsl()/hsla() literals in `src/` outside `src/theme.ts`. Enforced by `tests/tokens.test.ts` (prints match count; 3 documented exceptions for the `withAlpha` computation helper and its tests).
+- **New alpha colors use withAlpha**: new code must call `withAlpha(theme.colors.x, a)` from `src/styles/color.ts` for translucent variants instead of adding rgba tokens. The existing `*NN` alpha tokens are frozen.
 - **Range theming via RangeTheme**: range-specific color direction flows through `theme.range`, never hardcoded per-section values.
 - **Motion durations from tokens**: new motion uses `theme.motion`; `Reveal` retains its 0.52s tuned default with the standard easing tuple from the theme.
 - **Type scale for new work only**: the fluid `fontSizes` scale is consumed only by new primitives; existing sections keep their current sizes.
@@ -112,7 +113,7 @@ All primitives live in `src/components/ui/<Name>/` and are re-exported from `src
 ## How to Run /_system
 
 - Dev only: `npm run dev`, then open the `/_system` path at the printed localhost URL/port.
-- Shows swatches, contrast table, type specimens, scales, motion demos, every primitive variant, MediaFrame Picsum placeholders, and plump/clear side-by-side.
+- Shows swatches, contrast table, type specimens, scales, motion demos, every primitive variant, MediaFrame Picsum stand-ins, and plump/clear side-by-side.
 - Never ships to production: guarded by `import.meta.env.DEV` + `React.lazy`; the marker string `CMF_SYSTEM_PAGE_MARKER` is absent from `dist/`.
 
 ## Component Architecture

@@ -126,5 +126,35 @@ Date: 2026-10-26
 ### Notes
 
 - Only intentional visual change: display typeface (Garamond fallback to self-hosted Cormorant Garamond) and body font loading method (Google Fonts to self-hosted Inter, same family).
-- `tsconfig.app.json` `strict` is not effectively true (pre-existing); tests config is strict. Asked as an open question, not enabled silently.
+- `tsconfig.app.json` `strict`: Phase 1 left it implicit; the fix pass proved strict was already effectively on (canary errors TS7006/TS2322/TS18048 with no explicit flag) and made it explicit. Zero new errors.
 - The live deployment is older than the local repository and was not deployed in this phase.
+
+## Phase 1 Fix Pass
+
+Date: 2026-10-26
+
+### What was done
+
+- FIX A (computed-style regression proof): built phase-0-complete in a temp worktree plus the HEAD build, served on ports 4181/4182, and compared every element's color-related computed properties (17 props x element x ::before/::after, 390/1440 widths, reduced motion). Result after harness fixes: 7,808 shared elements, 398,208 properties, 0 differences; interactive states (hover/focus on / and one product page): 161 shared states, 2,737 properties, 0 differences. Only removed keys: the 3 Google Fonts `<link>` tags (intentional). Added `npm run snapshot:styles` (`scripts/computed-style-snapshot.mjs`).
+- FIX A found and fixed one real defect: ProductCard dark-tone hover shadow rendered `none` because a token replacement left a template interpolation inside a plain string (`'... ${({ theme }) => ...} ...'`). Fixed to backtick templates with the imported theme (`black60`/`text35` tokens, values identical to the old literals).
+- FIX B (strict): canary file proved strict already effective (TS7006/TS2322/TS18048 with no explicit flag; TypeScript 6 defaults). Added explicit `"strict": true` to `tsconfig.app.json`; 0 new errors.
+- FIX C (bundle guard): renamed MediaFrame `placeholder` to `standIn`; `data-stand-in` renders only when `import.meta.env.DEV` is true (absent from `dist/`, verified). Added `scripts/check-bundle.mjs` + `npm run check:bundle` (appended to `check`); proves failure modes (forbidden markers, allowlist, strict picsum gate). Em-dash scan of `src/`: only 2 hits, both in comments in `src/data/images.ts` — no rendered-copy violation.
+- FIX D (withAlpha): added `src/styles/color.ts` (`withAlpha(theme.colors.x, a)`, validated, throwing real errors) with colocated tests; documented in `docs/FRONTEND.md` that new code must use it instead of adding rgba tokens.
+- FIX E (repo hygiene): `.env.local` never committed and untracked (contents never printed); index already all-LF so only `.gitattributes` added (no renormalize); build byte-identical before/after (517,101 raw / 152,678 gzip). Lockfile has linux-x64 (gnu+musl) resolved+integrity entries for every native family with a win32-x64 entry (@rolldown, @oxlint, lightningcss) — no deployment risk. `npm ci` fails locally with EPERM on the Rolldown `.node` binary (no owned process holds it; likely antivirus/indexer); recovered with `npm install` (lockfile untouched).
+- FIX F (AGENTS.md): rewrote in full; stale rules updated (tests exist, Motion for React approved, docs accurate, ui/ layout, token-only colors, self-hosted fonts, dev-only /_system and standIn, internal-metadata rule, same-commit TECH_STACK rows).
+- FIX G (review package): assembled in the fix report.
+- FIX H (image intake): `scripts/measure-image-usage.mjs` + `npm run measure:images`; measured /, first product per range, 390/1440, DPR 1/2. Wrote `docs/baseline/image-usage.md` (+ raw JSON to gitignored `test-results/`). 6 unreferenced images listed as removal candidates (not deleted). Sharp feasibility proven in `%TEMP%/sharp-test` (NOT added to repo): hero.png 1,504,507 B -> 960px AVIF 25,408 B, WebP 17,538 B, no errors.
+
+### Validation
+
+- `npm run check` green (typecheck, lint, Vitest, build, check-bundle).
+- Vitest: 66 passed (incl. withAlpha, tokens guard, fonts, SystemPage, contrast suites).
+- Playwright Chromium: 99 passed x3 consecutive runs (smoke 93 + fonts 5 + system 1).
+- Tokens guard: 0 unallowlisted matches; 3 documented allowlist entries (withAlpha helper + its tests).
+- Bundle: `dist/assets/index-C5i6rkQy.js`, 517,101 raw / 152,678 gzip. Marker and `data-stand-in` absent from `dist/`.
+- Lighthouse (final tree, local preview): mobile perf 0.51, CLS 0, LCP 18.7 s (hero); desktop perf 0.76, CLS 0.006, LCP 3.2 s. Third-party hosts on `/`: none.
+
+### Notes
+
+- The fix pass added one unplanned commit (`fix:` for a stray-markup line the dev server rejected) plus the 5 planned commits; the tag is `phase-1-fixed` and `phase-1-complete` was left untouched.
+- `npm ci` remains broken on this Windows machine; use `npm install`. Real Linux-install proof is a Vercel preview deployment.
