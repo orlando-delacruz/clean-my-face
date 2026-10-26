@@ -97,7 +97,7 @@ Note: bytes are raw file sizes from disk.
 
 ## Phase 1 comparison (2026-10-26, local preview http://localhost:4175/)
 
-Same Lighthouse method as Phase 0 (`npx lighthouse <url> --quiet --output=json ... --chrome-flags="--headless=new"`, plus `--preset=desktop` for desktop). Lighthouse 12.8.2, Chrome 155.0.0.0. Measured on the final Phase 1 tree (bundle `index-CXSlCcAj.js`; an earlier mid-phase run produced `index-BRLYSh0B.js` at 517,495 raw / 152,442 gzip — same content class, hash moved with final tree).
+Same Lighthouse method as Phase 0 (`npx lighthouse <url> --quiet --output=json ... --chrome-flags="--headless=new"`, plus `--preset=desktop` for desktop). Lighthouse 12.8.2, Chrome 155.0.0.0. Measured on the final Phase 1 tree (bundle `index-C5i6rkQy.js`).
 
 ### Mobile
 
@@ -125,10 +125,10 @@ Same Lighthouse method as Phase 0 (`npx lighthouse <url> --quiet --output=json .
 
 | Method | Main JS | Raw | Gzip |
 |---|---|---:|---:|
-| Vite table | `dist/assets/index-CXSlCcAj.js` | 517.13 kB | 153.92 kB |
-| Node (`fs.statSync` + `zlib.gzipSync` default level) | `dist/assets/index-CXSlCcAj.js` | 517,137 bytes | 152,688 bytes |
+| Vite table | `dist/assets/index-C5i6rkQy.js` | 517.10 kB | 153.91 kB |
+| Node (`fs.statSync` + `zlib.gzipSync` default level) | `dist/assets/index-C5i6rkQy.js` | 517,101 bytes | 152,678 bytes |
 
-Phase 0: 508,156 raw / 150,252 gzip. Delta: +8,981 raw (+1.8%), +2,436 gzip. Sources: V2 tokens, new primitives, fonts wiring, App lazy wrapper. Self-hosted woff2 ships as separate files (118,368 bytes total), not in JS. `CMF_SYSTEM_PAGE_MARKER` and `data-placeholder` absent from `dist/` (dev-only split confirmed; remaining `placeholder` strings are pre-existing form copy).
+Phase 0: 508,156 raw / 150,252 gzip. Delta: +8,945 raw (+1.8%), +2,426 gzip. Sources: V2 tokens, new primitives, fonts wiring, App lazy wrapper. Self-hosted woff2 ships as separate files (118,368 bytes total), not in JS. `CMF_SYSTEM_PAGE_MARKER` and `data-placeholder` absent from `dist/` (dev-only split confirmed; remaining `placeholder` strings are pre-existing form copy).
 
 ### Third-party requests on `/`
 
