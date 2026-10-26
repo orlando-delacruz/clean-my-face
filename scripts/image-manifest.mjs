@@ -60,8 +60,8 @@ export const IMAGE_MANIFEST = [
   },
   {
     key: 'CLEANSING BALM/CLEANSING BALM.png',
-    widths: [320, 480, 640],
-    note: 'ProductCard/ProductGallery hero, rendered max 347.81 CSS px (needs 696 at DPR 2; source is 576 px, so DPR 2 is a shortfall). 640 is skipped by the optimizer because it exceeds the source width.',
+    widths: [320, 480],
+    note: 'ProductCard/ProductGallery hero, rendered max 347.81 CSS px (needs 696 at DPR 2; source is 576 px, so DPR 2 is a shortfall). 480 covers most of the 1x need; 640 was listed but exceeds the source width and is never produced.',
   },
   {
     key: 'milky-cushion-cleanser.jpg',
@@ -70,8 +70,8 @@ export const IMAGE_MANIFEST = [
   },
   {
     key: 'ESSENCE TONER/ESSENCE TONER.png',
-    widths: [320, 480, 640],
-    note: 'ProductCard thumb, rendered max 159.84 CSS px (needs 320 at DPR 2). Widths above the 414 px source are skipped by the optimizer.',
+    widths: [320],
+    note: 'ProductCard thumb, rendered max 159.84 CSS px (needs 320 at DPR 2). Source is 414 px, so only 320 is produced; 480 and 640 were listed but exceed the source width.',
   },
   {
     key: 'soft-peeling-gel.jpg',
@@ -80,8 +80,8 @@ export const IMAGE_MANIFEST = [
   },
   {
     key: 'dry spot rescue balm/dry spot rescue balm.png',
-    widths: [320, 480, 640],
-    note: 'ProductCard thumb in the same card grid as the other heroes (about 160 to 348 CSS px). Widths above the source width are skipped by the optimizer.',
+    widths: [320],
+    note: 'ProductCard thumb in the same card grid as the other heroes (about 160 to 348 CSS px). Source is 402 px, so only 320 is produced; 480 and 640 were listed but exceed the source width.',
   },
   {
     key: 'heartleaf-cleansing-oil.jpg',
@@ -90,8 +90,8 @@ export const IMAGE_MANIFEST = [
   },
   {
     key: '2-bha-gel-cleanser/2-bha-gel-cleanser.png',
-    widths: [320, 480, 640],
-    note: 'ProductCard thumb, rendered max 160.39 CSS px (needs 321 at DPR 2). Widths above the 405 px source are skipped by the optimizer.',
+    widths: [320],
+    note: 'ProductCard thumb, rendered max 160.39 CSS px (needs 321 at DPR 2). Source is 405 px, so only 320 is produced; 480 and 640 were listed but exceed the source width.',
   },
   {
     key: 'balancing-daily-toner.jpg',
@@ -100,18 +100,18 @@ export const IMAGE_MANIFEST = [
   },
   {
     key: 'EXFOLIATING TONER/EXFOLIATING TONER.png',
-    widths: [320, 480, 640],
-    note: 'ProductCard thumb, rendered max 160 CSS px (needs 320 at DPR 2). Widths above the 396 px source are skipped by the optimizer.',
+    widths: [320],
+    note: 'ProductCard thumb, rendered max 160 CSS px (needs 320 at DPR 2). Source is 396 px, so only 320 is produced; 480 and 640 were listed but exceed the source width.',
   },
   {
     key: 'CLARIFYING CLAY MASK/CLARIFYING CLAY MASK.png',
-    widths: [320, 480, 640],
-    note: 'ProductCard thumb in the same card grid as the other heroes (about 160 to 348 CSS px). Widths above the source width are skipped by the optimizer.',
+    widths: [320],
+    note: 'ProductCard thumb in the same card grid as the other heroes (about 160 to 348 CSS px). Source is 406 px, so only 320 is produced; 480 and 640 were listed but exceed the source width.',
   },
   {
     key: 'blemish-mark-spot-treatment/blemish-mark-spot-treatment.png',
-    widths: [320, 480, 640],
-    note: 'ProductCard thumb in the same card grid as the other heroes (about 160 to 348 CSS px). Widths above the source width are skipped by the optimizer.',
+    widths: [320],
+    note: 'ProductCard thumb in the same card grid as the other heroes (about 160 to 348 CSS px). Source is 409 px, so only 320 is produced; 480 and 640 were listed but exceed the source width.',
   },
   {
     key: 'additional-img-7.png',
