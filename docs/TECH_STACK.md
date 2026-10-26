@@ -87,6 +87,7 @@ Do not introduce pnpm, yarn, Bun, or another package manager.
 | Motion for React  | Animation   | Required                        | Declarative reveals and entrances (installed Phase 0 baseline)    |
 | Fontsource Inter  | Fonts       | Required                        | Self-hosted Inter variable latin subset (Phase 1, no Google Fonts request) |
 | Fontsource Cormorant Garamond | Fonts | Required                | Self-hosted Cormorant Garamond latin 400/500/500-italic for display type (Phase 1, TBD per OQ-6) |
+| sharp             | Image pipeline | Required (devDependency, 0.35.5) | Build-time AVIF/WebP derivatives via scripts/optimize-images.mjs (Phase 2 only; originals in images/ untouched) |
 | GSAP              | Animation   | Optional — add only when needed | Advanced animation control when CSS/browser APIs are insufficient |
 | Zod               | Validation  | Optional — add only when needed | Runtime validation for structured user input                      |
 
@@ -97,6 +98,8 @@ The actual project requirement must justify the dependency.
 ### Current Dependency Policy
 
 GSAP and Zod should **not** be added to `package.json` until a concrete requirement justifies them.
+
+sharp (devDependency, 0.35.5) is approved for the Phase 2 image pipeline only: build-time derivative generation. No runtime dependency on sharp ships to the browser.
 
 Likewise, do not add backend, database, authentication, or email dependencies unless the relevant functionality is actually required.
 
