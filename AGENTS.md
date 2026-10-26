@@ -1,16 +1,15 @@
 # AGENTS.md
 
-Vite 8 + React 19 + TypeScript + styled-components v6 + Motion for React. Single-page marketing site with a few static routes. No backend, no CMS, no ecommerce, no analytics. Tests: Vitest (unit/integration) + Playwright (e2e, Chromium). No CI.
+Vite 8 + React 19 + TypeScript + styled-components v6 + Motion for React. Single-page marketing site with a few static routes. No backend, no CMS, no ecommerce, no analytics. Tests: Vitest (unit). No CI.
 
 ## Commands
 
 - `npm run dev` / `npm run build` / `npm run preview` / `npm run lint` (oxlint, no config file)
 - `npm run typecheck` for types (`tsc -b`; `build` runs it first, so a green build implies clean types)
-- `npm run test` (Vitest, watch with `test:watch`), `npm run test:e2e` (Playwright)
+- `npm run test` (Vitest, watch with `test:watch`)
 - `npm run check` runs typecheck + lint + test + build + check:bundle, in that order, failing fast
 - `npm run check:bundle` fails the build if internal metadata leaked into `dist/`
-- `npm run snapshot:styles` records computed color styles per route for visual regression-proof baselines
-- `npm run measure:images` records per-image usage (sizes, viewports, DPR) for the Phase 2 image pass
+- `npm run build:images` / `npm run images:optimize` generates image derivatives (sharp)
 - **npm only.** Never pnpm/yarn/bun.
 
 ## TypeScript strictness (bites often)
@@ -33,6 +32,7 @@ Read before changing behavior: `docs/PROJECT.md` (scope), `docs/REQUIREMENTS.md`
 - Filenames are filesystem labels, not copy. Never derive names/alt text from them. Two folders were renamed to URL-safe slugs (`2-bha-gel-cleanser`, `blemish-mark-spot-treatment`).
 - Vite dev 404s on `%`/`+` in asset paths, so new assets must use slug-safe names (lowercase, hyphens). Spaces are tolerated but discouraged.
 - Register every used image as an explicit static import in `src/data/images.ts` (`import.meta.glob` did not match reliably). `img()` returns `''` for unmapped paths and callers guard on it.
+- Phase 2 image pipeline: build-time derivatives via `scripts/optimize-images.mjs` (sharp) into `public/img/` (git-ignored). `ResponsiveImage` / `ResponsiveBackground` consume them and fall back to originals in dev.
 
 ## Routing
 
@@ -48,6 +48,12 @@ Custom history router in `src/router.tsx` (no dependency). Routes: `/`, `/privac
 - Icons: only `src/components/icons.tsx` (single stroke, currentColor). No emoji icons.
 - Motion: Motion for React is the approved animation library. Storytelling sections may use several Reveal moments where the narrative benefits. Parallax only in the hero and at most one other section. Every animation honors `prefers-reduced-motion`. No new animation library.
 - Mobile-first; provisional breakpoints in `src/theme.ts` (`md` 768, `lg` 1024, plus `sm`/`xl`/`xxl`) are recommendations, not confirmed requirements.
+
+## Testing
+
+- Unit tests use Vitest with jsdom and Testing Library (`npm run test`). Manual QA is performed by the project owner. Do not add automated browser testing.
+- Guard tests: `tests/tokens.test.ts` (zero hardcoded colors outside `theme.ts`), `tests/contrast.test.ts` (WCAG ratios), `tests/theme.test.ts` (frozen legacy values + new groups).
+- Test setup is in `tests/setup.ts`. Vitest config is in `vite.config.ts`.
 
 ## Scope guardrails
 

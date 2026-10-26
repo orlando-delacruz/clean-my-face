@@ -101,6 +101,8 @@ GSAP and Zod should **not** be added to `package.json` until a concrete requirem
 
 sharp (devDependency, 0.35.5) is approved for the Phase 2 image pipeline only: build-time derivative generation. No runtime dependency on sharp ships to the browser.
 
+Playwright: REMOVED (2026-10-26). Project owner performs manual QA; automated browser tests were removed. Do not re-add without an explicit requirement and a TECH_STACK row in the same commit.
+
 Likewise, do not add backend, database, authentication, or email dependencies unless the relevant functionality is actually required.
 
 ## Animation / Interaction Direction

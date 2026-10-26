@@ -72,7 +72,7 @@ Alpha variants of the above are expressed with `color-mix(in srgb, <token> <pct>
 ## Font Loading and License Note
 
 - Inter (variable, latin `wght` subset) and Cormorant Garamond (latin 400, 500, 500-italic) are bundled from `@fontsource-variable/inter` and `@fontsource/cormorant-garamond` via Vite `?url` woff2 imports in `src/styles/fonts.ts`. Total downloadable woff2 for the homepage: 118,368 bytes (budget 160 KB).
-- `@font-face` uses `font-display: swap`. No requests to Google Fonts remain on `/` (verified by Playwright).
+- `@font-face` uses `font-display: swap`. No requests to Google Fonts remain on `/` (verified manually).
 - License: Fontsource packages carry the SIL Open Font License alongside the files; see `node_modules/@fontsource-variable/inter` and `node_modules/@fontsource/cormorant-garamond` for license text.
 - `index.html` contains no font `<link>` tags.
 

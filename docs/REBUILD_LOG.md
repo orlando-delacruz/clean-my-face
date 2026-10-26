@@ -93,7 +93,7 @@ Date: 2026-10-26
 
 ### What changed
 
-- Type coverage: added `tsconfig.tests.json` (strict) covering `tests/`, `scripts/`, `playwright.config.ts`, `vite.config.ts`; wired into `tsconfig.json` references. App config (`tsconfig.app.json`) intentionally left non-strict (pre-existing; enabling it is an open question).
+- Type coverage: added `tsconfig.tests.json` (strict) covering `tests/`, `scripts/`, `vite.config.ts`; wired into `tsconfig.json` references. App config (`tsconfig.app.json`) intentionally left non-strict (pre-existing; enabling it is an open question).
 - Fonts: installed `@fontsource-variable/inter` and `@fontsource/cormorant-garamond`; self-hosted latin woff2 via `?url` imports in `src/styles/fonts.ts`; removed Google Fonts tags from `index.html`; display face is now Cormorant Garamond via the single `theme.fonts.display` token. Homepage woff2 total 118,368 bytes (budget 160 KB).
 - Theme: rewrote `src/theme.ts` (Brand System V2). All legacy keys kept with identical values except `fonts` (intentional swap). Added colors (inverse/range/feedback/overlay/warm-neutral tokens), fluid `fontSizes`, `lineHeights`, `letterSpacings`, `fontWeights`, `layout`, breakpoints sm/xl/xxl, `radius` lg/pill, `shadows`, `zIndex`, `motion` presets, `rangeThemes` + current `range`. Added `src/styles/media.ts` (`up()` helper; existing sections not converted).
 - Primitives: split `src/components/primitives.tsx` into `src/components/ui/<Name>/` (Container, Section, EyebrowRow, SectionRule, SectionTitle, Lead, Button, TextAction, SkipLink, Reveal) with barrel export; migrated all imports; deleted `primitives.tsx`. Props, defaults, and CSS values preserved.
@@ -156,5 +156,25 @@ Date: 2026-10-26
 
 ### Notes
 
-- The fix pass added one unplanned commit (`fix:` for a stray-markup line the dev server rejected) plus the 5 planned commits; the tag is `phase-1-fixed` and `phase-1-complete` was left untouched.
-- `npm ci` remains broken on this Windows machine; use `npm install`. Real Linux-install proof is a Vercel preview deployment.
+## Playwright Removal
+
+Date: 2026-10-26
+
+### What was done
+
+- Removed Playwright and all browser-based e2e tests: `playwright.config.ts`, `tests/e2e/` (smoke, fonts, system, images), `scripts/computed-style-snapshot.mjs`, `scripts/measure-image-usage.mjs`, `scripts/geometry-snapshot.mjs`.
+- Removed `@playwright/test` from devDependencies and the `test:e2e`, `snapshot:styles`, `snapshot:geometry`, and `measure:images` npm scripts.
+- Updated `check` to run typecheck, lint, test, build, and check:bundle only.
+- Updated `tsconfig.tests.json` (dropped `playwright.config.ts` from include) and `vite.config.ts` (dropped the `tests/e2e` exclude entry).
+- AGENTS.md updated: Vitest-only testing, no automated browser testing.
+- Added `docs/QA_CHECKLIST.md` for manual QA by the project owner.
+
+### Validation
+
+- `npm run typecheck`, `npm run test`, `npm run lint`, `npm run build`, and `npm run check` pass after removal.
+- Originals in `images/` untouched. No `src/` visual or copy changes.
+
+### Notes
+
+- Historical Playwright references in earlier REBUILD_LOG entries are retained as project history.
+- Automated browser testing must not be re-added without an explicit requirement and a `docs/TECH_STACK.md` row in the same commit.

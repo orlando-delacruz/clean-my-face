@@ -26,7 +26,7 @@ CleanMyFace is a client-side single-page application. Vercel serves `index.html`
 - `src/sections/` — homepage section components (structure unchanged this phase).
 - `src/pages/` — route-level page components, plus dev-only `SystemPage` (eliminated from production).
 - `src/data/` — content model, image map, and legal copy.
-- `tests/` — Vitest (incl. `tests/e2e/` Playwright) tests.
+- `tests/` — Vitest unit tests.
 - `scripts/` — helper scripts.
 - `docs/` — project documentation.
 - `images/` — supplied raster assets.
@@ -46,7 +46,7 @@ CleanMyFace is a client-side single-page application. Vercel serves `index.html`
 - `images/` — supplied raster assets
 - `public/` — static files served at site root
 - `docs/` — project documentation
-- `tests/` — Vitest and Playwright tests
+- `tests/` — Vitest unit tests only. Manual QA is performed by the project owner (see `docs/QA_CHECKLIST.md`). Playwright was removed.
 - `scripts/` — helper scripts
 - `docs/baseline/` — baseline measurements
 
@@ -127,11 +127,9 @@ styled-components 6 is the only styling system. Theme tokens are provided throug
 ## Testing
 
 - Vitest with jsdom and Testing Library for unit/integration tests (colocated primitive tests included).
-- Playwright with Chromium for smoke, responsive, font-loading (`tests/e2e/fonts.spec.ts`), and `/_system` 404 (`tests/e2e/system.spec.ts`) tests.
 - Guard tests: `tests/tokens.test.ts` (zero hardcoded colors outside `theme.ts`), `tests/contrast.test.ts` (WCAG ratios), `tests/theme.test.ts` (frozen legacy values + new groups).
 - Test setup is in `tests/setup.ts`.
 - Vitest config is in `vite.config.ts`.
-- Playwright config is in `playwright.config.ts` (port 4174, `reuseExistingServer: false`).
 
 ## Known Limitations
 
