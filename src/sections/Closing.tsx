@@ -2,7 +2,7 @@ import { useState } from 'react';
 import type { FormEvent } from 'react';
 import styled from 'styled-components';
 import { closing, footer, skinNeeds } from '../data/content';
-import { img } from '../data/images';
+import { imageMeta } from '../data/images';
 import { Link } from '../router';
 import { ArrowRightIcon, ChatIcon, CheckIcon, socialIcons } from '../components/icons';
 import { theme } from '../theme';
@@ -10,21 +10,15 @@ import {
   Container,
   EyebrowRow,
   Lead,
+  ResponsiveBackground,
+  ResponsiveImage,
   Reveal,
   Section,
   SectionRule,
   SectionTitle,
 } from '../components/ui';
 
-const ClosingSection = styled(Section)<{ $bg: string }>`
-  background-color: ${({ theme }) => theme.colors.background};
-  ${({ theme, $bg }) =>
-    $bg !== '' &&
-    `
-    background-image: linear-gradient(color-mix(in srgb, ${theme.colors.background} 86%, transparent), color-mix(in srgb, ${theme.colors.background} 86%, transparent)), url("${$bg}");
-    background-size: cover;
-    background-position: center;
-    `};
+const ClosingBackdrop = styled(ResponsiveBackground)`
   color: ${({ theme }) => theme.colors.text};
   border-top: 1px solid ${({ theme }) => theme.colors.border};
 `;
@@ -78,7 +72,7 @@ const Figure = styled.figure`
   }
 `;
 
-const SmallImage = styled.img`
+const SmallImage = styled(ResponsiveImage)`
   width: 100%;
   aspect-ratio: 4 / 5;
   object-fit: cover;
@@ -352,8 +346,8 @@ export function Closing() {
   const [message, setMessage] = useState('');
   const [errors, setErrors] = useState<FormErrors>({});
   const [sent, setSent] = useState(false);
-  const imageSrc = img(closing.image);
-  const bg = img('bg-mage-1.jpg');
+  const portraitMeta = imageMeta(closing.image);
+  const bgMeta = imageMeta('bg-mage-1.jpg');
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -377,8 +371,17 @@ export function Closing() {
 
   const firstName = name.trim().split(/\s+/)[0] ?? '';
 
+  // Registry-mapped constants, so this branch never executes. It keeps the
+  // guard contract (missing images render nothing) without forking markup.
+  if (bgMeta === null) return null;
+
   return (
-    <ClosingSection id="contact" aria-labelledby="contact-title" $bg={bg}>
+    <ClosingBackdrop
+      image={bgMeta}
+      tint={theme.colors.background}
+      id="contact"
+    >
+      <Section aria-labelledby="contact-title">
       <Container>
         <Reveal>
           <Grid>
@@ -391,13 +394,12 @@ export function Closing() {
               <SectionRule aria-hidden="true" />
               <ClosingLead>{closing.lead}</ClosingLead>
               <Assurance>
-                {imageSrc !== '' && (
+                {portraitMeta !== null && (
                   <Figure>
                     <SmallImage
-                      src={imageSrc}
+                      image={portraitMeta}
                       alt={closing.imageAlt}
-                      loading="lazy"
-                      decoding="async"
+                      sizes="(min-width: 768px) 176px, 136px"
                     />
                   </Figure>
                 )}
@@ -523,6 +525,7 @@ export function Closing() {
           </Grid>
         </Reveal>
       </Container>
-    </ClosingSection>
+      </Section>
+    </ClosingBackdrop>
   );
 }

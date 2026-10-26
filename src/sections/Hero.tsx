@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import { brand } from '../data/content';
-import { img } from '../data/images';
+import { imageMeta } from '../data/images';
 import { ArrowRightIcon, ChatIcon, DropletIcon, LayersIcon, LeafIcon, ListIcon } from '../components/icons';
-import { Container } from '../components/ui';
+import { Container, ResponsiveImage } from '../components/ui';
 import { motion, useReducedMotion } from 'motion/react';
 
 const HeroSection = styled.section`
@@ -32,7 +32,7 @@ const HeroBg = styled.div`
   z-index: -2;
 `;
 
-const HeroImage = styled.img`
+const HeroImage = styled(ResponsiveImage)`
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -358,16 +358,14 @@ const statIcons = {
 
 export function Hero() {
   const reduceMotion = useReducedMotion();
+  const heroMeta = imageMeta(brand.heroImage);
 
   return (
     <HeroSection id="hero" aria-labelledby="hero-title">
       <HeroBg aria-hidden="true">
-        <HeroImage
-          src={img(brand.heroImage)}
-          alt=""
-          fetchPriority="high"
-          decoding="async"
-        />
+        {heroMeta !== null && (
+          <HeroImage image={heroMeta} alt="" sizes="100vw" priority />
+        )}
       </HeroBg>
       <Overlay aria-hidden="true" />
       <Content>

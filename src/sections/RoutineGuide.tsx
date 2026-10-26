@@ -2,12 +2,13 @@ import { useRef, useState } from 'react';
 import type { KeyboardEvent } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { routineGuide } from '../data/content';
-import { img } from '../data/images';
+import { imageMeta } from '../data/images';
 import { ListIcon } from '../components/icons';
 import {
   Container,
   EyebrowRow,
   Lead,
+  ResponsiveImage,
   Reveal,
   Section,
   SectionRule,
@@ -270,7 +271,7 @@ const Figure = styled.figure`
   }
 `;
 
-const GuideImage = styled.img`
+const GuideImage = styled(ResponsiveImage)`
   width: 100%;
   aspect-ratio: 1 / 1;
   object-fit: cover;
@@ -325,7 +326,7 @@ export function RoutineGuide() {
     routines.findIndex((routine) => routine.rangeId === activeId),
   );
   const active = routines[activeIndex] ?? routines[0];
-  const imageSrc = img(routineGuide.image);
+  const imageSrc = imageMeta(routineGuide.image);
 
   function focusTab(index: number) {
     const total = routines.length;
@@ -427,13 +428,12 @@ export function RoutineGuide() {
             </PanelInner>
           </Panel>
           <Closing>
-            {imageSrc !== '' && (
+            {imageSrc !== null && (
               <Figure>
                 <GuideImage
-                  src={imageSrc}
+                  image={imageSrc}
                   alt={routineGuide.imageAlt}
-                  loading="lazy"
-                  decoding="async"
+                  sizes="280px"
                 />
               </Figure>
             )}

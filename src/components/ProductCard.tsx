@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 import { theme } from '../theme';
-import { img } from '../data/images';
+import { imageMeta } from '../data/images';
 import type { ProductContent } from '../data/content';
 import { Link } from '../router';
 import { ArrowRightIcon } from './icons';
+import { ResponsiveImage } from './ui';
 
 const CardLink = styled(Link)<{ $tone: 'light' | 'dark' }>`
   display: flex;
@@ -66,7 +67,7 @@ const GhostStep = styled.span`
   user-select: none;
 `;
 
-const ProductImage = styled.img`
+const ProductImage = styled(ResponsiveImage)`
   height: 11rem;
   width: auto;
   max-width: 100%;
@@ -180,7 +181,7 @@ export function ProductCard({
   rangeName: string;
   tone?: 'light' | 'dark';
 }) {
-  const src = img(product.image);
+  const meta = imageMeta(product.image);
   const ink = product.rangeId === 'plump' ? theme.colors.plumpDeep : theme.colors.clearDeep;
   const tint = product.rangeId === 'plump' ? theme.colors.plumpTint : theme.colors.clearTint;
   const arrow = tone === 'dark' ? theme.colors.gold : ink;
@@ -192,12 +193,11 @@ export function ProductCard({
     >
       <ImageWrap $tone={tone}>
         <GhostStep aria-hidden="true">{product.step}</GhostStep>
-        {src !== '' && (
+        {meta !== null && (
           <ProductImage
-            src={src}
+            image={meta}
             alt={`${product.name} from the ${rangeName} range`}
-            loading="lazy"
-            decoding="async"
+            sizes="(min-width: 1024px) 360px, (min-width: 768px) 45vw, 80vw"
           />
         )}
       </ImageWrap>

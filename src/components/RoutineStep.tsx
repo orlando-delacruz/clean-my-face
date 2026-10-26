@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 import { theme } from '../theme';
-import { img } from '../data/images';
+import { imageMeta } from '../data/images';
 import type { ProductContent } from '../data/content';
 import { Link } from '../router';
 import { ArrowRightIcon } from './icons';
+import { ResponsiveImage } from './ui';
 
 const Step = styled.li<{ $ink: string }>`
   position: relative;
@@ -39,7 +40,7 @@ const ThumbLink = styled.div<{ $tint: string }>`
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
 `;
 
-const Thumb = styled.img`
+const Thumb = styled(ResponsiveImage)`
   width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: contain;
@@ -152,15 +153,19 @@ const CircleArrow = styled.span<{ $ink: string }>`
 `;
 
 export function RoutineStep({ product }: { product: ProductContent }) {
-  const src = img(product.image);
+  const meta = imageMeta(product.image);
   const to = `/products/${product.slug}`;
   const ink = product.rangeId === 'plump' ? theme.colors.plumpDeep : theme.colors.clearDeep;
   const tint = product.rangeId === 'plump' ? theme.colors.plumpTint : theme.colors.clearTint;
   return (
     <Step $ink={ink}>
-      {src !== '' && (
+      {meta !== null && (
         <ThumbLink $tint={tint}>
-          <Thumb src={src} alt={`${product.name} packaging`} loading="lazy" decoding="async" />
+          <Thumb
+            image={meta}
+            alt={`${product.name} packaging`}
+            sizes="(min-width: 768px) 50vw, 100vw"
+          />
         </ThumbLink>
       )}
       <StepBody>

@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import { img } from '../data/images';
+import { imageMeta } from '../data/images';
+import { ResponsiveImage } from './ui';
 
 const Figure = styled.figure<{ $tint: string }>`
   margin: 0;
@@ -31,7 +32,7 @@ const Figure = styled.figure<{ $tint: string }>`
   }
 `;
 
-const HeroImage = styled.img`
+const HeroImage = styled(ResponsiveImage)`
   width: 100%;
   height: 100%;
   object-fit: contain;
@@ -52,15 +53,15 @@ export function ProductGallery({
   image: string;
   tint: string;
 }) {
-  const src = img(image);
-  if (src === '') return null;
+  const meta = imageMeta(image);
+  if (meta === null) return null;
   return (
     <Figure $tint={tint}>
       <HeroImage
-        src={src}
+        image={meta}
         alt={`${productName} packaging`}
-        decoding="async"
-        fetchPriority="high"
+        sizes="(min-width: 1024px) 520px, 100vw"
+        priority
       />
     </Figure>
   );

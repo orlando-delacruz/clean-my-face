@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import type { RangeContent } from '../data/content';
-import { img } from '../data/images';
+import { imageMeta } from '../data/images';
 import { theme } from '../theme';
 import { Link } from '../router';
 import { DropletIcon, LeafIcon } from '../components/icons';
@@ -8,21 +8,15 @@ import {
   Container,
   EyebrowRow,
   Lead,
+  ResponsiveBackground,
+  ResponsiveImage,
   Reveal,
   Section,
   SectionRule,
   SectionTitle,
 } from '../components/ui';
 
-const Tinted = styled.div<{ $tint: string; $bg: string }>`
-  background-color: ${({ $tint }) => $tint};
-  ${({ $tint, $bg }) =>
-    $bg !== '' &&
-    `
-    background-image: linear-gradient(color-mix(in srgb, ${$tint} 86%, transparent), color-mix(in srgb, ${$tint} 86%, transparent)), url("${$bg}");
-    background-size: cover;
-    background-position: center;
-    `};
+const Tinted = styled(ResponsiveBackground)`
   border-block: 1px solid ${({ theme }) => theme.colors.border};
 
   /* Muted secondary text fails contrast on the pastel tints, so labels and
@@ -119,7 +113,7 @@ const HeroCard = styled.figure`
 
 // Reserve space before load (1136x592 and 1126x587, same aspect) so late
 // image loads don't shift the layout under an anchor jump landing here.
-const HeroImage = styled.img`
+const HeroImage = styled(ResponsiveImage)`
   width: 100%;
   height: auto;
   aspect-ratio: 1136 / 592;
@@ -232,10 +226,15 @@ const RoutineLink = styled(Link)`
 `;
 
 export function RangeSystem({ range, tint }: { range: RangeContent; tint: string }) {
-  const bg = img(range.id === 'plump' ? 'bg-image-2.png' : 'bg-image-3.png');
+  const bgMeta = imageMeta(range.id === 'plump' ? 'bg-image-2.png' : 'bg-image-3.png');
+  const systemMeta = imageMeta(range.systemImage);
+  // Both keys are registry-mapped constants, so this branch never executes.
+  // It keeps the guard contract (missing images render nothing) without
+  // forking the section markup.
+  if (bgMeta === null || systemMeta === null) return null;
   const ink = range.id === 'plump' ? theme.colors.plumpDeep : theme.colors.clearDeep;
   return (
-    <Tinted $tint={tint} $bg={bg}>
+    <Tinted image={bgMeta} tint={tint}>
       <Section id={`range-${range.id}`} aria-labelledby={`range-${range.id}-title`}>
         <Container>
           <Reveal>
@@ -264,22 +263,19 @@ export function RangeSystem({ range, tint }: { range: RangeContent; tint: string
               </BenefitList>
             </Header>
             <Body>
-              {img(range.systemImage) !== '' && (
-                <HeroCard>
-                  <HeroImage
-                    src={img(range.systemImage)}
-                    alt={`The six-product ${range.name} system`}
-                    loading="lazy"
-                    decoding="async"
-                  />
-                  <HeroScrim aria-hidden="true" />
-                  <HeroContent>
-                    <HeroRule aria-hidden="true" />
-                    <HeroTitle>{range.name}</HeroTitle>
-                    <HeroDesc>{range.description}</HeroDesc>
-                  </HeroContent>
-                </HeroCard>
-              )}
+              <HeroCard>
+                <HeroImage
+                  image={systemMeta}
+                  alt={`The six-product ${range.name} system`}
+                  sizes="(min-width: 1024px) 1080px, 100vw"
+                />
+                <HeroScrim aria-hidden="true" />
+                <HeroContent>
+                  <HeroRule aria-hidden="true" />
+                  <HeroTitle>{range.name}</HeroTitle>
+                  <HeroDesc>{range.description}</HeroDesc>
+                </HeroContent>
+              </HeroCard>
               <RoutineList aria-label={`${range.name} routine steps`}>
                 {range.products.map((product) => (
                   <RoutineRow key={product.slug}>
