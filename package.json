@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "npm run build:images && tsc -b && vite build",
+    "build:images": "node scripts/optimize-images.mjs",
+    "images:optimize": "node scripts/optimize-images.mjs",
     "lint": "oxlint",
     "preview": "vite preview",
     "typecheck": "tsc -b",
