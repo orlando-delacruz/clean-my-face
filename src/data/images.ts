@@ -215,3 +215,217 @@ const byPath: Record<string, string> = {
 export function img(path: string): string {
   return byPath[path] ?? '';
 }
+
+/**
+ * Phase 2 responsive registry. Extends the explicit-import rule: every key
+ * below is one of the byPath keys above, and every variant URL is derived by
+ * convention (slug + width + format) by scripts/optimize-images.mjs, so no
+ * runtime fetch or JSON import is needed. The width lists must mirror
+ * scripts/image-manifest.mjs exactly (enforced by tests/registry.test.ts).
+ * In DEV the generated files may not exist, so imageMeta() returns an empty
+ * variant list and ResponsiveImage falls back to the original URL; in
+ * production the build always runs build:images first, so variants exist.
+ */
+
+export interface ImageVariant {
+  format: 'avif' | 'webp';
+  width: number;
+  url: string;
+}
+
+export interface ImageMeta {
+  key: string;
+  src: string;
+  width: number;
+  height: number;
+  variants: ImageVariant[];
+}
+
+const VARIANT_WIDTHS: Record<string, readonly number[]> = {
+  'hero.png': [640, 960, 1280, 1417],
+  'bg-image-2.png': [640, 960, 1280],
+  'bg-image-3.png': [640, 960, 1280],
+  'bg-mage-1.jpg': [640, 960, 1280],
+  '6 products system.jpg': [640, 960, 1080],
+  '6 products system-2.jpg': [640, 960, 1080],
+  'RICE BARRIER CREAM MASK/RICE BARRIER CREAM MASK.png': [360, 560, 720],
+  'CLEANSING BALM/CLEANSING BALM.png': [320, 480, 640],
+  'milky-cushion-cleanser.jpg': [320, 480, 640],
+  'ESSENCE TONER/ESSENCE TONER.png': [320, 480, 640],
+  'soft-peeling-gel.jpg': [320, 480, 640],
+  'dry spot rescue balm/dry spot rescue balm.png': [320, 480, 640],
+  'heartleaf-cleansing-oil.jpg': [320, 480, 640],
+  '2-bha-gel-cleanser/2-bha-gel-cleanser.png': [320, 480, 640],
+  'balancing-daily-toner.jpg': [320, 480, 640],
+  'EXFOLIATING TONER/EXFOLIATING TONER.png': [320, 480, 640],
+  'CLARIFYING CLAY MASK/CLARIFYING CLAY MASK.png': [320, 480, 640],
+  'blemish-mark-spot-treatment/blemish-mark-spot-treatment.png': [320, 480, 640],
+};
+
+/** Intrinsic dimensions of every manifest source, measured once with sharp. */
+const IMAGE_DIMENSIONS: Record<string, readonly [number, number]> = {
+  '2-bha-gel-cleanser/2-bha-gel-cleanser.png': [405, 505],
+  '2-bha-gel-cleanser/ingredient-1.png': [99, 99],
+  '2-bha-gel-cleanser/ingredient-2.png': [100, 99],
+  '2-bha-gel-cleanser/ingredient-3.png': [100, 99],
+  '6 products system-2.jpg': [1126, 587],
+  '6 products system.jpg': [1136, 592],
+  'BALANCING DAILY TONER/ingredient-1.png': [99, 99],
+  'BALANCING DAILY TONER/ingredient-2.png': [99, 99],
+  'BALANCING DAILY TONER/ingredient-3.png': [100, 99],
+  'BALANCING DAILY TONER/ingredient-4.png': [99, 99],
+  'CLARIFYING CLAY MASK/CLARIFYING CLAY MASK.png': [406, 508],
+  'CLARIFYING CLAY MASK/ingredient-1.png': [99, 99],
+  'CLARIFYING CLAY MASK/ingredient-2.png': [100, 99],
+  'CLARIFYING CLAY MASK/ingredient-3.png': [100, 99],
+  'CLARIFYING CLAY MASK/ingredient-4.png': [99, 99],
+  'CLEANSING BALM/CLEANSING BALM.png': [576, 555],
+  'CLEANSING BALM/ingredients-1.png': [100, 99],
+  'CLEANSING BALM/ingredients-2.png': [99, 99],
+  'CLEANSING BALM/ingredients-3.png': [99, 99],
+  'CLEANSING BALM/ingredients-4.png': [99, 99],
+  'CLEANSING BALM/step-1.png': [99, 99],
+  'CLEANSING BALM/step-2.png': [99, 99],
+  'CLEANSING BALM/step-3.png': [99, 99],
+  'ESSENCE TONER/ESSENCE TONER.png': [414, 518],
+  'ESSENCE TONER/ingredients-1.png': [100, 99],
+  'ESSENCE TONER/ingredients-2.png': [99, 99],
+  'ESSENCE TONER/ingredients-3.png': [99, 99],
+  'ESSENCE TONER/ingredients-4.png': [99, 99],
+  'ESSENCE TONER/step-1.png': [99, 99],
+  'ESSENCE TONER/step-2.png': [99, 99],
+  'ESSENCE TONER/step-3.png': [99, 99],
+  'EXFOLIATING TONER/EXFOLIATING TONER.png': [396, 495],
+  'EXFOLIATING TONER/ingredient-1.png': [99, 99],
+  'EXFOLIATING TONER/ingredient-2.png': [99, 99],
+  'EXFOLIATING TONER/ingredient-3.png': [100, 99],
+  'EXFOLIATING TONER/ingredient-4.png': [99, 99],
+  'GEL CLEANSER/ingredients-1.png': [100, 99],
+  'GEL CLEANSER/ingredients-2.png': [99, 99],
+  'GEL CLEANSER/ingredients-3.png': [99, 99],
+  'GEL CLEANSER/step-1.png': [99, 99],
+  'GEL CLEANSER/step-2.png': [100, 99],
+  'GEL CLEANSER/step-3.png': [99, 99],
+  'HEARTLEAF CLEANSING OI/ingredient-1.png': [99, 99],
+  'HEARTLEAF CLEANSING OI/ingredient-2.png': [100, 99],
+  'HEARTLEAF CLEANSING OI/ingredient-3.png': [100, 99],
+  'RICE BARRIER CREAM MASK/RICE BARRIER CREAM MASK.png': [2523, 1728],
+  'RICE BARRIER CREAM MASK/ingredients-1.png': [99, 99],
+  'RICE BARRIER CREAM MASK/ingredients-2.png': [100, 99],
+  'RICE BARRIER CREAM MASK/ingredients-3.png': [99, 99],
+  'RICE BARRIER CREAM MASK/ingredients-4.png': [99, 99],
+  'RICE BARRIER CREAM MASK/ingredients-5.png': [100, 99],
+  'RICE BARRIER CREAM MASK/purpose-1.png': [99, 99],
+  'RICE BARRIER CREAM MASK/purpose-2.png': [99, 99],
+  'RICE BARRIER CREAM MASK/purpose-3.png': [99, 99],
+  'SOFT PEELING GEL/ingredients-1.png': [100, 99],
+  'SOFT PEELING GEL/ingredients-2.png': [99, 99],
+  'SOFT PEELING GEL/ingredients-3.png': [100, 99],
+  'SOFT PEELING GEL/ingredients-4.png': [99, 99],
+  'SOFT PEELING GEL/ingredients-5.png': [99, 99],
+  'SOFT PEELING GEL/purpose-1.png': [99, 99],
+  'SOFT PEELING GEL/purpose-2.png': [99, 99],
+  'SOFT PEELING GEL/purpose-3.png': [99, 99],
+  'additional-img-3.png': [283, 325],
+  'additional-img-7.png': [229, 225],
+  'balancing-daily-toner.jpg': [921, 1152],
+  'bg-image-2.png': [1416, 794],
+  'bg-image-3.png': [1417, 794],
+  'bg-mage-1.jpg': [1416, 794],
+  'blemish-mark-spot-treatment/blemish-mark-spot-treatment.png': [409, 511],
+  'blemish-mark-spot-treatment/ingredient-1.png': [99, 99],
+  'blemish-mark-spot-treatment/ingredient-2.png': [100, 99],
+  'blemish-mark-spot-treatment/ingredient-3.png': [99, 99],
+  'blemish-mark-spot-treatment/ingredient-4.png': [99, 99],
+  'dry spot rescue balm/dry spot rescue balm.png': [402, 504],
+  'dry spot rescue balm/ingredients-1.png': [100, 99],
+  'dry spot rescue balm/ingredients-2.png': [99, 99],
+  'dry spot rescue balm/ingredients-3.png': [99, 99],
+  'dry spot rescue balm/ingredients-4.png': [99, 99],
+  'dry spot rescue balm/ingredients-5.png': [100, 99],
+  'dry spot rescue balm/step-1.png': [99, 99],
+  'dry spot rescue balm/step-2.png': [99, 99],
+  'dry spot rescue balm/step-3.png': [99, 99],
+  'heartleaf-cleansing-oil.jpg': [920, 1152],
+  'hero.png': [1417, 794],
+  'milky-cushion-cleanser.jpg': [920, 1152],
+  'soft-peeling-gel.jpg': [922, 1152],
+};
+
+/**
+ * URL-safe slug for a manifest key. Must stay identical to slugify() in
+ * scripts/optimize-images.mjs; pinned by tests/registry.test.ts.
+ */
+export function slugifyImageKey(key: string): string {
+  return key
+    .replace(/\.[a-zA-Z0-9]+$/, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .replace(/-+/g, '-');
+}
+
+export function variantUrl(
+  key: string,
+  width: number,
+  format: 'avif' | 'webp',
+): string {
+  return `/img/${slugifyImageKey(key)}-${width}.${format}`;
+}
+
+/**
+ * Typed metadata for a manifest key. Returns null when the key is not mapped
+ * (same contract as img(), so callers keep their exact guard behavior and
+ * the rendered DOM for missing images does not change). Throws with the
+ * real key when the source is imported but has no registry entry, because
+ * that is a registry bug that must never render silently.
+ * Widths wider than the source are skipped (the optimizer never upscales),
+ * so the variant list only contains files the optimizer actually wrote.
+ */
+export function imageMeta(path: string): ImageMeta | null {
+  const src = img(path);
+  if (src === '') return null;
+  const dims = IMAGE_DIMENSIONS[path];
+  if (dims === undefined) {
+    throw new Error(
+      `imageMeta: no registry entry for "${path}". Add it to IMAGE_DIMENSIONS in src/data/images.ts and to scripts/image-manifest.mjs.`,
+    );
+  }
+  const [width, height] = dims;
+  if (import.meta.env.DEV) {
+    return { key: path, src, width, height, variants: [] };
+  }
+  const declared = VARIANT_WIDTHS[path] ?? [];
+  const variants: ImageVariant[] = [];
+  for (const w of declared) {
+    if (w > width) continue;
+    variants.push({ format: 'avif', width: w, url: variantUrl(path, w, 'avif') });
+    variants.push({ format: 'webp', width: w, url: variantUrl(path, w, 'webp') });
+  }
+  variants.sort((a, b) => a.width - b.width || a.format.localeCompare(b.format));
+  return { key: path, src, width, height, variants };
+}
+
+/** Build a srcset string for one format from typed metadata (pure helper). */
+export function buildSrcSet(image: ImageMeta, format: 'avif' | 'webp'): string {
+  return image.variants
+    .filter((v) => v.format === format)
+    .map((v) => `${v.url} ${v.width}w`)
+    .join(', ');
+}
+
+/**
+ * Build a CSS image-set() layer for a background from typed metadata.
+ * Returns null when there are no variants (DEV, or original-only assets),
+ * so the caller renders the plain url() fallback. The smallest variant is
+ * served at 1x and the largest at 2x; intermediate widths exist for the
+ * <picture> srcset path, not for backgrounds.
+ */
+export function buildImageSet(image: ImageMeta, format: 'avif' | 'webp' = 'webp'): string | null {
+  const candidates = image.variants.filter((v) => v.format === format);
+  if (candidates.length === 0) return null;
+  const first = candidates[0] as ImageVariant;
+  const last = candidates[candidates.length - 1] as ImageVariant;
+  if (first.width === last.width) return `image-set(url("${first.url}") 1x)`;
+  return `image-set(url("${first.url}") 1x, url("${last.url}") 2x)`;
+}

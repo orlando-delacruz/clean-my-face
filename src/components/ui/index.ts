@@ -15,5 +15,7 @@ export * from './Heading';
 export * from './MediaFrame';
 export * from './Parallax';
 export * from './RangeTheme';
+export * from './ResponsiveBackground';
+export * from './ResponsiveImage';
 export * from './Text';
 export * from './TextureSwatch';
