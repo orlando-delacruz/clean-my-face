@@ -9,8 +9,8 @@ export default defineConfig({
     globals: true,
     setupFiles: './tests/setup.ts',
     css: true,
-    // Full-App render tests need headroom under parallel load (17 jsdom workers).
+    // Full-App render tests need headroom under parallel load.
     testTimeout: 30000,
-    exclude: ['**/node_modules/**', '**/dist/**', '**/tests/e2e/**'],
+    exclude: ['**/node_modules/**', '**/dist/**'],
   },
 })

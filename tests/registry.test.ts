@@ -110,7 +110,8 @@ describe('image registry consistency', () => {
     // Vitest runs with import.meta.env.DEV === true, so this executes the
     // dev branch: originals render, no /img/ file is ever requested.
     // Production (preview/Vercel) takes the other branch; Playwright
-    // tests/e2e/images.spec.ts covers the prod branch in a real browser.
+    // Production uses the generated variants; manual QA (docs/QA_CHECKLIST.md)
+    // covers the prod branch in a real browser.
     expect(import.meta.env.DEV).toBe(true);
     const meta = imageMeta('hero.png');
     expect(meta).not.toBeNull();
