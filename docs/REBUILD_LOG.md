@@ -554,3 +554,52 @@ Date: 2026-10-27
 ### Notes
 
 - Tag `phase-9-candidate` created. The owner does the final tag.
+
+## Phase 10: Legal pages, 404, route-change focus
+
+Date: 2026-10-27
+
+### Commits (on rebuild/brand-experience, none pushed)
+
+- `475031b` feat(legal): restyle legal and 404 pages
+- `612948d` feat(router): move focus to main on route change
+- docs(phase-10) commit follows (this commit)
+
+### What changed
+
+- Rewrote `src/pages/LegalPage.tsx`: narrow reading column (layout.container.narrow), display-face title, updated date, draft notice verbatim, numbered sections with generous spacing from the document data, contact line, kept the back link to home. Desktop-only sticky "On this page" list (renders only when 4+ sections; both documents qualify with 10 and 11) using in-page anchors; each section id appears exactly once; no list on mobile. No legal text, data, or structure changed.
+- Rewrote `src/pages/NotFound.tsx`: cream background, large aria-hidden display "404", kept the existing strings verbatim ("404", "This page is not here", the mistyped-address text, "Back to CleanMyFace"), one h1, links to home and both range pages via the router Link.
+- Added `useRouteFocus` in `src/router.tsx` (separate documented effect, pathname-only, preventScroll focus on #main-content; no scroll logic touched) and called it in App. Added tabIndex={-1} to the main landmark in Home, RangePage, LegalPage, NotFound; ProductPage had no main-content id at all, so both id and tabIndex were added there.
+
+### 404 strings kept (verbatim)
+
+- "404" (numeral decoration, aria-hidden; also the existing small-caps label)
+- "This page is not here" (h1)
+- "The address may be mistyped, or the page may have moved. The CleanMyFace homepage is one click away."
+- "Back to CleanMyFace"
+
+### Route-change focus
+
+- Implemented: the effect runs only when usePathname value changes, so hash-only navigation never retriggers it; focus uses preventScroll, so position stays owned by the existing scrollTo/rAF/hash-retry logic. No scrollTo added; verified by diff.
+- Files changed for tabIndex: Home.tsx, RangePage.tsx, ProductPage.tsx (also gained the missing id), LegalPage.tsx, NotFound.tsx.
+
+### Footer legal links
+
+- Both footer legal links come from site.ts legalLinks and point to /privacy-policy and /terms-and-conditions, matching the App.tsx routes. Confirmed, no change needed.
+
+### Validation
+
+- Each commit passed `npm run check` (typecheck, lint, Vitest 21 files / 88 tests, build, check:bundle).
+- No legal text changes; no em dashes in rendered copy; colors from tokens only.
+- Post-build: no `data-stand-in` in dist; every main-content id listed per page file.
+
+### UNVERIFIED (owner's manual checks)
+
+- Legal reading column, title, date, draft notice at 1440/390; desktop section list jumps.
+- 404 h1, numeral, and three links on unknown routes.
+- Keyboard: first Tab after navigation enters new page content; scroll behavior unchanged.
+- Footer legal links.
+
+### Notes
+
+- Tag `phase-10-candidate` created. The owner does the final tag.

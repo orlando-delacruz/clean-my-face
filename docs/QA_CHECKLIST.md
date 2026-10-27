@@ -66,6 +66,13 @@ Test at least four products: the first and last of each range.
 - [ ] Back link goes to the correct range page; the header is solid on product pages.
 - [ ] Reduced motion on; no horizontal scroll; no console errors.
 
+### Phase 10: Legal, 404, focus
+
+- [ ] /privacy-policy and /terms-and-conditions at 1440 and 390: the reading column is narrow; the title, updated date, and draft notice are visible; the section list appears on desktop only and its links jump to the right sections.
+- [ ] /this-page-does-not-exist and /ranges/nope: the 404 page shows one h1, the 404 numeral, and working links to home and both ranges.
+- [ ] Keyboard: after clicking a link to another page, the first Tab moves into the new page's content. Page scroll position behaves as before (no unexpected jumps).
+- [ ] Footer legal links work.
+
 ## Homepage (desktop 1440, tablet 768, mobile 390)
 
 - [ ] Hero renders with the brand headline and both range badges; no broken image.

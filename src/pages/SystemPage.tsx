@@ -242,7 +242,7 @@ function SampleCard() {
 export default function SystemPage() {
   const reduceMotion = useReducedMotion();
   return (
-    <main id="main-content" data-marker={CMF_SYSTEM_PAGE_MARKER}>
+    <main id="main-content" tabIndex={-1} data-marker={CMF_SYSTEM_PAGE_MARKER}>
       <Section>
         <Container>
           <Eyebrow>Design system</Eyebrow>
