@@ -4,7 +4,7 @@ import { Container, Eyebrow, Heading, Reveal, Text } from '../components/ui';
 import { StandInImage } from '../components/ui/StandInImage';
 
 const Section = styled.section`
-  background: ${({ theme }) => theme.colors.surface};
+  background: ${({ theme }) => theme.colors.background};
   color: ${({ theme }) => theme.colors.text};
   padding-block: ${({ theme }) => theme.spacing.sectionMobile};
 
@@ -79,6 +79,12 @@ const ImageWrap = styled.div`
   @media (min-width: ${({ theme }) => theme.breakpoints.lg}) {
     order: 0;
     margin-top: 4rem;
+    /* Pull the next section up so the image crosses the section boundary.
+       Only visible where the image column is tallest; the section keeps
+       overflow-x clipping so this never causes horizontal scroll. */
+    margin-bottom: -4rem;
+    position: relative;
+    z-index: 1;
   }
 `;
 
