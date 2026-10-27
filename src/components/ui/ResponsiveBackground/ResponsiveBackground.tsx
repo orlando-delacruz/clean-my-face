@@ -40,7 +40,7 @@ const Layer = styled.div<{
 /**
  * ResponsiveBackground: tinted overlay plus a responsive background image.
  *
- * The layering is exactly the one used by RangeSystem and Closing today: a
+ * The layering is exactly the one used by Closing today: a
  * tint gradient at 86 percent over the image, cover, centered. The plain
  * url() declaration comes first as the fallback; when variants exist, an
  * image-set() override (1x smallest, 2x largest, WebP) follows it, so
