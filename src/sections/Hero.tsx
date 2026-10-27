@@ -24,7 +24,7 @@ const HeroSection = styled.section`
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
     margin-top: calc(-4.5rem - 1px);
     padding-block: calc(7.5rem + 4.5rem + 1px) 6.5rem;
-    align-items: center;
+    align-items: flex-end;
   }
 `;
 
