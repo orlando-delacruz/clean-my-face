@@ -4,6 +4,7 @@ export * from './EyebrowRow';
 export * from './Lead';
 export * from './Reveal';
 export * from './Section';
+export * from './ScrollCue';
 export * from './SectionHeader';
 export * from './SectionRule';
 export * from './SectionTitle';

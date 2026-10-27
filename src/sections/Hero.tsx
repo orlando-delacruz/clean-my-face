@@ -1,28 +1,30 @@
 import styled from 'styled-components';
 import { brand } from '../data/content';
+import { home } from '../data/home';
 import { imageMeta } from '../data/images';
-import { ArrowRightIcon, ChatIcon, DropletIcon, LayersIcon, LeafIcon, ListIcon } from '../components/icons';
-import { Container, ResponsiveImage } from '../components/ui';
+import { Link } from '../router';
+import { ArrowRightIcon } from '../components/icons';
+import { Container, Parallax, ResponsiveImage, Reveal } from '../components/ui';
+import { StandInImage } from '../components/ui/StandInImage';
+import { ScrollCue } from '../components/ui/ScrollCue';
 import { motion, useReducedMotion } from 'motion/react';
 
 const HeroSection = styled.section`
   position: relative;
   isolation: isolate;
   display: flex;
-  align-items: center;
-  min-height: clamp(640px, 94vh, 920px);
-  /* Slide under the sticky transparent header so the hero imagery shows
-     through it. Offsets mirror the header height (Inner min-height + 1px
-     Bar border): 4rem on mobile, 4.5rem from md up. */
+  align-items: flex-end;
+  min-height: clamp(640px, 100svh, 960px);
   margin-top: calc(-4rem - 1px);
-  padding-block: calc(6rem + 4rem + 1px) 4.5rem;
+  padding-block: calc(6rem + 4rem + 1px) 5rem;
   overflow: hidden;
   background-color: ${({ theme }) => theme.colors.surfaceInverse};
-  color: ${({ theme }) => theme.colors.surface};
+  color: ${({ theme }) => theme.colors.textInverse};
 
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
     margin-top: calc(-4.5rem - 1px);
     padding-block: calc(7.5rem + 4.5rem + 1px) 6.5rem;
+    align-items: center;
   }
 `;
 
@@ -30,6 +32,7 @@ const HeroBg = styled.div`
   position: absolute;
   inset: 0;
   z-index: -2;
+  overflow: hidden;
 `;
 
 const HeroImage = styled(ResponsiveImage)`
@@ -74,201 +77,115 @@ const Overlay = styled.div`
 `;
 
 const Content = styled(Container)`
+  position: relative;
+  z-index: 1;
   width: 100%;
 `;
 
 const Copy = styled.div`
-  max-width: 37rem;
-  margin-inline: auto;
+  max-width: 38rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
-    margin-inline: 0;
-    text-align: left;
     align-items: flex-start;
-  }
-`;
-
-const TopRow = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.5rem;
-  margin-bottom: 1.75rem;
-
-  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-  }
-`;
-
-const BadgeRow = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.625rem;
-
-  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
-    justify-content: flex-start;
-  }
-`;
-
-const Badge = styled.span<{ $tone: 'plump' | 'clear' }>`
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  padding: 0.5rem 1rem;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  border-radius: 999px;
-  background: ${({ theme, $tone }) =>
-    $tone === 'plump' ? theme.colors.plumpTint : theme.colors.clearTint};
-  color: ${({ theme, $tone }) =>
-    $tone === 'plump' ? theme.colors.plumpDeep : theme.colors.clearDeep};
-
-  svg {
-    flex: none;
-  }
-`;
-
-const Rule = styled.span`
-  display: block;
-  width: 3.5rem;
-  height: 2px;
-  border-radius: 2px;
-  background: ${({ theme }) => theme.colors.gold};
-
-  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
-    order: -1;
+    text-align: left;
   }
 `;
 
 const Title = styled.h1`
-  font-size: clamp(2.75rem, 6vw, 5rem);
-  line-height: 1.04;
-  letter-spacing: -0.02em;
-  text-wrap: balance;
+  font-family: ${({ theme }) => theme.fonts.display};
+  font-size: ${({ theme }) => theme.fontSizes.display};
+  line-height: ${({ theme }) => theme.lineHeights.heading};
+  letter-spacing: ${({ theme }) => theme.letterSpacings.heading};
   color: ${({ theme }) => theme.colors.textInverse};
   margin-bottom: 1.25rem;
-  max-width: 12ch;
-
-  em {
-    font-style: italic;
-    font-weight: 400;
-  }
+  text-wrap: balance;
+  max-width: 14ch;
 `;
 
 const HeroLead = styled.p`
   font-size: clamp(1.0625rem, 1.4vw, 1.25rem);
   line-height: 1.6;
   color: ${({ theme }) => theme.colors.textInverse88};
-  max-width: 38ch;
+  max-width: 40ch;
   margin-bottom: 2.25rem;
 `;
 
 const CtaRow = styled.div`
   display: flex;
-  flex-wrap: nowrap;
-  justify-content: center;
-  gap: 0.625rem;
+  flex-direction: column;
+  gap: 0.75rem;
   width: 100%;
 
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
-    justify-content: flex-start;
+    flex-direction: row;
     gap: 0.875rem;
     width: auto;
   }
 `;
 
-const HeroPrimary = styled.a`
+const HeroPrimary = styled(Link)`
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
   min-height: 3.25rem;
-  padding: 0.875rem 1rem;
+  padding: 0.875rem 1.25rem;
   font-family: ${({ theme }) => theme.fonts.body};
-  font-size: 0.875rem;
+  font-size: 0.9375rem;
   font-weight: 600;
   letter-spacing: 0.01em;
   text-decoration: none;
-  border-radius: 999px;
+  border-radius: ${({ theme }) => theme.radius.pill};
   border: 1px solid ${({ theme }) => theme.colors.textInverse};
   background: ${({ theme }) => theme.colors.textInverse};
   color: ${({ theme }) => theme.colors.inkDark};
-  cursor: pointer;
-  flex: 1 1 0;
-  min-width: 0;
   white-space: nowrap;
 
   svg {
     flex: none;
   }
 
-  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
-    flex: none;
-    padding: 0.875rem 2rem;
-    font-size: 0.9375rem;
-  }
-  transition:
-    background-color 180ms ease,
-    border-color 180ms ease,
-    transform 180ms ease,
-    box-shadow 180ms ease;
-
   &:hover {
     background: ${({ theme }) => theme.colors.surfaceWarm};
     border-color: ${({ theme }) => theme.colors.surfaceWarm};
     transform: translateY(-1px);
-    box-shadow: 0 12px 32px ${({ theme }) => theme.colors.black35};
   }
 
   &:focus-visible {
     outline: 3px solid ${({ theme }) => theme.colors.gold};
     outline-offset: 3px;
   }
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
+    padding: 0.875rem 2rem;
+  }
 `;
 
-const HeroSecondary = styled.a`
+const HeroSecondary = styled(Link)`
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
   min-height: 3.25rem;
-  padding: 0.875rem 1rem;
+  padding: 0.875rem 1.25rem;
   font-family: ${({ theme }) => theme.fonts.body};
-  font-size: 0.875rem;
+  font-size: 0.9375rem;
   font-weight: 600;
   letter-spacing: 0.01em;
   text-decoration: none;
-  border-radius: 999px;
+  border-radius: ${({ theme }) => theme.radius.pill};
   background: transparent;
   color: ${({ theme }) => theme.colors.textInverse};
   border: 1px solid ${({ theme }) => theme.colors.textInverse48};
-  cursor: pointer;
-  flex: 1 1 0;
-  min-width: 0;
   white-space: nowrap;
 
   svg {
     flex: none;
   }
-
-  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
-    flex: none;
-    padding: 0.875rem 2rem;
-    font-size: 0.9375rem;
-  }
-  transition:
-    background-color 180ms ease,
-    border-color 180ms ease,
-    transform 180ms ease;
 
   &:hover {
     border-color: ${({ theme }) => theme.colors.textInverse};
@@ -280,81 +197,32 @@ const HeroSecondary = styled.a`
     outline: 3px solid ${({ theme }) => theme.colors.gold};
     outline-offset: 3px;
   }
-`;
-
-const Stats = styled.ul`
-  list-style: none;
-  margin: 1.5rem 0 0;
-  padding: 0;
-  display: flex;
-  flex-wrap: nowrap;
-  justify-content: center;
-  gap: 0.75rem 1rem;
 
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
-    justify-content: flex-start;
-    gap: 1.75rem 2.5rem;
+    padding: 0.875rem 2rem;
   }
 `;
 
-const Stat = styled.li`
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-`;
+const FloatingCard = styled.div`
+  display: none;
 
-const StatMark = styled.span`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.125rem;
-  height: 2.125rem;
-  flex: none;
-  border: 1px solid ${({ theme }) => theme.colors.textInverse35};
-  border-radius: 50%;
-  color: ${({ theme }) => theme.colors.gold};
-
-  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
-    width: 2.5rem;
-    height: 2.5rem;
+  @media (min-width: ${({ theme }) => theme.breakpoints.lg}) {
+    display: block;
+    position: absolute;
+    right: 2rem;
+    bottom: -2rem;
+    width: 220px;
+    z-index: 2;
   }
 `;
 
-const StatText = styled.span`
-  display: flex;
-  flex-direction: column;
-  line-height: 1.25;
-  text-align: left;
+const CueWrap = styled.div`
+  position: absolute;
+  left: 50%;
+  bottom: 1.5rem;
+  transform: translateX(-50%);
+  z-index: 2;
 `;
-
-const StatValue = styled.span`
-  font-family: ${({ theme }) => theme.fonts.display};
-  font-size: 1.125rem;
-  color: ${({ theme }) => theme.colors.textInverse};
-
-  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
-    font-size: 1.375rem;
-  }
-`;
-
-const StatLabel = styled.span`
-  font-size: 0.625rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: ${({ theme }) => theme.colors.textInverse72};
-
-  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
-    font-size: 0.6875rem;
-    letter-spacing: 0.14em;
-  }
-`;
-
-const statIcons = {
-  droplet: DropletIcon,
-  layers: LayersIcon,
-  list: ListIcon,
-};
 
 export function Hero() {
   const reduceMotion = useReducedMotion();
@@ -363,107 +231,65 @@ export function Hero() {
   return (
     <HeroSection id="hero" aria-labelledby="hero-title">
       <HeroBg aria-hidden="true">
-        {heroMeta !== null && (
-          <HeroImage image={heroMeta} alt="" sizes="100vw" priority />
-        )}
+        <Parallax distance={32}>
+          {heroMeta !== null && (
+            <HeroImage image={heroMeta} alt="" sizes="100vw" priority />
+          )}
+        </Parallax>
       </HeroBg>
       <Overlay aria-hidden="true" />
       <Content>
-        <motion.div
-          initial={reduceMotion ? false : { opacity: 0, y: 18 }}
-          animate={reduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
-          transition={{
-            duration: reduceMotion ? 0 : 0.62,
-            ease: [0.22, 1, 0.36, 1],
-          }}
-        >
+        <Reveal>
           <Copy>
             <motion.div
-              initial={reduceMotion ? false : { opacity: 0, y: 10 }}
+              initial={reduceMotion ? false : { opacity: 0, y: 18 }}
               animate={reduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
               transition={{
-                duration: reduceMotion ? 0 : 0.42,
-                delay: reduceMotion ? 0 : 0.08,
+                duration: reduceMotion ? 0 : 0.62,
                 ease: [0.22, 1, 0.36, 1],
               }}
             >
-              <TopRow>
-                <BadgeRow aria-label="Product ranges">
-                  <Badge $tone="plump">
-                    <DropletIcon size={13} aria-hidden="true" />
-                    Plump It Up
-                  </Badge>
-                  <Badge $tone="clear">
-                    <LeafIcon size={13} aria-hidden="true" />
-                    Stay Clear
-                  </Badge>
-                </BadgeRow>
-                <Rule aria-hidden="true" />
-              </TopRow>
-            </motion.div>
-            <motion.div
-              initial={reduceMotion ? false : { opacity: 0, y: 16 }}
-              animate={reduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
-              transition={{
-                duration: reduceMotion ? 0 : 0.5,
-                delay: reduceMotion ? 0 : 0.16,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-            >
-              <Title id="hero-title">
-                Skincare that <em>gets to the point.</em>
-              </Title>
-              <HeroLead>{brand.heroLead}</HeroLead>
+              <Title id="hero-title">{home.hero.headline}</Title>
             </motion.div>
             <motion.div
               initial={reduceMotion ? false : { opacity: 0, y: 12 }}
               animate={reduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
               transition={{
+                duration: reduceMotion ? 0 : 0.5,
+                delay: reduceMotion ? 0 : 0.12,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+            >
+              <HeroLead>{home.hero.support}</HeroLead>
+            </motion.div>
+            <motion.div
+              initial={reduceMotion ? false : { opacity: 0, y: 10 }}
+              animate={reduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
+              transition={{
                 duration: reduceMotion ? 0 : 0.42,
-                delay: reduceMotion ? 0 : 0.28,
+                delay: reduceMotion ? 0 : 0.24,
                 ease: [0.22, 1, 0.36, 1],
               }}
             >
               <CtaRow>
-                <HeroPrimary href={brand.heroPrimaryCta.href}>
-                  {brand.heroPrimaryCta.label}
+                <HeroPrimary to="/#solutions">
+                  {home.hero.cta}
                   <ArrowRightIcon size={16} />
                 </HeroPrimary>
-                <HeroSecondary href={brand.heroSecondaryCta.href}>
-                  {brand.heroSecondaryCta.label}
-                  <ChatIcon size={16} />
+                <HeroSecondary to="/#promise">
+                  {home.hero.secondaryLink}
                 </HeroSecondary>
               </CtaRow>
             </motion.div>
-            <motion.div
-              initial={reduceMotion ? false : { opacity: 0, y: 8 }}
-              animate={reduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
-              transition={{
-                duration: reduceMotion ? 0 : 0.36,
-                delay: reduceMotion ? 0 : 0.38,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-            >
-              <Stats aria-label="CleanMyFace at a glance">
-                {brand.stats.map((stat) => {
-                  const Icon = statIcons[stat.icon];
-                  return (
-                    <Stat key={stat.label}>
-                      <StatMark aria-hidden="true">
-                        <Icon size={17} />
-                      </StatMark>
-                      <StatText>
-                        <StatValue>{stat.value}</StatValue>
-                        <StatLabel>{stat.label}</StatLabel>
-                      </StatText>
-                    </Stat>
-                  );
-                })}
-              </Stats>
-            </motion.div>
           </Copy>
-        </motion.div>
+        </Reveal>
+        <FloatingCard aria-hidden="true">
+          <StandInImage seed="cmf-hero-texture" ratio="4/5" width={220} height={275} />
+        </FloatingCard>
       </Content>
+      <CueWrap aria-hidden="true">
+        <ScrollCue />
+      </CueWrap>
     </HeroSection>
   );
 }
