@@ -1,0 +1,1 @@
+export { StandInImage } from './StandInImage';
