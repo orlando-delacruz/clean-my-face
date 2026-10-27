@@ -47,6 +47,15 @@ The redesign runs in phases 4 to 12 (see `docs/REDESIGN_PLAN.md`). Each phase ap
 - [ ] Header links: Expertise and Contact scroll to the right sections. The hero button reaches the solutions section.
 - [ ] Reduced motion on: no hover transforms, no parallax. No horizontal scroll at any width. No console errors.
 
+### Phase 8: Range pages
+
+- [ ] /ranges/plump-it-up and /ranges/stay-clear at 1440 and 390: the blue (Plump) and green (Clear) themes stay consistent from hero to crossover.
+- [ ] The six steps appear in order; each "View product" link opens the correct product page.
+- [ ] Routine tabs switch with mouse and with the keyboard (Left, Right, Home, End); the content matches the routine copy.
+- [ ] The crossover card leads to the other range.
+- [ ] The header is transparent over the range hero and solid after scrolling; the background image fills the hero; no horizontal scroll.
+- [ ] Reduced motion on: no animation; all content visible.
+
 ## Homepage (desktop 1440, tablet 768, mobile 390)
 
 - [ ] Hero renders with the brand headline and both range badges; no broken image.

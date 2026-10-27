@@ -458,3 +458,53 @@ Date: 2026-10-27
 ### Notes
 
 - Tag `phase-7-candidate` created. The owner does the final tag.
+
+## Phase 8: Range pages
+
+Date: 2026-10-27
+
+### Commits (on rebuild/brand-experience, none pushed)
+
+- `a3542c2` feat(ranges): add range page components and fix product links
+- `77608b0` feat(ranges): assemble RangePage and delete legacy sections
+- docs(phase-8) commit follows (this commit)
+
+### What changed
+
+- Added `src/components/ranges/RangeHero/` (RangeHero.tsx, index.ts): full-bleed tinted field via ResponsiveBackground (bg-image-2.png for plump, bg-image-3.png for clear, cover/center as RangeSystem used, tint from the range's soft token), page eyebrow/headline/support, range skin type and promise, system image as MediaFrame 4/3 on desktop. Slides under the sticky header with the same negative-margin pattern as the homepage hero. The h1 is the range headline.
+- Added `src/components/ranges/SystemSteps/` (SystemSteps.tsx, index.ts): the range's products in step order (count from data) as an ol; desktop editorial rows alternating image side with large display step number, packshot, name, role, tagline, View product link; stacked cards on mobile.
+- Added `src/components/ranges/RoutineGuideTabs/` (RoutineGuideTabs.tsx, index.ts): routine groups as tabs for the page's range. Preserved from RoutineGuide: tablist/tab/tabpanel roles, aria-selected, aria-controls, Left/Right/Home/End keys with focus following selection, group structure from routineGuide data. Restyled with tokens and range accents. Deleted `src/sections/RoutineGuide.tsx` after migration; no behavior lost (only the per-range tab switcher and section header were dropped, replaced by the page-chosen range and the Your routine heading).
+- Added `src/components/ranges/RangeCrossover/` (RangeCrossover.tsx, index.ts): card to the other range in the other range's RangeTheme, with the other range's eyebrow, solutions.headline, and the Explore button linking to the other range page. Only the button links.
+- Rewrote `src/pages/RangePage.tsx`: RangeTheme wrap, order RangeHero, SystemSteps, RoutineGuideTabs, RangeCrossover. Unknown range ids already route to NotFound in App.tsx (lines 30-36 lookup, 68-73 guard).
+- Fixed two dead links in `src/pages/ProductPage.tsx`: the Back link and the See the full routine link pointed to `/#range-<id>` (anchors that no longer exist); both now point to `/ranges/<slug>` via rangePages. Header, footer, and CuratedDiscovery range links already pointed at the range routes; no change needed there.
+- Deleted with git rm: `src/sections/RangeSystem.tsx` (superseded by RangeHero/SystemSteps), `src/sections/RoutineGuide.tsx` (superseded by RoutineGuideTabs). No remaining importers (verified by grep). No export from content.ts touched.
+- Extended `MediaRatio` with `'4/3'` for the hero system image; fixed a stale RangeSystem mention in a ResponsiveBackground comment.
+
+### Tab accessibility preserved (list)
+
+- role="tablist" with aria-label per routine, role="tab" with aria-selected and aria-controls, role="tabpanel" with aria-labelledby.
+- ArrowLeft/ArrowRight move selection, Home/End jump to first/last; preventDefault on handled keys.
+- Focus follows selection via tabRefs; roving tabIndex (selected 0, others -1).
+- Panel content re-animates per tab with fadeUp; disabled under prefers-reduced-motion.
+
+### Header transparency over /ranges/*
+
+- Header lines 395-401: `rangeSlug` from the path, `onRangePage = findRangePageBySlug(rangeSlug) !== null`, `transparent = (path === '/' || onRangePage) && !scrolled && !open`. Any valid range slug gets the transparent inverse header until 24px of scroll; unknown slugs render NotFound (solid header).
+
+### Validation
+
+- Each commit passed `npm run check` (typecheck, lint, Vitest 21 files / 88 tests, build, check:bundle).
+- `grep -rI 'data-stand-in' dist/`: empty. `grep -rn "RangeSystem|src/sections/RoutineGuide" src/`: only the fixed comment (since corrected). `id="routine"`: no matches (no anchor needed; nothing links to it).
+- No em dashes in new copy; colors from tokens only, alpha via withAlpha; copy from range data, rangePages.ts, and plan labels only.
+
+### UNVERIFIED (owner's manual checks)
+
+- Blue/green theme consistency hero to crossover at 1440 and 390.
+- Six steps in order; View product links; tab mouse and keyboard behavior; routine copy.
+- Crossover navigation; transparent header over hero; background fill; horizontal scroll.
+- Reduced motion behavior.
+
+### Notes
+
+- Plan 7.1 item (5), a short closing line without the Find your routine button, was skipped: the task's page order ends at the crossover and no copy source exists for the line.
+- Tag `phase-8-candidate` created. The owner does the final tag.
