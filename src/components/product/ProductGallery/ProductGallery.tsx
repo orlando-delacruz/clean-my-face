@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { imageMeta } from '../data/images';
-import { ResponsiveImage } from './ui';
+import { imageMeta } from '../../../data/images';
+import { ResponsiveImage } from '../../ui';
 
 const Figure = styled.figure<{ $tint: string }>`
   margin: 0;

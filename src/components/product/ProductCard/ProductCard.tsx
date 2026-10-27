@@ -1,10 +1,10 @@
 import styled from 'styled-components';
-import { theme } from '../theme';
-import { imageMeta } from '../data/images';
-import type { ProductContent } from '../data/content';
-import { Link } from '../router';
-import { ArrowRightIcon } from './icons';
-import { ResponsiveImage } from './ui';
+import { theme } from '../../../theme';
+import { imageMeta } from '../../../data/images';
+import type { ProductContent } from '../../../data/content';
+import { Link } from '../../../router';
+import { ArrowRightIcon } from '../../icons';
+import { ResponsiveImage } from '../../ui';
 
 const CardLink = styled(Link)<{ $tone: 'light' | 'dark' }>`
   display: flex;

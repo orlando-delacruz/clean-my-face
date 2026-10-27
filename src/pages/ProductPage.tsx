@@ -5,8 +5,8 @@ import { rangePages } from '../data/rangePages';
 import { Link } from '../router';
 import { theme } from '../theme';
 import { img } from '../data/images';
-import { ProductGallery } from '../components/ProductGallery';
-import { ProductCard } from '../components/ProductCard';
+import { ProductGallery } from '../components/product/ProductGallery';
+import { ProductCard } from '../components/product/ProductCard';
 import { ArrowRightIcon, CheckIcon } from '../components/icons';
 import { Container, Reveal, Section } from '../components/ui';
 
