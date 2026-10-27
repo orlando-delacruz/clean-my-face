@@ -369,3 +369,50 @@ Date: 2026-10-27
 ### Notes
 
 - Tag `phase-5-candidate` created. The owner does the final tag.
+
+## Phase 6: Homepage sections 04 and 05
+
+Date: 2026-10-27
+
+### Commits (on rebuild/brand-experience, none pushed)
+
+- `9dae3ff` feat(home): add gentle performance section
+- `89b6b5f` feat(home): add RangePanel and skin solutions section
+- docs(phase-6) commit follows (this commit)
+
+### What changed
+
+- Added `src/sections/GentlePerformance.tsx` (id="gentle"): surfaceWarm background, SectionHeader with gentle headline and support, three product columns resolved with findProductBySlug (throws with the real slug when missing). Each column: tall stand-in texture image (3/4), real packshot overlapping its lower corner, product name, tagline from content.ts, View product link. Desktop stagger 0/3rem/6rem (literals; no spacing token matches). Removes row: label plus four items as a list with thin dividers, then the note. Mobile uses SnapRow (itemWidth 78% with peek, columns 3 at lg).
+- Added `src/components/ranges/RangePanel/` (RangePanel.tsx, index.ts): props rangeId, eyebrow, headline, support, skinType, href, standInSeed. Wraps content in RangeTheme; background theme.range.soft, text and button theme.range.deep, button text textInverse. Mood image (16/9) with soft overlay; hover and focus-within scale the image to 1.04 and lighten the overlay. Transitions from theme.motion tokens; disabled under prefers-reduced-motion. Only the button is a link.
+- Added `src/sections/SkinSolutions.tsx` (id="solutions"): centered intro, two RangePanels 50/50 at lg and stacked below (min-height 78svh at lg, 560px stacked). Skin type text from skinNeeds data; button labels Explore Plump It Up and Explore Stay Clear link to the range pages.
+- Rewrote `src/pages/Home.tsx`: Hero, BrandPromise, Expertise, GentlePerformance, SkinSolutions, Featured, Closing. Removed SkinNeeds, both RangeSystem blocks, RoutineGuide, and the temporary #solutions alias. Source files kept on disk.
+- Updated `docs/STAND_INS.md` status for the five seeds used to "in use (Phase 6)".
+
+### Contrast (range panels)
+
+- plumpDeep #2C4763 on plumpSoft #DFE8F3: 7.76:1
+- plumpDeep #2C4763 on plumpTint #B0C5E0: 5.44:1
+- clearDeep #3F6034 on clearSoft #EDF3E6: 6.33:1
+- clearDeep #3F6034 on clearTint #D3E2C1: 5.25:1
+- textInverse #FFFDF8 on plumpDeep (button): 9.44:1
+- textInverse #FFFDF8 on clearDeep (button): 7.04:1
+
+All text pairs meet 4.5:1.
+
+### Validation
+
+- Each commit passed `npm run check` (typecheck, lint, Vitest 21 files / 88 tests, build, check:bundle).
+- `grep -rn 'id="solutions"' src/` shows exactly one match; same for `id="gentle"`.
+- Remaining `/#range-plump` and `/#range-clear` hrefs exist only in the unused `navigation` export of `src/data/content.ts` (untouched per constraints); nothing imports that export, and SkinNeeds (its only renderer) is off the homepage.
+- No hex literals added; colors from tokens only, alpha via withAlpha.
+
+### UNVERIFIED (owner's manual checks)
+
+- Gentle stagger, snap row peek, packshot overlap, product links, Removes row.
+- Solutions split, panel colors, hover and focus scale, button-only links.
+- No horizontal scroll at any width; reduced motion behavior.
+- Header Expertise link and Find your routine button landing.
+
+### Notes
+
+- Tag `phase-6-candidate` created. The owner does the final tag.

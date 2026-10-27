@@ -30,6 +30,14 @@ The redesign runs in phases 4 to 12 (see `docs/REDESIGN_PLAN.md`). Each phase ap
 - [ ] The header "Expertise" link lands on the expertise section.
 - [ ] Headings render in Cormorant Garamond; adjacent sections look clearly different.
 
+### Phase 6: Homepage sections 04 and 05
+
+- [ ] Gentle: three columns staggered on desktop; a snap row with a peek on mobile; packshots overlap the texture images; each card links to the correct product page; the Removes row is plain text with dividers, not badges.
+- [ ] Solutions: a 50/50 split at 1440, stacked at 390; the two panels are clearly different colors (blue and green); hover and keyboard focus scale the image; only the buttons are clickable; both buttons reach the range pages.
+- [ ] No horizontal scroll at any width. With reduced motion on, the hover transform is gone.
+- [ ] The homepage no longer shows the product grids or the routine tabs.
+- [ ] The header "Expertise" link works; the header "Find your routine" button lands on the solutions section.
+
 ## Homepage (desktop 1440, tablet 768, mobile 390)
 
 - [ ] Hero renders with the brand headline and both range badges; no broken image.
