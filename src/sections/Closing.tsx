@@ -6,6 +6,7 @@ import { theme } from '../theme';
 import { Container, Heading, Reveal, Text } from '../components/ui';
 import { ResponsiveBackground } from '../components/ui/ResponsiveBackground';
 import { ArrowRightIcon } from '../components/icons';
+import { withAlpha } from '../styles/color';
 
 const Backdrop = styled(ResponsiveBackground)`
   scroll-margin-top: 5rem;
@@ -21,29 +22,62 @@ const Copy = styled.div`
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 1.25rem;
-  max-width: 46rem;
+  gap: 1.5rem;
+  max-width: 48rem;
   margin-inline: auto;
 `;
 
+const Rule = styled.span`
+  display: block;
+  width: 3.5rem;
+  height: 1px;
+  background: ${({ theme }) => theme.colors.gold};
+`;
+
 const Button = styled(Link)`
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  min-height: 3.25rem;
+  gap: 0.75rem;
+  min-height: 3.5rem;
   margin-top: 1rem;
-  padding: 0.875rem 2rem;
+  padding: 0.875rem 1.25rem 0.875rem 2rem;
   font-size: 0.9375rem;
   font-weight: 600;
+  letter-spacing: 0.01em;
   text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
   border-radius: ${({ theme }) => theme.radius.pill};
   background: ${({ theme }) => theme.colors.textInverse};
   color: ${({ theme }) => theme.colors.inkDark};
 
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -60%;
+    width: 40%;
+    background: linear-gradient(
+      100deg,
+      transparent 0%,
+      ${({ theme }) => withAlpha(theme.colors.surfaceWarm, 0.7)} 50%,
+      transparent 100%
+    );
+    transform: skewX(-18deg);
+    transition: left 600ms cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: none;
+  }
+
   &:hover {
     background: ${({ theme }) => theme.colors.surfaceWarm};
     transform: translateY(-1px);
+  }
+
+  &:hover::after {
+    left: 130%;
   }
 
   &:focus-visible {
@@ -52,7 +86,37 @@ const Button = styled(Link)`
   }
 
   @media (prefers-reduced-motion: reduce) {
+    &::after {
+      display: none;
+    }
+
     &:hover {
+      transform: none;
+    }
+  }
+`;
+
+const CtaArrow = styled.span`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  flex: none;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  transition: background-color 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+
+  ${Button}:hover & {
+    background: ${({ theme }) => theme.colors.inkDark};
+    color: ${({ theme }) => theme.colors.textInverse};
+    transform: translateX(2px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    ${Button}:hover & {
       transform: none;
     }
   }
@@ -78,6 +142,7 @@ export function Closing() {
       <Container>
         <Reveal>
           <Copy>
+            <Rule aria-hidden="true" />
             <Heading as="h2" size="display" tone="inverse" id="closing-title">
               {home.closing.headline}
             </Heading>
@@ -86,7 +151,9 @@ export function Closing() {
             </Text>
             <Button to="/#solutions">
               {home.closing.cta}
-              <ArrowRightIcon size={16} />
+              <CtaArrow aria-hidden="true">
+                <ArrowRightIcon size={15} />
+              </CtaArrow>
             </Button>
           </Copy>
         </Reveal>

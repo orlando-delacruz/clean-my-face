@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { withAlpha } from '../styles/color';
 import { home } from '../data/home';
 import { findProductBySlug } from '../data/content';
 import { imageMeta } from '../data/images';
@@ -11,13 +12,13 @@ import {
   SectionHeader,
   SnapRow,
 } from '../components/ui';
-import { StandInImage } from '../components/ui/StandInImage';
+import { RangeTheme } from '../components/ui/RangeTheme';
 import { ArrowRightIcon } from '../components/icons';
 
 const COLUMNS = [
-  { slug: 'cleansing-balm', seed: 'cmf-texture-balm' },
-  { slug: 'milky-cushion-cleanser', seed: 'cmf-texture-milk' },
-  { slug: 'heartleaf-cleansing-oil', seed: 'cmf-texture-oil' },
+  { slug: 'cleansing-balm' },
+  { slug: 'milky-cushion-cleanser' },
+  { slug: 'heartleaf-cleansing-oil' },
 ] as const;
 
 const Wrap = styled(Section)`
@@ -55,17 +56,63 @@ const Column = styled.article`
 const Media = styled.div`
   position: relative;
   margin-bottom: 1.5rem;
-`;
-
-const Packshot = styled.div`
-  position: absolute;
-  right: 0.75rem;
-  bottom: -1.25rem;
-  width: 44%;
+  background: ${({ theme }) => theme.range.soft};
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.radius.sm};
-  background: ${({ theme }) => theme.colors.surface};
-  overflow: hidden;
+  padding: 2.25rem 2rem 1.75rem;
+  display: flex;
+  justify-content: center;
+  box-shadow: ${({ theme }) => theme.shadows.soft};
+  transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 280ms cubic-bezier(0.22, 1, 0.36, 1);
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 1.5rem;
+    right: 1.5rem;
+    height: 2px;
+    border-radius: 2px;
+    background: ${({ theme }) => theme.colors.gold};
+  }
+
+  ${Column}:hover &,
+  ${Column}:focus-within & {
+    transform: translateY(-4px);
+    box-shadow: ${({ theme }) => theme.shadows.lifted};
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+
+    ${Column}:hover &,
+    ${Column}:focus-within & {
+      transform: none;
+    }
+  }
+`;
+
+const Packshot = styled(ResponsiveImage)`
+  height: 12.5rem;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+
+  ${Column}:hover &,
+  ${Column}:focus-within & {
+    transform: scale(1.04);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+
+    ${Column}:hover &,
+    ${Column}:focus-within & {
+      transform: none;
+    }
+  }
 `;
 
 const Name = styled.h3`
@@ -88,7 +135,7 @@ const CardLink = styled(Link)`
   min-height: 2.75rem;
   font-size: 0.9375rem;
   font-weight: 600;
-  color: ${({ theme }) => theme.colors.plumpDeep};
+  color: ${({ theme }) => theme.range.deep};
   text-decoration: none;
   border-bottom: 1px solid currentColor;
   padding-bottom: 0.125rem;
@@ -103,20 +150,32 @@ const CardLink = styled(Link)`
 `;
 
 const Removes = styled.div`
-  margin-top: 4rem;
-  padding-top: 2rem;
+  margin-top: 5rem;
+  padding-block: 2.5rem 0.5rem;
   border-top: 1px solid ${({ theme }) => theme.colors.border};
   display: grid;
-  gap: 1rem;
+  gap: 1.5rem;
   text-align: center;
 `;
 
 const RemovesLabel = styled.p`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
   font-size: 0.75rem;
   font-weight: 600;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
   color: ${({ theme }) => theme.colors.muted};
+
+  &::before,
+  &::after {
+    content: '';
+    width: 3.5rem;
+    height: 1px;
+    background: ${({ theme }) => theme.colors.gold};
+  }
 `;
 
 const RemovesList = styled.ul`
@@ -129,30 +188,41 @@ const RemovesList = styled.ul`
   align-items: baseline;
 
   li {
+    position: relative;
     font-family: ${({ theme }) => theme.fonts.display};
-    font-size: 1.25rem;
-    padding-inline: 1rem;
+    font-size: clamp(1.375rem, 1.8vw, 1.625rem);
+    font-style: italic;
+    padding-inline: 1.75rem;
 
-    & + li {
-      border-left: 1px solid ${({ theme }) => theme.colors.border};
+    & + li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      width: 7px;
+      height: 7px;
+      transform: translateY(-50%) rotate(45deg);
+      background: ${({ theme }) => withAlpha(theme.colors.gold, 0.7)};
     }
   }
 `;
 
 const Note = styled.p`
+  font-family: ${({ theme }) => theme.fonts.display};
+  font-style: italic;
+  font-size: 1.0625rem;
   color: ${({ theme }) => theme.colors.muted};
-  font-size: 0.9375rem;
 `;
 
 export function GentlePerformance() {
-  const columns = COLUMNS.map(({ slug, seed }) => {
+  const columns = COLUMNS.map(({ slug }) => {
     const match = findProductBySlug(slug);
     if (match === null) {
       throw new Error(
         `GentlePerformance: unknown product slug "${slug}".`,
       );
     }
-    return { ...match, seed };
+    return match;
   });
 
   return (
@@ -167,28 +237,27 @@ export function GentlePerformance() {
         </Reveal>
         <Reveal>
           <Rows itemWidth="78%" label="Gentle cleansers" columns={3}>
-              {columns.map(({ product, seed }) => {
+              {columns.map(({ product }) => {
                 const meta = imageMeta(product.image);
                 return (
                   <Column key={product.slug}>
-                    <Media>
-                      <StandInImage seed={seed} ratio="3/4" />
-                      {meta !== null && (
-                        <Packshot>
-                          <ResponsiveImage
+                    <RangeTheme id={product.rangeId}>
+                      <Media>
+                        {meta !== null && (
+                          <Packshot
                             image={meta}
                             alt=""
-                            sizes="(min-width: 1024px) 160px, 140px"
+                            sizes="(min-width: 1024px) 280px, (min-width: 768px) 40vw, 70vw"
                           />
-                        </Packshot>
-                      )}
-                    </Media>
-                    <Name>{product.name}</Name>
-                    <Tagline>{product.tagline}</Tagline>
-                    <CardLink to={`/products/${product.slug}`}>
-                      {home.discover.viewProduct}
-                      <ArrowRightIcon size={15} />
-                    </CardLink>
+                        )}
+                      </Media>
+                      <Name>{product.name}</Name>
+                      <Tagline>{product.tagline}</Tagline>
+                      <CardLink to={`/products/${product.slug}`}>
+                        {home.discover.viewProduct}
+                        <ArrowRightIcon size={15} />
+                      </CardLink>
+                    </RangeTheme>
                   </Column>
                 );
               })}

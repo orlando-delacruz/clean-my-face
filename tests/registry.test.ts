@@ -119,11 +119,12 @@ describe('image registry consistency', () => {
     expect(meta?.src).not.toBe('');
   });
 
-  it('returns null for unmapped keys and throws for registry gaps', () => {
+  it('returns null for unmapped keys and metadata for registered keys', () => {
     expect(imageMeta('does-not-exist.png')).toBeNull();
-    expect(() => imageMeta('additional-img-1.jpg')).toThrow(
-      /imageMeta: no registry entry for "additional-img-1\.jpg"/,
-    );
+    // additional-img-1.jpg and additional-img-6.jpg were registered
+    // (Phase 10.5 follow-up) so the Expertise section can use real photos.
+    expect(imageMeta('additional-img-1.jpg')).not.toBeNull();
+    expect(imageMeta('additional-img-6.jpg')).not.toBeNull();
   });
 
   it('builds srcset and image-set from metadata', () => {

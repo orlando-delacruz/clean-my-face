@@ -3,7 +3,7 @@ import { BrandPromise } from '../sections/BrandPromise';
 import { Expertise } from '../sections/Expertise';
 import { GentlePerformance } from '../sections/GentlePerformance';
 import { SkinSolutions } from '../sections/SkinSolutions';
-import { CuratedDiscovery } from '../sections/CuratedDiscovery';
+import { Faq } from '../sections/Faq';
 import { Closing } from '../sections/Closing';
 import { Contact } from '../sections/Contact';
 
@@ -15,7 +15,7 @@ export function Home() {
       <Expertise />
       <GentlePerformance />
       <SkinSolutions />
-      <CuratedDiscovery />
+      <Faq />
       <Closing />
       <Contact />
     </main>

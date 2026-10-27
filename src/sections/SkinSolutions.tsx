@@ -44,7 +44,8 @@ export function SkinSolutions() {
               support={home.solutions.plump.support}
               skinType={skinTypeFor('plump')}
               href="/ranges/plump-it-up"
-              standInSeed="cmf-solution-plump"
+              imageKey="CLEANSING BALM/CLEANSING BALM.png"
+              index="01"
             />
             <RangePanel
               rangeId="clear"
@@ -53,7 +54,8 @@ export function SkinSolutions() {
               support={home.solutions.clear.support}
               skinType={skinTypeFor('clear')}
               href="/ranges/stay-clear"
-              standInSeed="cmf-solution-clear"
+              imageKey="heartleaf-cleansing-oil.jpg"
+              index="02"
             />
           </Panels>
         </Reveal>

@@ -2,7 +2,8 @@ import styled from 'styled-components';
 import { Link } from '../../../router';
 import { RangeTheme } from '../../ui/RangeTheme';
 import type { RangeId } from '../../ui/RangeTheme';
-import { StandInImage } from '../../ui/StandInImage';
+import { ResponsiveImage } from '../../ui/ResponsiveImage';
+import { imageMeta } from '../../../data/images';
 import { withAlpha } from '../../../styles/color';
 import { labels } from '../../../data/rangePages';
 import { ArrowRightIcon } from '../../icons';
@@ -24,23 +25,31 @@ const Panel = styled.article`
 const Media = styled.div`
   position: relative;
   overflow: hidden;
+  background: ${({ theme }) => theme.range.soft};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+  padding: 2rem 2rem 1.5rem;
+  display: flex;
+  justify-content: center;
 `;
 
-const MediaImage = styled(StandInImage)`
-  img {
-    transition: transform ${({ theme }) => theme.motion.css.base}
-      ${({ theme }) => theme.motion.cssEasings.standard};
-  }
+const MediaImage = styled(ResponsiveImage)`
+  height: 12rem;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  transition: transform ${({ theme }) => theme.motion.css.base}
+    ${({ theme }) => theme.motion.cssEasings.standard};
 
-  ${Panel}:hover &, ${Panel}:focus-within & {
-    img {
-      transform: scale(1.04);
-    }
+  ${Panel}:hover &,
+  ${Panel}:focus-within & {
+    transform: scale(1.04);
   }
 
   @media (prefers-reduced-motion: reduce) {
-    img {
-      transition: none;
+    transition: none;
+
+    ${Panel}:hover &,
+    ${Panel}:focus-within & {
       transform: none;
     }
   }
@@ -74,6 +83,21 @@ const Body = styled.div`
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
     padding: 2.5rem;
   }
+`;
+
+const IndexRow = styled.div`
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+`;
+
+const IndexNumber = styled.span`
+  font-family: ${({ theme }) => theme.fonts.display};
+  font-style: italic;
+  font-size: 1rem;
+  color: ${({ theme }) => theme.range.deep};
+  letter-spacing: 0.08em;
 `;
 
 const EyebrowText = styled.p`
@@ -143,7 +167,8 @@ export function RangePanel({
   support,
   skinType,
   href,
-  standInSeed,
+  imageKey,
+  index,
 }: {
   /** Range theme to apply. */
   rangeId: RangeId;
@@ -157,18 +182,31 @@ export function RangePanel({
   skinType: string;
   /** Range page href. Only the button links. */
   href: string;
-  /** Picsum seed for the mood image. Must start with "cmf-". */
-  standInSeed: string;
+  /** Real project photo for the panel (repo-relative asset key). */
+  imageKey: string;
+  /** Decorative panel number, e.g. "01". */
+  index: string;
 }) {
+  const meta = imageMeta(imageKey);
+  // Registry-mapped keys, so this branch never executes in practice.
+  if (meta === null) return null;
+
   return (
     <RangeTheme id={rangeId}>
       <Panel>
         <Media>
-          <MediaImage seed={standInSeed} ratio="16/9" />
+          <MediaImage
+            image={meta}
+            alt=""
+            sizes="(min-width: 1024px) 480px, 90vw"
+          />
           <Overlay aria-hidden="true" />
         </Media>
         <Body>
-          <EyebrowText>{eyebrow}</EyebrowText>
+          <IndexRow>
+            <EyebrowText>{eyebrow}</EyebrowText>
+            <IndexNumber aria-hidden="true">{index}</IndexNumber>
+          </IndexRow>
           <Headline>{headline}</Headline>
           <Support>{support}</Support>
           <SkinType>{skinType}</SkinType>

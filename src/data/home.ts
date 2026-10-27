@@ -59,6 +59,41 @@ export const home = {
     support: 'Skincare for real skin, real routines, and real results.',
     cta: labels.findYourRoutine,
   },
+  faq: {
+    heading: 'Frequently asked questions',
+    items: [
+      {
+        question: 'What does Clean with Purpose mean?',
+        answer:
+          'It is our promise: skincare for real skin, real routines, and real results.',
+      },
+      {
+        question: 'Which range is right for my skin?',
+        answer:
+          'Plump It Up is built for normal to dry skin. Stay Clear is built for oily to troubled skin.',
+      },
+      {
+        question: 'How many steps are in a routine?',
+        answer:
+          'Each range follows the same logic. Use the daily core every day, then add targeted care when skin needs it.',
+      },
+      {
+        question: 'Is CleanMyFace hypoallergenic?',
+        answer:
+          'Hypoallergenic skincare, made to remove everyday impurities while keeping skin comfort in focus.',
+      },
+      {
+        question: 'Who is behind CleanMyFace?',
+        answer:
+          'CleanMyFace is made by Peerpharm, built on two decades of research and development experience helping beauty brands.',
+      },
+      {
+        question: 'How do I get a recommendation for my skin?',
+        answer:
+          'Tell us what your skin needs and we will point you to the range built for it: Plump It Up for normal to dry skin, Stay Clear for oily to troubled skin.',
+      },
+    ],
+  },
   contact: {
     heading: labels.talkToUs,
   },

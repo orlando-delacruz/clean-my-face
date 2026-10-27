@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { brand, headerCta, navItems } from '../../../data/site';
 import { findRangePageBySlug } from '../../../data/rangePages';
 import { Link, usePathname } from '../../../router';
 import { Container } from '../../ui';
 import { ArrowRightIcon, CloseIcon, MenuIcon } from '../../icons';
+import { withAlpha } from '../../../styles/color';
 
 const isRangeHref = (href: string): boolean => href.startsWith('/ranges/');
 const primaryNav = navItems.filter((item) => !isRangeHref(item.href));
@@ -15,41 +16,48 @@ function hashOf(href: string): string {
   return index === -1 ? '' : href.slice(index + 1);
 }
 
-const Bar = styled.header<{ $transparent: boolean; $scrolled: boolean }>`
+const Bar = styled.header<{ $transparent: boolean; $onDark: boolean }>`
   position: sticky;
   top: 0;
   z-index: ${({ theme }) => theme.zIndex.modal};
-  color: ${({ theme, $transparent }) =>
-    $transparent ? theme.colors.textInverse : theme.colors.text};
-  background: ${({ theme, $transparent }) =>
-    $transparent ? 'transparent' : theme.colors.background};
-  border-bottom: 1px solid
-    ${({ theme, $transparent }) =>
-      $transparent ? 'transparent' : theme.colors.border};
-  transition: background-color 280ms cubic-bezier(0.22, 1, 0.36, 1),
-    border-color 280ms cubic-bezier(0.22, 1, 0.36, 1),
-    color 220ms cubic-bezier(0.22, 1, 0.36, 1);
+  padding: 0.5rem 1rem 0;
+  color: ${({ theme, $onDark }) =>
+    $onDark ? theme.colors.textInverse : theme.colors.text};
+  transition: color 220ms cubic-bezier(0.22, 1, 0.36, 1);
 
-  ${({ theme, $scrolled, $transparent }) =>
-    $scrolled &&
-    !$transparent &&
-    css`
-      box-shadow: 0 1px 0 ${theme.colors.border},
-        0 18px 36px -24px ${theme.colors.text28};
-    `}
+  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
+    padding-inline: 2rem;
+  }
 `;
 
-const Inner = styled(Container)`
+const Inner = styled(Container)<{ $transparent: boolean; $scrolled: boolean }>`
   position: relative;
   z-index: ${({ theme }) => theme.zIndex.raised};
   display: flex;
   align-items: center;
   gap: 1.5rem;
-  min-height: 4rem;
-  padding-block: 0.625rem;
+  min-height: 3.5rem;
+  padding-block: 0.375rem;
+  border: 1px solid
+    ${({ theme, $transparent }) =>
+      $transparent ? 'transparent' : theme.colors.border};
+  border-radius: ${({ theme }) => theme.radius.pill};
+  background: ${({ theme, $transparent }) =>
+    $transparent
+      ? 'transparent'
+      : withAlpha(theme.colors.background, 0.85)};
+  backdrop-filter: ${({ $transparent }) =>
+    $transparent ? 'none' : 'blur(16px) saturate(1.2)'};
+  -webkit-backdrop-filter: ${({ $transparent }) =>
+    $transparent ? 'none' : 'blur(16px) saturate(1.2)'};
+  box-shadow: ${({ theme, $scrolled, $transparent }) =>
+    $scrolled && !$transparent ? theme.shadows.lifted : 'none'};
+  transition: background-color 280ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 280ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 280ms cubic-bezier(0.22, 1, 0.36, 1);
 
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
-    min-height: 4.5rem;
+    min-height: 4rem;
     gap: 2rem;
   }
 `;
@@ -59,7 +67,8 @@ const Brand = styled(Link)<{ $onDark: boolean }>`
   line-height: 1.15;
   margin-right: auto;
   padding-block: 0.25rem;
-  border-radius: ${({ theme }) => theme.radius.sm};
+  padding-inline: 0.5rem;
+  border-radius: ${({ theme }) => theme.radius.pill};
 
   &:focus-visible {
     outline-color: ${({ theme, $onDark }) =>
@@ -95,7 +104,7 @@ const BrandSub = styled.span<{ $onDark: boolean }>`
 const Nav = styled.nav`
   display: none;
   align-items: center;
-  gap: 2rem;
+  gap: 0.25rem;
   margin-inline: auto;
 
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
@@ -108,25 +117,27 @@ const NavLink = styled(Link)<{ $active: boolean; $onDark: boolean }>`
   display: inline-flex;
   align-items: center;
   min-height: 2.75rem;
-  padding-block: 0;
+  padding-inline: 0.875rem;
   font-size: 0.775rem;
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   text-decoration: none;
   text-underline-offset: 0.3em;
+  border-radius: ${({ theme }) => theme.radius.pill};
   color: ${({ theme, $onDark }) =>
     $onDark ? theme.colors.surface : theme.colors.text};
-  transition: color 220ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: color 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 220ms cubic-bezier(0.22, 1, 0.36, 1);
 
   &::after {
     content: '';
     position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0.2rem;
+    left: 0.875rem;
+    right: 0.875rem;
+    bottom: 0.45rem;
     height: 1px;
-    background: currentColor;
+    background: ${({ theme }) => theme.colors.gold};
     transform: scaleX(${({ $active }) => ($active ? 1 : 0)});
     transform-origin: left center;
     transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
@@ -135,6 +146,10 @@ const NavLink = styled(Link)<{ $active: boolean; $onDark: boolean }>`
   &:hover {
     color: ${({ theme, $onDark }) =>
       $onDark ? theme.colors.surface : theme.colors.plumpDeep};
+    background: ${({ theme, $onDark }) =>
+      $onDark
+        ? withAlpha(theme.colors.surface, 0.12)
+        : withAlpha(theme.colors.plumpDeep, 0.08)};
   }
 
   &:hover::after,
@@ -221,11 +236,13 @@ const MenuButton = styled.button<{ $onDark: boolean }>`
   min-height: 2.75rem;
   padding-inline: 0.6rem;
   background: ${({ theme, $onDark }) =>
-    $onDark ? 'transparent' : theme.colors.surface};
+    $onDark
+      ? withAlpha(theme.colors.surface, 0.12)
+      : withAlpha(theme.colors.text, 0.05)};
   border: 1px solid
     ${({ theme, $onDark }) =>
       $onDark ? theme.colors.textInverse40 : theme.colors.border};
-  border-radius: ${({ theme }) => theme.radius.sm};
+  border-radius: ${({ theme }) => theme.radius.pill};
   cursor: pointer;
   color: ${({ theme, $onDark }) =>
     $onDark ? theme.colors.surface : theme.colors.text};
@@ -399,6 +416,9 @@ export function Header() {
   // Transparent over the homepage hero and range heroes; solid elsewhere and
   // once scrolled or when the mobile menu is open.
   const transparent = (path === '/' || onRangePage) && !scrolled && !open;
+  // Inverse text only over the dark homepage hero. Range heroes are light,
+  // so the transparent pill keeps dark text there.
+  const onDark = path === '/' && !scrolled && !open;
 
   const closeMenu = useCallback(() => {
     setOpen(false);
@@ -509,11 +529,11 @@ export function Header() {
   }, []);
 
   return (
-    <Bar $transparent={transparent} $scrolled={scrolled}>
-      <Inner>
-        <Brand to="/" aria-label="CleanMyFace home" $onDark={transparent}>
+    <Bar $transparent={transparent} $onDark={onDark}>
+      <Inner $transparent={transparent} $scrolled={scrolled}>
+        <Brand to="/" aria-label="CleanMyFace home" $onDark={onDark}>
           <BrandName>{brand.name}</BrandName>
-          <BrandSub $onDark={transparent}>{brand.sub}</BrandSub>
+          <BrandSub $onDark={onDark}>{brand.sub}</BrandSub>
         </Brand>
         <Nav aria-label="Primary">
           {navItems.map((link) => {
@@ -524,7 +544,7 @@ export function Header() {
                 key={link.href}
                 to={link.href}
                 $active={active}
-                $onDark={transparent}
+                $onDark={onDark}
                 aria-current={active ? 'location' : undefined}
               >
                 {link.label}
@@ -533,14 +553,14 @@ export function Header() {
           })}
         </Nav>
         <Actions>
-          <HeaderCta to={headerCta.href} $onDark={transparent}>
+          <HeaderCta to={headerCta.href} $onDark={onDark}>
             {headerCta.label}
             <ArrowRightIcon size={15} />
           </HeaderCta>
           <MenuButton
             ref={toggleRef}
             type="button"
-            $onDark={transparent}
+            $onDark={onDark}
             aria-expanded={open}
             aria-controls="mobile-menu"
             aria-label={open ? 'Close menu' : 'Open menu'}
