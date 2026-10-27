@@ -294,3 +294,35 @@ Date: 2026-10-27
 
 - `src/data/content.ts` is untouched; `navigation` and `footer` in it are now unused but retained.
 - Tag `phase-4-candidate` created. The owner does the final tag.
+
+## Phase 4 corrective pass
+
+Date: 2026-10-27
+
+### What was done
+
+- Patched the dev-only vite advisory by installing `vite@8.3.3` (was 8.3.2). Only `vite` changed in `package.json` and `package-lock.json`; no other package moved.
+- Updated `docs/TECH_STACK.md` vite row to 8.3.3 with the reason (patches dev-server advisories; dev dependency only).
+- Moved the `phase-4-candidate` tag from `5af8d11` to `1f07f88` after the patch commit.
+
+### Audit before and after
+
+- Before: 1 high severity vulnerability in `vite@8.3.0 - 8.3.2` (dev dependency; GHSA-698v-4r3x-3vcv, GHSA-r825-w8mm-5pxw, GHSA-587h-7wmj-h5pm, GHSA-9jrq-w75r-8gcw, GHSA-rq7h-c2jc-7f22, GHSA-vfpm-58rq-9qcg).
+- After: `found 0 vulnerabilities`.
+
+### Task 2 grep results
+
+- Footer social links: `grep -rn 'href="#"' src/components/layout/Footer/` and `to="#"` — no matches.
+- Em dashes in rendered copy: `grep -rn "—" src/data/site.ts src/data/home.ts src/data/rangePages.ts` — no matches.
+- Internal markers in bundle: `grep -rI "PLACEHOLDER_INVENTORY|OQ-|TBD|data-stand-in|picsum" dist/` — no text matches (binary PNG false positives excluded with -I).
+- Temporary aliases present: `src/pages/Home.tsx` lines 31 and 33 (`<Anchor id="expertise" />`, `<Anchor id="solutions" />`).
+
+### Validation
+
+- `npm run check` passed (typecheck, lint, 21 files / 88 tests, build, check:bundle) with exit code 0.
+- Dev server (`npm run dev`) started on http://localhost:5174/ (port 5173 in use) with Vite 8.3.3, no errors.
+- `git status --short` empty after commit and tag move.
+
+### Commit
+
+- `1f07f88` chore(deps): patch vite dev-server advisories
