@@ -429,7 +429,7 @@ Date: 2026-10-27
 
 ### What changed
 
-- Added `src/sections/CuratedDiscovery.tsx` (id="discover"): cream background, SectionHeader with eyebrow "Hero products" and heading "Where to begin". Three products from featured.picks (cleansing-balm, rice-barrier-cream-mask, balancing-daily-toner) resolved with findProductBySlug (throws with the real slug when missing). Desktop bento: first card spans 7 columns over two rows, other two stacked in 5 columns (12-column grid from layout breakpoints). Each card: packshot on a field tinted with that product's range token (RangeTheme per card), step and role, name, tagline, View product link. Below: quiet text links Explore Plump It Up and Explore Stay Clear. Mobile: SnapRow (itemWidth 78% with peek, label "Curated products").
+- Added `src/sections/CuratedDiscovery.tsx` (id="discover"): cream background, SectionHeader with eyebrow "Hero products" and heading "Where to begin". Three products from featured.picks (cleansing-balm, rice-barrier-cream-mask, 2-bha-gel-cleanser; 2-bha-gel-cleanser is Stay Clear step 02) resolved with findProductBySlug (throws with the real slug when missing). Correction: an earlier draft of this entry named balancing-daily-toner here; that was wrong and the code was not affected. Desktop bento: first card spans 7 columns over two rows, other two stacked in 5 columns (12-column grid from layout breakpoints). Each card: packshot on a field tinted with that product's range token (RangeTheme per card), step and role, name, tagline, View product link. Below: quiet text links Explore Plump It Up and Explore Stay Clear. Mobile: SnapRow (itemWidth 78% with peek, label "Curated products").
 - Rewrote `src/sections/Closing.tsx` (id="closing"): full-bleed bg-mage-1.jpg through ResponsiveBackground (cover, center preserved), dark scrim from the rangeScrim token (#0C0906, layered at 86% by the primitive). Centered closing headline at display size, support in mutedInverse, exactly one button Find your routine to /#solutions. Form and social buttons removed.
 - Added `src/sections/Contact.tsx` (id="contact"): cream quiet two-column band. Left: heading "Talk to us" and the closing lead verbatim. Right: the inquiry form moved from the old Closing with fields, validation messages, submit handler, and success state copied exactly; token styling only. Social links (all "#") not rendered.
 - Rewrote `src/pages/Home.tsx`: Hero, BrandPromise, Expertise, GentlePerformance, SkinSolutions, CuratedDiscovery, Closing, Contact.
@@ -603,3 +603,35 @@ Date: 2026-10-27
 ### Notes
 
 - Tag `phase-10-candidate` created. The owner does the final tag.
+
+## Phase 10.5: Corrective pass from the final review
+
+Date: 2026-10-27
+
+### Commits (on rebuild/brand-experience, none pushed)
+
+- `aa1e3b3` fix(home): cream promise background and image overlap
+- `4609f1c` fix(home): anchor hero copy lower-left on desktop
+- docs(phase-10.5) commit follows (this commit)
+
+### What changed
+
+- `src/sections/BrandPromise.tsx`: section background `theme.colors.surface` to `theme.colors.background` (cream per plan 5.1). Adjacent sections (Hero, Expertise) are dark, so no light-on-light adjacency. Desktop image column gains `margin-bottom: -4rem`, `position: relative`, `z-index: 1` so the image crosses into the next section; the section keeps `overflow-x: clip` and no body/html overflow changed.
+- `src/sections/Hero.tsx`: desktop (`md` and up) content alignment `center` to `flex-end`, so the copy sits lower-left; mobile was already bottom-anchored and unchanged. No copy or button changes.
+- Added `docs/CLAIM_REVIEW.md`: internal review record (not rendered) with six rendered claims awaiting client confirmation (hypoallergenic line, R&D support line, innovation headline + support, cleansing headline + support). No tags added to src/.
+- Corrected the Phase 7 entry: the clear step 02 curated pick is 2-bha-gel-cleanser (see fix 5 diff); code unaffected.
+- Deleted `src/components/RoutineStep.tsx` (zero importers). Post-delete grep for RoutineStep in src/ is empty.
+
+### Validation
+
+- Each commit passed `npm run check` (typecheck, lint, Vitest 21 files / 88 tests, build, check:bundle).
+- No em dashes in rendered copy; colors from tokens only; no copy changes.
+- Post-build: no `data-stand-in` in dist; no internal markers in dist.
+
+### UNVERIFIED (owner's manual checks)
+
+- Cream promise distinct from dark neighbors; image overlap at 1440 without horizontal scroll or covered pillar text; hero lower-left at 1440, bottom full-width at 390.
+
+### Notes
+
+- Tag `phase-10.5-candidate` created. The owner does the final tag.

@@ -73,6 +73,12 @@ Test at least four products: the first and last of each range.
 - [ ] Keyboard: after clicking a link to another page, the first Tab moves into the new page's content. Page scroll position behaves as before (no unexpected jumps).
 - [ ] Footer legal links work.
 
+### Phase 10.5: Corrective pass
+
+- [ ] Promise section background is cream and reads distinct from the dark hero above and the dark expertise below.
+- [ ] At 1440, the promise image overlaps into the top of the expertise section. At 390, no overlap and no horizontal scroll.
+- [ ] At 1440, the hero copy sits in the lower left. At 390, it sits at the bottom, full width.
+
 ## Homepage (desktop 1440, tablet 768, mobile 390)
 
 - [ ] Hero renders with the brand headline and both range badges; no broken image.
