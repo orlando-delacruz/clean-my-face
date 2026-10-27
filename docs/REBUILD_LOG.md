@@ -224,3 +224,31 @@ The supplied images are used at their current sizes. Some will look soft on high
 
 - docs/baseline/image-usage.md is retained. A byte-identical copy exists at docs/baseline/image-usage-phase-1.md for Phase 1 reference.
 - Automated browser testing must not be re-added without an explicit requirement and a docs/TECH_STACK.md row in the same commit.
+
+## Phase 3: Redesign plan and rules
+
+Date: 2026-10-27
+
+### What was done
+
+- Created `docs/REDESIGN_PLAN.md`: the redesign source of truth for phases 4 to 12 (north star, scope decisions D1 to D7, flow and sitemap, copy deck, visual direction, homepage and page specifications, image roles, phase list). Written verbatim from the owner's brief.
+- Created `docs/STAND_INS.md`: the Picsum stand-in registry for the nine stand-in image roles in plan section 8. Delete a row when the real image replaces it.
+- Rewrote `AGENTS.md` in full: added the Redesign standing rules (11 items), pointed the docs list at `docs/REDESIGN_PLAN.md`, and added the StandInImage and `docs/STAND_INS.md` rule to the Images section. All still-valid rules kept.
+- Rewrote `docs/QA_CHECKLIST.md` in full: added the Redesign header explaining that each phase appends its own manual QA section.
+
+### Files
+
+- Modified: `AGENTS.md`, `docs/QA_CHECKLIST.md`, `docs/REBUILD_LOG.md`.
+- Created: `docs/REDESIGN_PLAN.md`, `docs/STAND_INS.md`.
+- No file under `src/`, `public/`, `images/`, `scripts/`, or `tests/` was changed.
+
+### Validation
+
+- `git diff --stat -- src/ public/ images/ scripts/ tests/` empty.
+- `npm run check` passed: typecheck, lint, Vitest (21 files, 88 tests), build, check:bundle.
+- `npm audit --omit=dev`: found 0 vulnerabilities.
+
+### Notes
+
+- Documentation only. Phase 3 introduces no visual or behavioral change.
+- Tag `phase-3-candidate` created. The owner does the final tag.

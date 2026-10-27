@@ -4,6 +4,14 @@ This checklist is performed manually by the project owner. Automated browser tes
 
 To test: run `npm run dev`, or run `npm run build` and `npm run preview`, then open the printed URL.
 
+## Redesign
+
+The redesign runs in phases 4 to 12 (see `docs/REDESIGN_PLAN.md`). Each phase appends its own subsection below with that phase's manual checks. The sections after this one describe the build as it stood before the redesign.
+
+### Phase 3: Redesign plan and rules
+
+- [ ] Documentation only. There is no new UI to test in this phase; confirm the pre-redesign sections below still pass.
+
 ## Homepage (desktop 1440, tablet 768, mobile 390)
 
 - [ ] Hero renders with the brand headline and both range badges; no broken image.

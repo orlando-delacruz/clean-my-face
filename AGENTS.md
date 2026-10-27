@@ -18,7 +18,7 @@ Vite 8 + React 19 + TypeScript + styled-components v6 + Motion for React. Single
 
 ## Docs are the source of truth
 
-Read before changing behavior: `docs/PROJECT.md` (scope), `docs/REQUIREMENTS.md` (FR/BR/CR rules + OQ open questions), `docs/TECH_STACK.md` (approved deps), `docs/UI_UX.md` (visual rules). `docs/ARCHITECTURE.md` and `docs/FRONTEND.md` describe the implemented system.
+Read before changing behavior: `docs/PROJECT.md` (scope), `docs/REQUIREMENTS.md` (FR/BR/CR rules + OQ open questions), `docs/TECH_STACK.md` (approved deps), `docs/UI_UX.md` (visual rules), and `docs/REDESIGN_PLAN.md` (redesign phases 4 to 12). `docs/ARCHITECTURE.md` and `docs/FRONTEND.md` describe the implemented system.
 
 ## Content rules (will fail review if broken)
 
@@ -33,6 +33,7 @@ Read before changing behavior: `docs/PROJECT.md` (scope), `docs/REQUIREMENTS.md`
 - Vite dev 404s on `%`/`+` in asset paths, so new assets must use slug-safe names (lowercase, hyphens). Spaces are tolerated but discouraged.
 - Register every used image as an explicit static import in `src/data/images.ts` (`import.meta.glob` did not match reliably). `img()` returns `''` for unmapped paths and callers guard on it.
 - Phase 2 image pipeline: build-time derivatives via `scripts/optimize-images.mjs` (sharp) into `public/img/` (git-ignored). `ResponsiveImage` / `ResponsiveBackground` consume them and fall back to originals in dev.
+- Stand-in imagery uses the `StandInImage` component only. Real assets only in the roles listed in `docs/REDESIGN_PLAN.md` section 8. The registry is `docs/STAND_INS.md`, never bundled `src/` data.
 
 ## Routing
 
@@ -48,6 +49,20 @@ Custom history router in `src/router.tsx` (no dependency). Routes: `/`, `/privac
 - Icons: only `src/components/icons.tsx` (single stroke, currentColor). No emoji icons.
 - Motion: Motion for React is the approved animation library. Storytelling sections may use several Reveal moments where the narrative benefits. Parallax only in the hero and at most one other section. Every animation honors `prefers-reduced-motion`. No new animation library.
 - Mobile-first; provisional breakpoints in `src/theme.ts` (`md` 768, `lg` 1024, plus `sm`/`xl`/`xxl`) are recommendations, not confirmed requirements.
+
+## Redesign standing rules
+
+1. Read `docs/REDESIGN_PLAN.md` sections relevant to the current phase before changing code.
+2. Copy only from the plan's copy deck, existing `content.ts`, or the labels in section 4.3. Never invent claims. No em dashes in rendered copy.
+3. Do not modify `src/data/content.ts`. New copy goes in `src/data/site.ts`, `home.ts`, `rangePages.ts`.
+4. Colors only from theme tokens; new alpha via `withAlpha`; no new rgba tokens; adding a hex token needs a stated reason in the report.
+5. Stand-in imagery only through the `StandInImage` component. Real assets only in the roles listed in section 8. Do not guess image content.
+6. Homepage sections live in `src/sections/`. Layout shell in `src/components/layout/`. Shared UI in `src/components/ui/<Name>/`. Range components in `src/components/ranges/`. Product components in `src/components/product/`.
+7. Motion for React only, honoring `prefers-reduced-motion`. Parallax only in the hero and Expertise.
+8. No new automated tests. No Playwright or browser automation. Existing Vitest tests must stay green; if a test asserts something a phase intentionally changes, update only that assertion and list it in the report.
+9. Each phase appends a manual QA section to `docs/QA_CHECKLIST.md` and an entry to `docs/REBUILD_LOG.md`, then creates a `phase-N-candidate` tag. The owner does the final tag.
+10. Do not push, deploy, or touch `main`. npm only. No new dependencies.
+11. Rewrite modified files in full. Surface real error text. Never claim a result you did not run; label UNVERIFIED.
 
 ## Testing
 
