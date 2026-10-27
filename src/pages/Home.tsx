@@ -9,7 +9,7 @@ import { Contact } from '../sections/Contact';
 
 export function Home() {
   return (
-    <main id="main-content">
+    <main id="main-content" tabIndex={-1}>
       <Hero />
       <BrandPromise />
       <Expertise />

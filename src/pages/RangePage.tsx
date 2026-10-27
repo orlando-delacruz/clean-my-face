@@ -28,7 +28,7 @@ export function RangePage({
 
   return (
     <RangeTheme id={range.id}>
-      <main id="main-content">
+      <main id="main-content" tabIndex={-1}>
         <RangeHero page={page} range={range} />
         <SystemSteps range={range} />
         <RoutineGuideTabs routine={routine} />

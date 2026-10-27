@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { ComponentProps, MouseEvent as ReactMouseEvent, ReactNode } from 'react';
 
 /**
@@ -30,6 +30,23 @@ export function usePathname(): string {
   }, []);
 
   return path;
+}
+
+/**
+ * Move keyboard focus to the page's main landmark after a route change.
+ * Runs only when the pathname changes (hash-only changes do not retrigger
+ * it), and never touches scrolling: preventScroll keeps the existing
+ * scroll logic (scrollTo, rAF, hash retries) as the sole owner of position.
+ */
+export function useRouteFocus(): void {
+  const path = usePathname();
+  const previous = useRef(path);
+
+  useEffect(() => {
+    if (previous.current === path) return;
+    previous.current = path;
+    document.getElementById('main-content')?.focus({ preventScroll: true });
+  }, [path]);
 }
 
 export function navigate(to: string): void {

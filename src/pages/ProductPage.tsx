@@ -403,7 +403,7 @@ export function ProductPage({
 
   return (
     <RangeTheme id={product.rangeId}>
-      <Section aria-labelledby="product-title">
+      <Section id="main-content" tabIndex={-1} aria-labelledby="product-title">
         <Container>
           <TopRow>
             <Back to={`/ranges/${rangePages[range.id].slug}`}>

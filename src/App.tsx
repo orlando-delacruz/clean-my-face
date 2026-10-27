@@ -2,7 +2,7 @@ import { Suspense, lazy } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { theme } from './theme';
 import { GlobalStyle } from './GlobalStyle';
-import { usePathname } from './router';
+import { usePathname, useRouteFocus } from './router';
 import { SkipLink } from './components/ui';
 import { Header } from './components/layout/Header';
 import { Footer } from './components/layout/Footer';
@@ -21,6 +21,7 @@ const SystemPage = import.meta.env.DEV
 
 function App() {
   const path = usePathname();
+  useRouteFocus();
   const productMatch = path.startsWith('/products/')
     ? findProductBySlug(path.slice('/products/'.length))
     : null;
