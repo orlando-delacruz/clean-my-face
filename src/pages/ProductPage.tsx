@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import styled from 'styled-components';
 import type { ProductContent, RangeContent } from '../data/content';
+import { rangePages } from '../data/rangePages';
 import { Link } from '../router';
 import { theme } from '../theme';
 import { img } from '../data/images';
@@ -454,7 +455,7 @@ export function ProductPage({
     <Section aria-labelledby="product-title">
       <Container>
         <TopRow>
-          <Back to={`/#range-${range.id}`} $ink={ink}>
+          <Back to={`/ranges/${rangePages[range.id].slug}`} $ink={ink}>
             <ArrowRightIcon size={15} style={{ transform: 'rotate(180deg)' }} />
             Back to {range.name}
           </Back>
@@ -671,7 +672,7 @@ export function ProductPage({
             ))}
           </RelatedGrid>
           <RangeCta>
-            <RangeLink to={`/#range-${range.id}`} $ink={ink}>
+            <RangeLink to={`/ranges/${rangePages[range.id].slug}`} $ink={ink}>
               See the full {range.name} routine
               <ArrowRightIcon size={15} />
             </RangeLink>

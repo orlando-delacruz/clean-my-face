@@ -1,0 +1,1 @@
+export { RangeHero } from './RangeHero';

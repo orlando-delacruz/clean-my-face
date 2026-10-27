@@ -9,7 +9,7 @@ import type { ReactNode } from 'react';
  * emitted only for dev builds; production builds omit the attribute and the
  * bundler drops the marker string entirely (verified by check:bundle).
  */
-export type MediaRatio = '1/1' | '4/5' | '3/4' | '16/9' | '21/9' | 'auto';
+export type MediaRatio = '1/1' | '4/5' | '3/4' | '4/3' | '16/9' | '21/9' | 'auto';
 export type MediaRadius = 'sm' | 'md' | 'lg' | 'pill';
 export type MediaFit = 'cover' | 'contain';
 export type MediaOverlay = 'none' | 'soft' | 'strong';
