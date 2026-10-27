@@ -1,9 +1,10 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import styled, { useTheme } from 'styled-components';
 import type { ProductContent, RangeContent } from '../data/content';
 import { rangePages, labels } from '../data/rangePages';
 import { Link } from '../router';
 import { img } from '../data/images';
+import { useCart } from '../cart';
 import { ProductGallery } from '../components/product/ProductGallery';
 import { ProductCard } from '../components/product/ProductCard';
 import { ArrowRightIcon, CheckIcon } from '../components/icons';
@@ -110,6 +111,81 @@ const Purpose = styled.p`
   color: ${({ theme }) => theme.colors.muted};
   max-width: 56ch;
   margin-bottom: 1.75rem;
+`;
+
+const Purchase = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: stretch;
+`;
+
+const QtyGroup = styled.div`
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: ${({ theme }) => theme.radius.sm};
+`;
+
+const QtyBtn = styled.button`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.75rem;
+  min-height: 3rem;
+  font-size: 1.125rem;
+  background: transparent;
+  border: none;
+  color: ${({ theme }) => theme.colors.text};
+  cursor: pointer;
+  border-radius: ${({ theme }) => theme.radius.sm};
+
+  &:hover:not(:disabled) {
+    background: ${({ theme }) => theme.colors.background};
+  }
+
+  &:focus-visible {
+    outline-color: ${({ theme }) => theme.range.deep};
+    outline-offset: -1px;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+`;
+
+const QtyValue = styled.span`
+  min-width: 2ch;
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.9375rem;
+`;
+
+const AddButton = styled.button`
+  flex: 1 1 12rem;
+  min-height: 3rem;
+  padding: 0.75rem 1.75rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.surface};
+  background: ${({ theme }) => theme.range.deep};
+  border: 1px solid transparent;
+  border-radius: ${({ theme }) => theme.radius.sm};
+  cursor: pointer;
+  transition: background-color 160ms ease;
+
+  &:hover {
+    background: color-mix(
+      in srgb,
+      ${({ theme }) => theme.range.deep} 82%,
+      ${({ theme }) => theme.colors.text}
+    );
+  }
+
+  &:focus-visible {
+    outline-color: ${({ theme }) => theme.range.deep};
+  }
 `;
 
 const RightColumn = styled.div`
@@ -386,8 +462,11 @@ export function ProductPage({
 }) {
   const related = range.products.filter((p) => p.slug !== product.slug).slice(0, 3);
   const rangeTheme = useTheme().range;
+  const { addItem, openCart } = useCart();
+  const [qty, setQty] = useState(1);
   const ingredientImages = ingredientTiles(product);
-  const stepIndex = range.products.findIndex((p) => p.slug === product.slug);  const previous = stepIndex > 0 ? range.products[stepIndex - 1] : undefined;
+  const stepIndex = range.products.findIndex((p) => p.slug === product.slug);
+  const previous = stepIndex > 0 ? range.products[stepIndex - 1] : undefined;
   const next =
     stepIndex !== -1 && stepIndex < range.products.length - 1
       ? range.products[stepIndex + 1]
@@ -437,6 +516,36 @@ export function ProductPage({
                 <Purpose>{product.positioning}</Purpose>
               </Reveal>
 
+              <Purchase>
+                <QtyGroup role="group" aria-label={`Quantity for ${product.name}`}>
+                  <QtyBtn
+                    type="button"
+                    onClick={() => setQty((q) => Math.max(1, q - 1))}
+                    disabled={qty <= 1}
+                    aria-label="Decrease quantity"
+                  >
+                    −
+                  </QtyBtn>
+                  <QtyValue aria-hidden="true">{qty}</QtyValue>
+                  <QtyBtn
+                    type="button"
+                    onClick={() => setQty((q) => q + 1)}
+                    aria-label="Increase quantity"
+                  >
+                    +
+                  </QtyBtn>
+                </QtyGroup>
+                <AddButton
+                  type="button"
+                  onClick={() => {
+                    addItem(product.slug, qty);
+                    openCart();
+                  }}
+                >
+                  Add to bag
+                </AddButton>
+              </Purchase>
+
               {product.benefits.length > 0 && (
                 <section aria-label="Benefits">
                   <BenefitList>
@@ -457,7 +566,7 @@ export function ProductPage({
 
               {product.ingredients.length > 0 && (
                 <section aria-label="Key ingredients">
-                  <BlockTitle>Key ingredients</BlockTitle>
+                  <BlockTitle>{labels.keyIngredients}</BlockTitle>
                   <BlockLead>
                     Purposeful actives chosen for {product.skinType.toLowerCase()}.
                   </BlockLead>
@@ -495,7 +604,7 @@ export function ProductPage({
 
               {product.textureNotes.length > 0 && (
                 <section aria-label="Texture">
-                  <BlockTitle>Texture</BlockTitle>
+                  <BlockTitle>{labels.texture}</BlockTitle>
                   <TextureIntro>
                     <TextureSwatch
                       color={rangeTheme.soft}
@@ -515,7 +624,7 @@ export function ProductPage({
 
               {product.usageSteps !== undefined && (
                 <section aria-label="How to use">
-                  <BlockTitle>How to use</BlockTitle>
+                  <BlockTitle>{labels.howToUse}</BlockTitle>
                   <BlockLead>
                     Step {product.step} in the {range.name} routine.
                   </BlockLead>

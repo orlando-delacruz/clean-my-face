@@ -18,7 +18,7 @@ export interface RangePageData extends RangePageCopy {
 
 /** UI labels from the plan (section 4.3). Not claims. */
 export const labels = {
-  findYourRoutine: 'Find your routine',
+  exploreNow: 'Explore Now',
   ourPromise: 'Our promise',
   heroProducts: 'Hero products',
   whereToBegin: 'Where to begin',

@@ -76,7 +76,7 @@ export function RangeCrossover({ currentId }: { currentId: RangeId }) {
   const otherId: RangeId = currentId === 'plump' ? 'clear' : 'plump';
 
   return (
-    <Section aria-label={`More from ${rangeCopy[otherId].headline}`}>
+    <Section>
       <Container>
         <Reveal>
           <RangeTheme id={otherId}>

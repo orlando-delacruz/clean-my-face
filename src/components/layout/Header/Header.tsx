@@ -3,8 +3,9 @@ import styled from 'styled-components';
 import { brand, headerCta, navItems } from '../../../data/site';
 import { findRangePageBySlug } from '../../../data/rangePages';
 import { Link, usePathname } from '../../../router';
+import { useCart } from '../../../cart';
 import { Container } from '../../ui';
-import { ArrowRightIcon, CloseIcon, MenuIcon } from '../../icons';
+import { ArrowRightIcon, BagIcon, CloseIcon, MenuIcon } from '../../icons';
 import { withAlpha } from '../../../styles/color';
 
 const isRangeHref = (href: string): boolean => href.startsWith('/ranges/');
@@ -265,6 +266,34 @@ const MenuButton = styled.button<{ $onDark: boolean }>`
   }
 `;
 
+const CartButton = styled(MenuButton)`
+  position: relative;
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
+    display: inline-flex;
+  }
+`;
+
+const CartCount = styled.span<{ $onDark: boolean }>`
+  position: absolute;
+  top: -0.375rem;
+  right: -0.375rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.375rem;
+  height: 1.375rem;
+  padding-inline: 0.3125rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  line-height: 1;
+  border-radius: ${({ theme }) => theme.radius.pill};
+  background: ${({ theme, $onDark }) =>
+    $onDark ? theme.colors.surface : theme.colors.text};
+  color: ${({ theme, $onDark }) =>
+    $onDark ? theme.colors.text : theme.colors.background};
+`;
+
 const MobilePanel = styled.nav`
   position: fixed;
   inset: 0;
@@ -401,6 +430,7 @@ const ShortcutLink = styled(Link)`
 
 export function Header() {
   const path = usePathname();
+  const { count, openCart } = useCart();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [hash, setHash] = useState(() =>
@@ -557,6 +587,19 @@ export function Header() {
             {headerCta.label}
             <ArrowRightIcon size={15} />
           </HeaderCta>
+          <CartButton
+            type="button"
+            $onDark={onDark}
+            onClick={openCart}
+            aria-label={`Shopping bag, ${count} ${count === 1 ? 'item' : 'items'}`}
+          >
+            <BagIcon />
+            {count > 0 && (
+              <CartCount $onDark={onDark} aria-hidden="true">
+                {count}
+              </CartCount>
+            )}
+          </CartButton>
           <MenuButton
             ref={toggleRef}
             type="button"

@@ -38,7 +38,7 @@ export const navItems: SiteLink[] = [
 ];
 
 export const headerCta: SiteLink = {
-  label: labels.findYourRoutine,
+  label: labels.exploreNow,
   href: '/#solutions',
 };
 

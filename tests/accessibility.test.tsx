@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ThemeProvider } from 'styled-components';
 import { theme } from '../src/theme';
+import { CartProvider } from '../src/cart';
 import App from '../src/App';
 import { Header } from '../src/components/layout/Header';
 
@@ -27,7 +28,9 @@ describe('accessibility basics', () => {
     const user = userEvent.setup();
     const { unmount } = render(
       <ThemeProvider theme={theme}>
-        <Header />
+        <CartProvider>
+          <Header />
+        </CartProvider>
       </ThemeProvider>,
     );
     const toggle = screen.getByRole('button', { name: /open menu/i });
@@ -42,7 +45,9 @@ describe('accessibility basics', () => {
     const user = userEvent.setup();
     const { unmount } = render(
       <ThemeProvider theme={theme}>
-        <Header />
+        <CartProvider>
+          <Header />
+        </CartProvider>
       </ThemeProvider>,
     );
     const toggle = screen.getByRole('button', { name: /open menu/i });

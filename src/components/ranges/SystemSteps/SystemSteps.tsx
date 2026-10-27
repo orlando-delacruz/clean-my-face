@@ -138,7 +138,7 @@ export function SystemSteps({ range }: { range: RangeContent }) {
       <Container>
         <Reveal>
           <SectionHeader
-            heading={labels.yourRoutine}
+            heading={`The ${range.name} routine`}
             id="system-title"
           />
         </Reveal>

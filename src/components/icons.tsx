@@ -165,3 +165,12 @@ export function CheckIcon({ size = 20, ...rest }: SVGProps<SVGSVGElement> & { si
     </SectionIcon>
   );
 }
+
+export function BagIcon({ size = 20, ...rest }: SVGProps<SVGSVGElement> & { size?: number }) {
+  return (
+    <svg width={size} height={size} {...base} {...rest}>
+      <path d="M6 7h12l1 14H5L6 7z" />
+      <path d="M9 10V6a3 3 0 0 1 6 0v4" />
+    </svg>
+  );
+}

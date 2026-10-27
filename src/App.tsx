@@ -4,6 +4,7 @@ import { theme } from './theme';
 import { GlobalStyle } from './GlobalStyle';
 import { usePathname, useRouteFocus } from './router';
 import { SkipLink } from './components/ui';
+import { CartDrawer, CartProvider } from './cart';
 import { Header } from './components/layout/Header';
 import { Footer } from './components/layout/Footer';
 import { Home } from './pages/Home';
@@ -41,6 +42,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle />
+      <CartProvider>
       <div id="top">
         <SkipLink href="#main-content">Skip to content</SkipLink>
         <Header />
@@ -73,7 +75,9 @@ function App() {
           productMatch === null &&
           !hasRangePage && <NotFound />}
         <Footer />
+        <CartDrawer />
       </div>
+      </CartProvider>
     </ThemeProvider>
   );
 }

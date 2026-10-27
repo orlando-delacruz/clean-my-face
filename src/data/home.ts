@@ -12,7 +12,7 @@ export const home = {
     headline: 'Clean with Purpose. Care with Confidence.',
     support:
       'Skincare thoughtfully developed for real skin, real routines, and real results.',
-    cta: labels.findYourRoutine,
+    cta: labels.exploreNow,
     secondaryLink: labels.ourPromise,
   },
   promise: {
@@ -57,7 +57,7 @@ export const home = {
   closing: {
     headline: 'Clean with Purpose.',
     support: 'Skincare for real skin, real routines, and real results.',
-    cta: labels.findYourRoutine,
+    cta: labels.exploreNow,
   },
   faq: {
     heading: 'Frequently asked questions',
