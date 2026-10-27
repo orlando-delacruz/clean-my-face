@@ -416,3 +416,45 @@ All text pairs meet 4.5:1.
 ### Notes
 
 - Tag `phase-6-candidate` created. The owner does the final tag.
+
+## Phase 7: Curated discovery, closing, contact, assembly
+
+Date: 2026-10-27
+
+### Commits (on rebuild/brand-experience, none pushed)
+
+- `99cf8fa` feat(home): add curated discovery section
+- `0f65c5f` feat(home): rewrite closing and add contact band
+- docs(phase-7) commit follows (this commit)
+
+### What changed
+
+- Added `src/sections/CuratedDiscovery.tsx` (id="discover"): cream background, SectionHeader with eyebrow "Hero products" and heading "Where to begin". Three products from featured.picks (cleansing-balm, rice-barrier-cream-mask, balancing-daily-toner) resolved with findProductBySlug (throws with the real slug when missing). Desktop bento: first card spans 7 columns over two rows, other two stacked in 5 columns (12-column grid from layout breakpoints). Each card: packshot on a field tinted with that product's range token (RangeTheme per card), step and role, name, tagline, View product link. Below: quiet text links Explore Plump It Up and Explore Stay Clear. Mobile: SnapRow (itemWidth 78% with peek, label "Curated products").
+- Rewrote `src/sections/Closing.tsx` (id="closing"): full-bleed bg-mage-1.jpg through ResponsiveBackground (cover, center preserved), dark scrim from the rangeScrim token (#0C0906, layered at 86% by the primitive). Centered closing headline at display size, support in mutedInverse, exactly one button Find your routine to /#solutions. Form and social buttons removed.
+- Added `src/sections/Contact.tsx` (id="contact"): cream quiet two-column band. Left: heading "Talk to us" and the closing lead verbatim. Right: the inquiry form moved from the old Closing with fields, validation messages, submit handler, and success state copied exactly; token styling only. Social links (all "#") not rendered.
+- Rewrote `src/pages/Home.tsx`: Hero, BrandPromise, Expertise, GentlePerformance, SkinSolutions, CuratedDiscovery, Closing, Contact.
+- Deleted with git rm (nothing imported them): `src/sections/Featured.tsx` (superseded by CuratedDiscovery), `src/sections/Philosophy.tsx` (superseded by BrandPromise), `src/sections/SkinNeeds.tsx` (superseded by SkinSolutions). Kept `src/sections/RangeSystem.tsx` and `src/sections/RoutineGuide.tsx` for Phase 8. Featured/closing exports in content.ts untouched.
+
+### Form success text (verbatim) and delivery assessment
+
+- Success text: "This concept preview does not send inquiries yet. Once connected, your message would go to the Peerpharm team."
+- Assessment: it explicitly states nothing is sent, so it does not imply a message was delivered. No change made; no owner flag needed beyond this note.
+
+### Validation
+
+- Each commit passed `npm run check` (typecheck, lint, Vitest 21 files / 88 tests, build, check:bundle).
+- Each homepage anchor id (hero, promise, expertise, gentle, solutions, discover, closing, contact) appears exactly once in src/.
+- Heading outline: exactly one h1 (hero headline); h2s in section order with h3s beneath (pillars, statements, product names, panel headlines, card names); no duplicate ids.
+- No hex literals added; colors from tokens only.
+
+### UNVERIFIED (owner's manual checks)
+
+- Whole-homepage walk at 1440 and 390; section differentiation; product grid appears once.
+- Discover bento and snap row; card and range links.
+- Closing readability and single button; contact validation and success state.
+- Header Expertise/Contact links; hero button landing.
+- Reduced motion; horizontal scroll; console errors.
+
+### Notes
+
+- Tag `phase-7-candidate` created. The owner does the final tag.

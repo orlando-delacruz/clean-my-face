@@ -38,6 +38,15 @@ The redesign runs in phases 4 to 12 (see `docs/REDESIGN_PLAN.md`). Each phase ap
 - [ ] The homepage no longer shows the product grids or the routine tabs.
 - [ ] The header "Expertise" link works; the header "Find your routine" button lands on the solutions section.
 
+### Phase 7: Discovery, closing, contact, assembly
+
+- [ ] Walk the whole homepage at 1440 and 390, top to bottom. Eight sections plus the contact band, each visibly different from its neighbors. The product grid appears once.
+- [ ] Discover: bento layout at 1440; snap row with a peek at 390. Each card links to a real product page. The two range links work.
+- [ ] Closing: one button only; the text is readable over the image.
+- [ ] Contact: the form validates and shows its existing success state. Nothing suggests a message was delivered beyond the existing text.
+- [ ] Header links: Expertise and Contact scroll to the right sections. The hero button reaches the solutions section.
+- [ ] Reduced motion on: no hover transforms, no parallax. No horizontal scroll at any width. No console errors.
+
 ## Homepage (desktop 1440, tablet 768, mobile 390)
 
 - [ ] Hero renders with the brand headline and both range badges; no broken image.
