@@ -4,9 +4,11 @@ import type { ProductContent, RangeContent } from '../data/content';
 import { rangePages, labels } from '../data/rangePages';
 import { Link } from '../router';
 import { img } from '../data/images';
+import { merchandisingFor } from '../data/merchandising';
 import { useCart } from '../cart';
 import { ProductGallery } from '../components/product/ProductGallery';
 import { ProductCard } from '../components/product/ProductCard';
+import { ProductStars } from '../components/product/ProductStars';
 import { ArrowRightIcon, CheckIcon } from '../components/icons';
 import {
   Container,
@@ -110,7 +112,21 @@ const Purpose = styled.p`
   font-size: 1.0625rem;
   color: ${({ theme }) => theme.colors.muted};
   max-width: 56ch;
-  margin-bottom: 1.75rem;
+  margin-bottom: 1.5rem;
+`;
+
+const MerchRow = styled.p`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.9rem;
+  margin: 0 0 1.75rem;
+`;
+
+const PriceText = styled.span`
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
 `;
 
 const Purchase = styled.div`
@@ -465,6 +481,7 @@ export function ProductPage({
   const { addItem, openCart } = useCart();
   const [qty, setQty] = useState(1);
   const ingredientImages = ingredientTiles(product);
+  const sample = merchandisingFor(product.slug);
   const stepIndex = range.products.findIndex((p) => p.slug === product.slug);
   const previous = stepIndex > 0 ? range.products[stepIndex - 1] : undefined;
   const next =
@@ -514,6 +531,12 @@ export function ProductPage({
                 <Title id="product-title">{product.name}</Title>
                 <Positioning>{product.tagline}</Positioning>
                 <Purpose>{product.positioning}</Purpose>
+                {sample !== undefined && (
+                  <MerchRow>
+                    <PriceText>{sample.price}</PriceText>
+                    <ProductStars rating={sample.rating} />
+                  </MerchRow>
+                )}
               </Reveal>
 
               <Purchase>
@@ -643,6 +666,9 @@ export function ProductPage({
 
               <section aria-label="Your routine">
                 <BlockTitle>{labels.yourRoutine}</BlockTitle>
+                <BlockLead>
+                  Move between routine steps.
+                </BlockLead>
                 <RoutineNav aria-label={`Steps around ${product.name}`}>
                   <RoutineLinks>
                     {previous !== undefined && (
@@ -676,9 +702,18 @@ export function ProductPage({
             </Purpose>
             <RelatedGrid>
               <SnapRow itemWidth="78%" label="Related products" columns={3}>
-                {related.map((item) => (
-                  <ProductCard key={item.slug} product={item} rangeName={range.name} />
-                ))}
+                {related.map((item) => {
+                  const itemSample = merchandisingFor(item.slug);
+                  return (
+                    <ProductCard
+                      key={item.slug}
+                      product={item}
+                      rangeName={range.name}
+                      price={itemSample?.price}
+                      rating={itemSample?.rating}
+                    />
+                  );
+                })}
               </SnapRow>
             </RelatedGrid>
             <RangeCta>

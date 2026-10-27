@@ -40,12 +40,12 @@ export const rangeCopy: Record<RangeId, RangePageCopy> = {
   plump: {
     eyebrow: 'Replenish + Comfort',
     headline: 'A Little More Love for Your Skin.',
-    support: 'Replenish moisture. Restore comfort. Embrace your natural glow.',
+    support: 'Moisture, comfort, and natural glow.',
   },
   clear: {
     eyebrow: 'Clarify + Balance',
     headline: 'Clear Skin. Clear Confidence.',
-    support: 'Find your balance with targeted care for clearer-looking skin.',
+    support: 'Find balance with targeted care.',
   },
 };
 

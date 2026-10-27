@@ -1,8 +1,14 @@
 import styled from 'styled-components';
-import { brand, footerGroups, legalLinks, socialLinks } from '../../../data/site';
+import { brand, contactInfo, footerGroups, legalLinks, socialLinks } from '../../../data/site';
 import { Link } from '../../../router';
 import { Container } from '../../ui';
-import { socialIcons } from '../../icons';
+import {
+  ArrowRightIcon,
+  EmailIcon,
+  LocationIcon,
+  PhoneIcon,
+  socialIcons,
+} from '../../icons';
 
 // Placeholder "#" links are never rendered; only real profile URLs qualify.
 const realSocials = socialLinks.filter(
@@ -30,7 +36,7 @@ const Grid = styled(Container)`
   }
 
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
-    grid-template-columns: 1.6fr 1fr 1fr;
+    grid-template-columns: 1.5fr 1.2fr 1fr 1fr;
     gap: 3rem;
   }
 
@@ -60,16 +66,6 @@ const BrandSub = styled.p`
   color: ${({ theme }) => theme.colors.mutedInverse};
 `;
 
-const Statement = styled.p`
-  margin-top: 1.25rem;
-  font-family: ${({ theme }) => theme.fonts.display};
-  font-size: clamp(1.5rem, 1.25rem + 1vw, 2rem);
-  font-weight: 500;
-  line-height: 1.15;
-  color: ${({ theme }) => theme.colors.textInverse};
-  text-wrap: balance;
-`;
-
 const SocialRow = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -77,33 +73,43 @@ const SocialRow = styled.div`
   margin-top: 1.5rem;
 `;
 
-const SocialButton = styled(Link)`
+const SocialButton = styled.a`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2.75rem;
-  height: 2.75rem;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0.625rem 1rem;
   border: 1px solid ${({ theme }) => theme.colors.borderInverse};
-  border-radius: 50%;
+  border-radius: ${({ theme }) => theme.radius.pill};
   color: ${({ theme }) => theme.colors.textInverse};
-  transition: color 160ms ease, border-color 160ms ease;
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: color 160ms ease, border-color 160ms ease,
+    transform 160ms ease;
 
   &:hover {
     color: ${({ theme }) => theme.colors.gold};
     border-color: ${({ theme }) => theme.colors.gold};
+    transform: translateY(-1px);
   }
 
   &:focus-visible {
     outline-color: ${({ theme }) => theme.colors.focusInverse};
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+
+    &:hover {
+      transform: none;
+    }
+  }
 `;
 
-const Nav = styled.nav`
+const Column = styled.nav`
   margin: 0;
-
-  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
-    padding-top: 0.375rem;
-  }
 `;
 
 const ColumnTitle = styled.h2`
@@ -114,6 +120,8 @@ const ColumnTitle = styled.h2`
   text-transform: uppercase;
   color: ${({ theme }) => theme.colors.mutedInverse};
   margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.borderInverse};
 `;
 
 const LinkList = styled.ul`
@@ -139,6 +147,51 @@ const FooterLink = styled(Link)`
   &:hover {
     text-decoration: underline;
     text-decoration-color: ${({ theme }) => theme.colors.gold};
+  }
+
+  &:focus-visible {
+    outline-color: ${({ theme }) => theme.colors.focusInverse};
+  }
+`;
+
+const ContactList = styled.ul`
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.75rem;
+`;
+
+const ContactItem = styled.li`
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 2.25rem;
+  font-size: 0.9375rem;
+  color: ${({ theme }) => theme.colors.textInverse};
+`;
+
+const ContactIcon = styled.span`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  flex: none;
+  border-radius: 50%;
+  background: ${({ theme }) => theme.colors.textInverse05};
+  color: ${({ theme }) => theme.colors.gold};
+`;
+
+const ContactLink = styled.a`
+  color: inherit;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.gold};
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
   }
 
   &:focus-visible {
@@ -190,6 +243,30 @@ const LegalLink = styled(Link)`
   }
 `;
 
+const BackToTop = styled(Link)`
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  margin-left: auto;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: ${({ theme }) => theme.radius.sm};
+  color: ${({ theme }) => theme.colors.mutedInverse};
+  transition: color 160ms ease;
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.gold};
+  }
+
+  &:focus-visible {
+    outline-color: ${({ theme }) => theme.colors.focusInverse};
+  }
+`;
+
 export function Footer() {
   return (
     <Bar>
@@ -197,7 +274,6 @@ export function Footer() {
         <BrandBlock>
           <BrandName>{brand.name}</BrandName>
           <BrandSub>{brand.sub}</BrandSub>
-          <Statement>{brand.statement}</Statement>
           {realSocials.length > 0 && (
             <SocialRow aria-label="Social and contact links">
               {realSocials.map((social) => {
@@ -205,18 +281,50 @@ export function Footer() {
                 return (
                   <SocialButton
                     key={social.label}
-                    to={social.href}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     aria-label={social.label}
                   >
                     <Icon size={18} />
+                    {social.label}
                   </SocialButton>
                 );
               })}
             </SocialRow>
           )}
         </BrandBlock>
+
+        <Column aria-label="Contact">
+          <ColumnTitle>Contact</ColumnTitle>
+          <ContactList>
+            <ContactItem>
+              <ContactIcon aria-hidden="true">
+                <EmailIcon size={16} />
+              </ContactIcon>
+              <ContactLink href={`mailto:${contactInfo.email}`}>
+                {contactInfo.email}
+              </ContactLink>
+            </ContactItem>
+            <ContactItem>
+              <ContactIcon aria-hidden="true">
+                <PhoneIcon size={16} />
+              </ContactIcon>
+              <ContactLink href={`tel:${contactInfo.phone.replace(/\s/g, '')}`}>
+                {contactInfo.phone}
+              </ContactLink>
+            </ContactItem>
+            <ContactItem>
+              <ContactIcon aria-hidden="true">
+                <LocationIcon size={16} />
+              </ContactIcon>
+              <span>{contactInfo.address}</span>
+            </ContactItem>
+          </ContactList>
+        </Column>
+
         {footerGroups.map((group) => (
-          <Nav key={group.title} aria-label={group.title}>
+          <Column key={group.title} aria-label={group.title}>
             <ColumnTitle>{group.title}</ColumnTitle>
             <LinkList>
               {group.links.map((link) => (
@@ -225,7 +333,7 @@ export function Footer() {
                 </li>
               ))}
             </LinkList>
-          </Nav>
+          </Column>
         ))}
       </Grid>
       <Legal>
@@ -236,6 +344,10 @@ export function Footer() {
             </LegalLink>
           ))}
         </LegalLinks>
+        <BackToTop to="#top">
+          Back to top
+          <ArrowRightIcon size={13} style={{ transform: 'rotate(-90deg)' }} />
+        </BackToTop>
       </Legal>
     </Bar>
   );

@@ -114,6 +114,16 @@ export const IMAGE_MANIFEST = [
     note: 'ProductCard thumb in the same card grid as the other heroes (about 160 to 348 CSS px). Source is 409 px, so only 320 is produced; 480 and 640 were listed but exceed the source width.',
   },
   {
+    key: 'expertise-lab.jpg',
+    widths: [320, 480, 640],
+    note: 'Expertise formulation image (4/5 frame, rendered max ~300 CSS px; 640 covers DPR 2). Source 1920 px.',
+  },
+  {
+    key: 'expertise-skincare.jpg',
+    widths: [320, 480, 640],
+    note: 'Expertise skincare image (1/1 frame, rendered max ~300 CSS px; 640 covers DPR 2). Source 1920 px.',
+  },
+  {
     key: 'additional-img-7.png',
     widths: [],
     note: 'RoutineGuide figure, rendered 280 CSS px (needs 560 at DPR 2) but the source is only 229 px. Original only; replacement requested from the client.',

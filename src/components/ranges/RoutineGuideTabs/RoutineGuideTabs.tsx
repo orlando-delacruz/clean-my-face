@@ -178,7 +178,11 @@ export function RoutineGuideTabs({ routine }: { routine: RangeRoutine }) {
     <Section aria-labelledby="routine-title">
       <Container>
         <Reveal>
-          <SectionHeader heading={labels.yourRoutine} id="routine-title" />
+          <SectionHeader
+            heading={labels.yourRoutine}
+            support={routineGuide.title}
+            id="routine-title"
+          />
           <TabsWrap>
             <TabList role="tablist" aria-label={`${routine.rangeName} routine`}>
               {groups.map((group, index) => {

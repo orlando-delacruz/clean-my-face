@@ -122,7 +122,11 @@ export function Faq() {
     <Section id="faq" aria-labelledby="faq-title">
       <Container>
         <Reveal>
-          <SectionHeader heading={home.faq.heading} id="faq-title" />
+          <SectionHeader
+            heading={home.faq.heading}
+            support={home.faq.support}
+            id="faq-title"
+          />
         </Reveal>
         <Reveal>
           <List>

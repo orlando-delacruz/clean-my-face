@@ -41,6 +41,9 @@ export const home = {
     removes: ['Makeup', 'Sunscreen', 'Oil', 'Daily impurities'],
     note: 'Hypoallergenic skincare.',
   },
+  bestSellers: {
+    heading: 'Featured Products',
+  },
   solutions: {
     headline: 'Different Skin Needs. Same Gentle Standard.',
     support: 'Discover solutions designed for your routine.',
@@ -50,6 +53,7 @@ export const home = {
   discover: {
     eyebrow: labels.heroProducts,
     heading: labels.whereToBegin,
+    support: 'Three essentials, two ranges, one routine.',
     viewProduct: labels.viewProduct,
     explorePlump: labels.explorePlump,
     exploreClear: labels.exploreClear,
@@ -61,6 +65,7 @@ export const home = {
   },
   faq: {
     heading: 'Frequently asked questions',
+    support: 'Common questions, clear answers.',
     items: [
       {
         question: 'What does Clean with Purpose mean?',
@@ -96,5 +101,6 @@ export const home = {
   },
   contact: {
     heading: labels.talkToUs,
+    lead: 'Tell us what your skin needs.',
   },
 };

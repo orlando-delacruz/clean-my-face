@@ -39,6 +39,14 @@ const Headline = styled.h2`
   max-width: 24ch;
 `;
 
+const Support = styled.p`
+  font-size: 1rem;
+  line-height: 1.6;
+  text-wrap: balance;
+  max-width: 52ch;
+  margin: 0;
+`;
+
 const Button = styled(Link)`
   display: inline-flex;
   align-items: center;
@@ -83,6 +91,7 @@ export function RangeCrossover({ currentId }: { currentId: RangeId }) {
             <Card>
               <EyebrowText>{rangeCopy[otherId].eyebrow}</EyebrowText>
               <Headline>{home.solutions.headline}</Headline>
+              <Support>{rangeCopy[otherId].support}</Support>
               <Button to={`/ranges/${rangePages[otherId].slug}`}>
                 {otherId === 'plump' ? labels.explorePlump : labels.exploreClear}
                 <ArrowRightIcon size={15} />

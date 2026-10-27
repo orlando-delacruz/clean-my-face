@@ -1,7 +1,7 @@
 import { Hero } from '../sections/Hero';
 import { BrandPromise } from '../sections/BrandPromise';
 import { Expertise } from '../sections/Expertise';
-import { GentlePerformance } from '../sections/GentlePerformance';
+import { BestSellers } from '../sections/BestSellers';
 import { SkinSolutions } from '../sections/SkinSolutions';
 import { Discover } from '../sections/Discover';
 import { Faq } from '../sections/Faq';
@@ -14,7 +14,7 @@ export function Home() {
       <Hero />
       <BrandPromise />
       <Expertise />
-      <GentlePerformance />
+      <BestSellers />
       <SkinSolutions />
       <Discover />
       <Faq />

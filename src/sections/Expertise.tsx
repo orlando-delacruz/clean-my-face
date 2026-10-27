@@ -41,29 +41,6 @@ const Left = styled.div`
   gap: 1.5rem;
 `;
 
-const Rule = styled.span`
-  display: block;
-  width: 3.5rem;
-  height: 1px;
-  background: ${({ theme }) => theme.colors.gold};
-  margin-bottom: 1.5rem;
-`;
-
-const NumeralRow = styled.div`
-  display: flex;
-  align-items: baseline;
-  gap: 1.5rem;
-  flex-wrap: wrap;
-`;
-
-const Numeral = styled.span`
-  font-family: ${({ theme }) => theme.fonts.display};
-  font-size: ${({ theme }) => theme.fontSizes.display};
-  line-height: 0.9;
-  color: ${({ theme }) => theme.colors.gold};
-  letter-spacing: -0.02em;
-`;
-
 const HeadlineBlock = styled.div`
   display: grid;
   gap: 1rem;
@@ -115,6 +92,17 @@ const FramedImage = styled(MediaFrame)`
   }
 `;
 
+/**
+ * ContainImage: fills the MediaFrame box while showing the whole photograph
+ * (object-fit: contain, never cropped). The className lands on the inner
+ * img, so the sizing below applies directly to the rendered image element.
+ */
+const ContainImage = styled(ResponsiveImage)`
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+`;
+
 const ImageA = styled.div`
   margin-top: 0;
 
@@ -129,14 +117,10 @@ const ImageB = styled.div`
   }
 `;
 
-const Hairline = styled.div`
-  margin-block: 4rem 2rem;
-  border-top: 1px solid ${({ theme }) => theme.colors.borderInverse};
-`;
-
 const BottomGrid = styled.div`
   display: grid;
   gap: 2.5rem;
+  margin-top: 3rem;
 
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
     grid-template-columns: 1fr 1fr;
@@ -153,10 +137,10 @@ const Statement = styled.div`
 `;
 
 export function Expertise() {
-  const ingredientMeta = imageMeta('additional-img-6.jpg');
-  const labMeta = imageMeta('additional-img-1.jpg');
+  const labMeta = imageMeta('expertise-lab.jpg');
+  const skincareMeta = imageMeta('expertise-skincare.jpg');
   // Registry-mapped keys, so this branch never executes in practice.
-  if (ingredientMeta === null || labMeta === null) return null;
+  if (labMeta === null || skincareMeta === null) return null;
 
   return (
     <Section id="expertise" aria-labelledby="expertise-title">
@@ -164,23 +148,19 @@ export function Expertise() {
         <TopGrid>
           <Left>
             <Reveal>
-              <Rule aria-hidden="true" />
-              <NumeralRow>
-                <Numeral aria-hidden="true">20</Numeral>
-                <HeadlineBlock>
-                  <Heading
-                    as="h2"
-                    size="h2"
-                    tone="inverse"
-                    id="expertise-title"
-                  >
-                    {home.expertise.headline}
-                  </Heading>
-                  <Text variant="bodyLg" tone="mutedInverse" balance>
-                    {home.expertise.support}
-                  </Text>
-                </HeadlineBlock>
-              </NumeralRow>
+              <HeadlineBlock>
+                <Heading
+                  as="h2"
+                  size="h2"
+                  tone="inverse"
+                  id="expertise-title"
+                >
+                  {home.expertise.headline}
+                </Heading>
+                <Text variant="bodyLg" tone="mutedInverse" balance>
+                  {home.expertise.support}
+                </Text>
+              </HeadlineBlock>
             </Reveal>
           </Left>
           <Reveal>
@@ -188,10 +168,10 @@ export function Expertise() {
               <ImagePair>
                 <ImageA>
                   <FramedFigure>
-                    <FramedImage ratio="4/5" radius="sm">
-                      <ResponsiveImage
-                        image={ingredientMeta}
-                        alt="Three CleanMyFace products arranged on blue fabric"
+                    <FramedImage ratio="4/5" radius="sm" fit="contain">
+                      <ContainImage
+                        image={labMeta}
+                        alt="Scientist in a lab coat and gloves handling a flask in a modern laboratory"
                         sizes="(min-width: 1024px) 300px, 45vw"
                       />
                     </FramedImage>
@@ -199,10 +179,10 @@ export function Expertise() {
                 </ImageA>
                 <ImageB>
                   <FramedFigure>
-                    <FramedImage ratio="1/1" radius="sm">
-                      <ResponsiveImage
-                        image={labMeta}
-                        alt="CleanMyFace products arranged in a blue cosmetic bag"
+                    <FramedImage ratio="1/1" radius="sm" fit="contain">
+                      <ContainImage
+                        image={skincareMeta}
+                        alt="Asian woman in a white robe holding a skincare product in soft natural light"
                         sizes="(min-width: 1024px) 300px, 45vw"
                       />
                     </FramedImage>
@@ -212,8 +192,6 @@ export function Expertise() {
             </Parallax>
           </Reveal>
         </TopGrid>
-
-        <Hairline aria-hidden="true" />
 
         <Reveal>
           <BottomGrid>

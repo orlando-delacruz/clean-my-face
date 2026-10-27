@@ -64,5 +64,17 @@ export const legalLinks: SiteLink[] = [
   { label: 'Terms and Conditions', href: '/terms-and-conditions' },
 ];
 
-/** Real profile URLs only. Placeholder "#" links must never render. */
-export const socialLinks: SocialLink[] = [];
+/** Prototype contact details and social profiles for the redesigned contact band. */
+export const contactInfo = {
+  email: 'hello@cleanmyface.com',
+  phone: '+63 917 123 4567',
+  address: 'Peerpharm, Manila, Philippines',
+  hours: 'Monday to Friday, 9am to 6pm PHT',
+};
+
+/** Prototype social profile URLs. Replace with the client's real profiles before launch. */
+export const socialLinks: SocialLink[] = [
+  { label: 'Instagram', href: 'https://instagram.com/cleanmyface', icon: 'instagram' },
+  { label: 'Facebook', href: 'https://facebook.com/cleanmyface', icon: 'facebook' },
+  { label: 'Email', href: 'mailto:hello@cleanmyface.com', icon: 'email' },
+];

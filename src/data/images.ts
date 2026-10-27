@@ -11,6 +11,8 @@ import additional1 from '../../images/additional-img-1.jpg';
 import additional3 from '../../images/additional-img-3.png';
 import additional6 from '../../images/additional-img-6.jpg';
 import additional7 from '../../images/additional-img-7.png';
+import expertiseLab from '../../images/expertise-lab.jpg';
+import expertiseSkincare from '../../images/expertise-skincare.jpg';
 import systemPlump from '../../images/6 products system.jpg';
 import milkyCushionCleanser from '../../images/milky-cushion-cleanser.jpg';
 import softPeelingGel from '../../images/soft-peeling-gel.jpg';
@@ -113,6 +115,8 @@ const byPath: Record<string, string> = {
   'additional-img-3.png': additional3,
   'additional-img-6.jpg': additional6,
   'additional-img-7.png': additional7,
+  'expertise-lab.jpg': expertiseLab,
+  'expertise-skincare.jpg': expertiseSkincare,
   '6 products system.jpg': systemPlump,
   'milky-cushion-cleanser.jpg': milkyCushionCleanser,
   'soft-peeling-gel.jpg': softPeelingGel,
@@ -260,6 +264,8 @@ const VARIANT_WIDTHS: Record<string, readonly number[]> = {
   'EXFOLIATING TONER/EXFOLIATING TONER.png': [320],
   'CLARIFYING CLAY MASK/CLARIFYING CLAY MASK.png': [320],
   'blemish-mark-spot-treatment/blemish-mark-spot-treatment.png': [320],
+  'expertise-lab.jpg': [320, 480, 640],
+  'expertise-skincare.jpg': [320, 480, 640],
 };
 
 /** Intrinsic dimensions of every manifest source, measured once with sharp. */
@@ -348,6 +354,8 @@ const IMAGE_DIMENSIONS: Record<string, readonly [number, number]> = {
   'dry spot rescue balm/step-1.png': [99, 99],
   'dry spot rescue balm/step-2.png': [99, 99],
   'dry spot rescue balm/step-3.png': [99, 99],
+  'expertise-lab.jpg': [1920, 1280],
+  'expertise-skincare.jpg': [1920, 1280],
   'heartleaf-cleansing-oil.jpg': [920, 1152],
   'hero.png': [1417, 794],
   'milky-cushion-cleanser.jpg': [920, 1152],

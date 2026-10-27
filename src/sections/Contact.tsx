@@ -3,8 +3,16 @@ import type { FormEvent } from 'react';
 import styled from 'styled-components';
 import { closing } from '../data/content';
 import { home } from '../data/home';
-import { ArrowRightIcon, CheckIcon } from '../components/icons';
+import { contactInfo, socialLinks } from '../data/site';
+import {
+  ArrowRightIcon,
+  CheckIcon,
+  EmailIcon,
+  LocationIcon,
+  PhoneIcon,
+} from '../components/icons';
 import { Container, Heading, Reveal, Text } from '../components/ui';
+import { socialIcons } from '../components/icons';
 
 const Band = styled.section`
   scroll-margin-top: 5rem;
@@ -27,19 +35,154 @@ const Grid = styled.div`
   }
 
   @media (min-width: ${({ theme }) => theme.breakpoints.lg}) {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
     gap: 4rem;
-    align-items: center;
+    align-items: stretch;
   }
 `;
 
 const Intro = styled.div`
   display: grid;
-  gap: 1rem;
+  gap: 1.5rem;
+  align-content: start;
+`;
+
+const Rule = styled.span`
+  display: block;
+  width: 3.5rem;
+  height: 1px;
+  background: ${({ theme }) => theme.colors.gold};
+`;
+
+const Lead = styled(Text)`
   max-width: 34rem;
 `;
 
+const ContactList = styled.ul`
+  list-style: none;
+  margin: 0.5rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+`;
+
+const ContactItem = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-height: 3.25rem;
+  padding: 0.75rem 1rem;
+  background: ${({ theme }) => theme.colors.surface};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: ${({ theme }) => theme.radius.sm};
+  transition: border-color 200ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
+
+  &:hover {
+    border-color: ${({ theme }) => theme.colors.plumpDeep};
+    transform: translateY(-1px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+
+    &:hover {
+      transform: none;
+    }
+  }
+`;
+
+const ContactIcon = styled.span`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  flex: none;
+  border-radius: 50%;
+  background: ${({ theme }) => theme.colors.plumpSoft};
+  color: ${({ theme }) => theme.colors.plumpDeep};
+`;
+
+const ContactMeta = styled.div`
+  display: grid;
+  gap: 0.125rem;
+  min-width: 0;
+`;
+
+const ContactLabel = styled.p`
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: ${({ theme }) => theme.colors.muted};
+`;
+
+const ContactValue = styled.p`
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.text};
+  overflow-wrap: anywhere;
+`;
+
+const SocialBlock = styled.div`
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+`;
+
+const SocialLabel = styled.p`
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: ${({ theme }) => theme.colors.muted};
+`;
+
+const SocialRow = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+`;
+
+const SocialButton = styled.a`
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0.625rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: ${({ theme }) => theme.radius.pill};
+  background: ${({ theme }) => theme.colors.surface};
+  color: ${({ theme }) => theme.colors.text};
+  transition: border-color 200ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 200ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
+
+  &:hover {
+    border-color: ${({ theme }) => theme.colors.plumpDeep};
+    color: ${({ theme }) => theme.colors.plumpDeep};
+    transform: translateY(-1px);
+  }
+
+  &:focus-visible {
+    outline-color: ${({ theme }) => theme.colors.focus};
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+
+    &:hover {
+      transform: none;
+    }
+  }
+`;
+
 const FormCard = styled.form`
+  position: relative;
   background: ${({ theme }) => theme.colors.surface};
   color: ${({ theme }) => theme.colors.text};
   border: 1px solid ${({ theme }) => theme.colors.border};
@@ -49,8 +192,24 @@ const FormCard = styled.form`
   display: grid;
   gap: 1.125rem;
 
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 1.75rem;
+    right: 1.75rem;
+    height: 2px;
+    border-radius: 2px;
+    background: ${({ theme }) => theme.colors.gold};
+  }
+
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
     padding: 2.25rem;
+
+    &::before {
+      left: 2.25rem;
+      right: 2.25rem;
+    }
   }
 `;
 
@@ -134,6 +293,10 @@ const Error = styled.p`
 `;
 
 const Submit = styled.button`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
   width: 100%;
   min-height: 3.25rem;
   padding: 0.875rem 1.75rem;
@@ -158,9 +321,18 @@ const Submit = styled.button`
     );
     box-shadow: 0 14px 28px -18px ${({ theme }) => theme.colors.text70};
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+
+    &:hover {
+      transform: none;
+    }
+  }
 `;
 
 const SuccessCard = styled.div`
+  position: relative;
   background: ${({ theme }) => theme.colors.surface};
   color: ${({ theme }) => theme.colors.text};
   border: 1px solid ${({ theme }) => theme.colors.border};
@@ -172,8 +344,24 @@ const SuccessCard = styled.div`
   justify-items: center;
   text-align: center;
 
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 1.75rem;
+    right: 1.75rem;
+    height: 2px;
+    border-radius: 2px;
+    background: ${({ theme }) => theme.colors.gold};
+  }
+
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
     padding: 3rem 2.25rem;
+
+    &::before {
+      left: 2.25rem;
+      right: 2.25rem;
+    }
   }
 `;
 
@@ -224,11 +412,33 @@ interface FormErrors {
   concern?: string;
 }
 
-/**
- * Contact band. The inquiry form is the visual-only mock moved from the old
- * Closing section: fields, validation, and success state copied exactly.
- * No network, no email service, no data capture.
- */
+const contactItems = [
+  {
+    label: 'Email',
+    value: contactInfo.email,
+    href: `mailto:${contactInfo.email}`,
+    icon: EmailIcon,
+  },
+  {
+    label: 'Phone',
+    value: contactInfo.phone,
+    href: `tel:${contactInfo.phone.replace(/\s/g, '')}`,
+    icon: PhoneIcon,
+  },
+  {
+    label: 'Visit',
+    value: contactInfo.address,
+    href: undefined,
+    icon: LocationIcon,
+  },
+  {
+    label: 'Hours',
+    value: contactInfo.hours,
+    href: undefined,
+    icon: CheckIcon,
+  },
+];
+
 export function Contact() {
   const { form } = closing;
   const [name, setName] = useState('');
@@ -266,12 +476,60 @@ export function Contact() {
         <Grid>
           <Reveal>
             <Intro>
+              <Rule aria-hidden="true" />
               <Heading as="h2" size="h2" id="contact-title">
                 {home.contact.heading}
               </Heading>
-              <Text variant="bodyLg" tone="muted" balance>
-                {closing.lead}
-              </Text>
+              <Lead variant="bodyLg" tone="muted" balance>
+                {home.contact.lead}
+              </Lead>
+              <ContactList>
+                {contactItems.map((item) => {
+                  const Icon = item.icon;
+                  const content = (
+                    <>
+                      <ContactIcon aria-hidden="true">
+                        <Icon size={18} />
+                      </ContactIcon>
+                      <ContactMeta>
+                        <ContactLabel>{item.label}</ContactLabel>
+                        <ContactValue>{item.value}</ContactValue>
+                      </ContactMeta>
+                    </>
+                  );
+                  return (
+                    <li key={item.label}>
+                      {item.href !== undefined ? (
+                        <ContactItem as="a" href={item.href}>
+                          {content}
+                        </ContactItem>
+                      ) : (
+                        <ContactItem>{content}</ContactItem>
+                      )}
+                    </li>
+                  );
+                })}
+              </ContactList>
+              <SocialBlock>
+                <SocialLabel>Follow along</SocialLabel>
+                <SocialRow>
+                  {socialLinks.map((social) => {
+                    const Icon = socialIcons[social.icon];
+                    return (
+                      <SocialButton
+                        key={social.label}
+                        href={social.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={social.label}
+                      >
+                        <Icon size={18} />
+                        {social.label}
+                      </SocialButton>
+                    );
+                  })}
+                </SocialRow>
+              </SocialBlock>
             </Intro>
           </Reveal>
           <Reveal>
@@ -301,7 +559,9 @@ export function Contact() {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     aria-invalid={errors.name !== undefined}
-                    aria-describedby={errors.name !== undefined ? 'inquiry-name-error' : undefined}
+                    aria-describedby={
+                      errors.name !== undefined ? 'inquiry-name-error' : undefined
+                    }
                   />
                   {errors.name !== undefined && (
                     <Error id="inquiry-name-error" role="alert">
@@ -320,7 +580,9 @@ export function Contact() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     aria-invalid={errors.email !== undefined}
-                    aria-describedby={errors.email !== undefined ? 'inquiry-email-error' : undefined}
+                    aria-describedby={
+                      errors.email !== undefined ? 'inquiry-email-error' : undefined
+                    }
                   />
                   {errors.email !== undefined && (
                     <Error id="inquiry-email-error" role="alert">
@@ -339,7 +601,9 @@ export function Contact() {
                         setConcern(e.target.value);
                       }}
                       aria-invalid={errors.concern !== undefined}
-                      aria-describedby={errors.concern !== undefined ? 'inquiry-concern-error' : undefined}
+                      aria-describedby={
+                        errors.concern !== undefined ? 'inquiry-concern-error' : undefined
+                      }
                     >
                       <option value="">Select one…</option>
                       {form.concernOptions.map((option) => (
@@ -368,7 +632,10 @@ export function Contact() {
                     onChange={(e) => setMessage(e.target.value)}
                   />
                 </Field>
-                <Submit type="submit">{form.submitLabel}</Submit>
+                <Submit type="submit">
+                  {form.submitLabel}
+                  <ArrowRightIcon size={15} />
+                </Submit>
               </FormCard>
             )}
           </Reveal>

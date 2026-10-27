@@ -2,9 +2,11 @@ import styled from 'styled-components';
 import type { RangeContent } from '../../../data/content';
 import { labels } from '../../../data/rangePages';
 import { imageMeta } from '../../../data/images';
+import { merchandisingFor } from '../../../data/merchandising';
 import { Link } from '../../../router';
 import { Container, ResponsiveImage, Reveal, Section, SectionHeader } from '../../ui';
 import { ArrowRightIcon } from '../../icons';
+import { ProductStars } from '../../product/ProductStars';
 
 const Steps = styled.ol`
   list-style: none;
@@ -106,6 +108,20 @@ const Tagline = styled.p`
   color: ${({ theme }) => theme.colors.muted};
 `;
 
+const MerchRow = styled.p`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.9rem;
+  margin: 0.25rem 0 0;
+`;
+
+const PriceText = styled.span`
+  font-size: 1.0625rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+`;
+
 const StepLink = styled(Link)`
   display: inline-flex;
   align-items: center;
@@ -139,12 +155,16 @@ export function SystemSteps({ range }: { range: RangeContent }) {
         <Reveal>
           <SectionHeader
             heading={`The ${range.name} routine`}
+            // Short display line; the canonical routine lead stays
+            // untouched in content.ts (routineGuide.lead).
+            support="Daily core first, targeted care next."
             id="system-title"
           />
         </Reveal>
         <Steps>
           {range.products.map((product) => {
             const meta = imageMeta(product.image);
+            const sample = merchandisingFor(product.slug);
             return (
               <Step key={product.slug}>
                 <Visual>
@@ -163,6 +183,12 @@ export function SystemSteps({ range }: { range: RangeContent }) {
                     Step {product.step} · {product.role}
                   </Role>
                   <Tagline>{product.tagline}</Tagline>
+                  {sample !== undefined && (
+                    <MerchRow>
+                      <PriceText>{sample.price}</PriceText>
+                      <ProductStars rating={sample.rating} />
+                    </MerchRow>
+                  )}
                   <StepLink to={`/products/${product.slug}`}>
                     {labels.viewProduct}
                     <ArrowRightIcon size={15} />

@@ -5,6 +5,7 @@ import type { ProductContent } from '../../../data/content';
 import { Link } from '../../../router';
 import { ArrowRightIcon } from '../../icons';
 import { ResponsiveImage } from '../../ui';
+import { ProductStars } from '../ProductStars';
 
 const CardLink = styled(Link)<{ $tone: 'light' | 'dark' }>`
   display: flex;
@@ -127,6 +128,15 @@ const Text = styled.p<{ $tone: 'light' | 'dark' }>`
     $tone === 'dark' ? theme.colors.textInverse82 : theme.colors.muted};
 `;
 
+const Price = styled.p<{ $tone: 'light' | 'dark' }>`
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: ${({ $tone, theme }) =>
+    $tone === 'dark' ? theme.colors.textInverse : theme.colors.text};
+`;
+
 const Foot = styled.span<{ $tone: 'light' | 'dark' }>`
   display: flex;
   align-items: center;
@@ -176,10 +186,19 @@ export function ProductCard({
   product,
   rangeName,
   tone = 'light',
+  price,
+  rating,
 }: {
   product: ProductContent;
   rangeName: string;
   tone?: 'light' | 'dark';
+  /** Prototype sample price (e.g. "₱1,250"). Rendered only when supplied. */
+  price?: string;
+  /**
+   * Prototype decorative rating on a 0-5 scale. Renders an aria-hidden
+   * five-star row only; never a review count or verified-review claim.
+   */
+  rating?: number;
 }) {
   const meta = imageMeta(product.image);
   const ink = product.rangeId === 'plump' ? theme.colors.plumpDeep : theme.colors.clearDeep;
@@ -207,7 +226,9 @@ export function ProductCard({
           {rangeName} · Step {product.step}
         </Meta>
         <Title $tone={tone}>{product.name}</Title>
+        {rating !== undefined && <ProductStars rating={rating} />}
         <Text $tone={tone}>{product.tagline}</Text>
+        {price !== undefined && <Price $tone={tone}>{price}</Price>}
         <Foot $tone={tone} aria-hidden="true">
           View product
           <CircleArrow $arrow={arrow} $tone={tone}>
