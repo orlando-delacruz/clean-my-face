@@ -508,3 +508,49 @@ Date: 2026-10-27
 
 - Plan 7.1 item (5), a short closing line without the Find your routine button, was skipped: the task's page order ends at the crossover and no copy source exists for the line.
 - Tag `phase-8-candidate` created. The owner does the final tag.
+
+## Phase 9: Product page redesign
+
+Date: 2026-10-27
+
+### Commits (on rebuild/brand-experience, none pushed)
+
+- `d11d825` refactor(product): move product components into components/product
+- `5a8ad94` feat(product): redesign product page
+- docs(phase-9) commit follows (this commit)
+
+### What changed
+
+- Moved `src/components/ProductCard.tsx` to `src/components/product/ProductCard/` (plus index.ts) and `src/components/ProductGallery.tsx` to `src/components/product/ProductGallery/` (plus index.ts); updated the ProductPage imports. `src/components/RoutineStep.tsx` still exists but is imported nowhere, so it was left in place rather than moved.
+- Rewrote `src/pages/ProductPage.tsx` in RangeTheme for the product's range. Desktop two columns with the gallery sticky (top 5.5rem, documented constant; no header-height token exists); mobile stacks with the gallery on top and no sticky. Right column order: Back to range link, Step N of total label, h1 name, tagline, positioning, benefits, Key ingredients, Texture, How to use (only when usageSteps exists), Your routine (previous/next links plus position indicator; the missing side renders nothing), Related products (existing same-range logic, SnapRow on mobile).
+- Product data, URLs, and copy untouched. usageSteps exists on three plump products only (04/05/06); the other nine render no How to use section. Texture section pairs one TextureSwatch with the textureNotes list. Ingredient tiles and gallery keep intrinsic sizes; packshot keeps the existing sizes string.
+
+### Data fields used per section
+
+- Back link: labels.backToRange, range route via rangePages. Step label: product.step, range.products.length, product.role. Heading: product.name. Copy: product.tagline, product.positioning. Benefits: product.benefits. Ingredients: product.ingredients plus gallery tiles via ingredientTiles, product.complex. Texture: product.textureNotes. How to use: product.usageSteps. Routine: range.products neighbors, labels.previousStep/nextStep. Related: same-range filter, ProductCard, range route link.
+
+### Sizes strings
+
+- Packshot: kept "(min-width: 1024px) 520px, 100vw" (5-column field of the 72rem container renders near 480px; full width below lg).
+- Ingredient tiles and gallery thumbs: intrinsic sizes (3.5rem circles; no sizes string).
+- Gallery has no thumbnail strip: the existing ProductGallery renders the hero image only by design, with detail tiles as circles beside their own copy. Preserved exactly.
+
+### Sticky offset and document.title
+
+- Sticky top 5.5rem: documented constant (header is 4.5rem; no header-height token in theme.layout). Mobile has no sticky.
+- document.title behavior kept exactly: `${product.name} · ${range.name} | CleanMyFace`, restored on cleanup.
+
+### Validation
+
+- Each commit passed `npm run check` (typecheck, lint, Vitest 21 files / 88 tests, build, check:bundle).
+- No em dashes in rendered copy; colors from tokens only; copy from product data and plan labels only.
+- Post-change greps: no `data-stand-in` in dist; no old component import paths; every `/#` link resolves to an existing id.
+
+### UNVERIFIED (owner's manual checks)
+
+- Four-product pass (first/last of each range) at 1440 and 390 per the QA list.
+- Sticky gallery, h1 order, ingredient tiles, snap row, prev/next edges, absent How to use, back link, solid header, reduced motion, horizontal scroll, console errors.
+
+### Notes
+
+- Tag `phase-9-candidate` created. The owner does the final tag.

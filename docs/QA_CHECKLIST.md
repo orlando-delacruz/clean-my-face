@@ -56,6 +56,16 @@ The redesign runs in phases 4 to 12 (see `docs/REDESIGN_PLAN.md`). Each phase ap
 - [ ] The header is transparent over the range hero and solid after scrolling; the background image fills the hero; no horizontal scroll.
 - [ ] Reduced motion on: no animation; all content visible.
 
+### Phase 9: Product page
+
+Test at least four products: the first and last of each range.
+- [ ] Desktop 1440: sticky gallery; one h1; sections in the specified order; ingredient tiles load.
+- [ ] Mobile 390: gallery on top; readable stacked layout; related products as a snap row.
+- [ ] Previous and next step links work; the first product has no previous link and the last has no next link.
+- [ ] Sections with no data are absent (check a product without usageSteps if one exists).
+- [ ] Back link goes to the correct range page; the header is solid on product pages.
+- [ ] Reduced motion on; no horizontal scroll; no console errors.
+
 ## Homepage (desktop 1440, tablet 768, mobile 390)
 
 - [ ] Hero renders with the brand headline and both range badges; no broken image.
