@@ -326,3 +326,46 @@ Date: 2026-10-27
 ### Commit
 
 - `1f07f88` chore(deps): patch vite dev-server advisories
+
+## Phase 5: Homepage sections 01 to 03
+
+Date: 2026-10-27
+
+### Commits (on rebuild/brand-experience, none pushed)
+
+- `b383e7d` feat(home): rebuild campaign hero and add ScrollCue
+- `0a5a016` feat(home): add brand promise and expertise sections
+- docs(phase-5) commit follows (this commit)
+
+### What changed
+
+- Removed the temporary `#expertise` alias from `src/pages/Home.tsx`; the real `Expertise` section now owns that id. Kept the `#solutions` alias until Phase 6.
+- Removed the old `Philosophy` section from `Home.tsx` (file retained for now).
+- Rewrote `src/sections/Hero.tsx`: full-viewport hero, copy from `src/data/home.ts`, primary button to `/#solutions`, secondary text link to `/#promise`, floating stand-in card (cmf-hero-texture) on desktop only, ScrollCue at the bottom, parallax on the image (distance 32, ~3.3%), no stats or pills. Object-position unchanged (62% 22% mobile, 68% 28% lg).
+- Added `src/sections/BrandPromise.tsx` (id="promise"): cream, 7/5 grid, eyebrow, statement at display size, support, four pillars numbered 01 to 04 with hairline dividers, stand-in image (cmf-promise-texture) offset 4rem on desktop. Section uses overflow-x clip only.
+- Added `src/sections/Expertise.tsx` (id="expertise"): dark surfaceInverse, gold numeral 20 (aria-hidden) beside the h2 headline, expertise support, two stand-in images (cmf-expertise-ingredient 4/5, cmf-expertise-lab 1/1) staggered with parallax, then formulation and innovation statements in a two-column row separated by a borderInverse hairline.
+- Added `src/components/ui/ScrollCue/ScrollCue.tsx` and barrel export.
+- Updated `docs/STAND_INS.md` status for the four seeds used to "in use (Phase 5)".
+
+### Contrast (dark Expertise section, surfaceInverse #121814)
+
+- textInverse #FFFDF8: 17.71:1
+- mutedInverse #B9B2A6: 8.56:1
+- gold #C9A96A (decoration only, display size): 8.03:1
+
+### Validation
+
+- Each commit passed `npm run check` (typecheck, lint, Vitest 21 files / 88 tests, build, check:bundle).
+- `grep -rn 'id="expertise"' src/` shows exactly one match.
+- No hex literals added; colors from tokens only.
+
+### UNVERIFIED (owner's manual checks)
+
+- Hero fill, headline legibility, parallax, floating card, scroll cue at 390 and 1440.
+- Promise overlap and pillar numbering.
+- Expertise numeral, staggered images, two-column statements.
+- No horizontal scroll from 320 to 1440; reduced motion behavior.
+
+### Notes
+
+- Tag `phase-5-candidate` created. The owner does the final tag.

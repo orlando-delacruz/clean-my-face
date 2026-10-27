@@ -20,6 +20,16 @@ The redesign runs in phases 4 to 12 (see `docs/REDESIGN_PLAN.md`). Each phase ap
 - [ ] Footer on every page; no social icon points to `#`.
 - [ ] Fonts are correct; no console errors.
 
+### Phase 5: Homepage sections 01 to 03
+
+- [ ] 1440 and 390: the hero fills the screen; the headline is readable over the image; one primary button; no stats or pills.
+- [ ] The hero image loads as AVIF or WebP in the Network tab. Known limitation: soft on high-density screens.
+- [ ] Promise: asymmetric layout; the image overlaps the next section on desktop only; pillars numbered 01 to 04.
+- [ ] Expertise: large 20; two images staggered on desktop and stacked on mobile; two statements side by side on desktop and stacked on mobile.
+- [ ] No horizontal scroll from 320 to 1440. With reduced motion on: no parallax, all content visible.
+- [ ] The header "Expertise" link lands on the expertise section.
+- [ ] Headings render in Cormorant Garamond; adjacent sections look clearly different.
+
 ## Homepage (desktop 1440, tablet 768, mobile 390)
 
 - [ ] Hero renders with the brand headline and both range badges; no broken image.

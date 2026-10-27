@@ -2,7 +2,8 @@ import styled from 'styled-components';
 import { theme } from '../theme';
 import { ranges } from '../data/content';
 import { Hero } from '../sections/Hero';
-import { Philosophy } from '../sections/Philosophy';
+import { BrandPromise } from '../sections/BrandPromise';
+import { Expertise } from '../sections/Expertise';
 import { SkinNeeds } from '../sections/SkinNeeds';
 import { RangeSystem } from '../sections/RangeSystem';
 import { Featured } from '../sections/Featured';
@@ -10,10 +11,9 @@ import { RoutineGuide } from '../sections/RoutineGuide';
 import { Closing } from '../sections/Closing';
 
 /**
- * Temporary anchor aliases for the global shell. The redesigned Expertise and
- * Solutions sections arrive in later phases; until then these zero-height
- * markers map the shell links onto the current homepage sections. Remove them
- * when the real section ids land.
+ * Temporary anchor alias for the global shell. The redesigned Solutions section
+ * arrives in Phase 6; until then this zero-height marker maps the shell links
+ * onto the current SkinNeeds section. Remove it when the real id lands.
  */
 const Anchor = styled.span`
   display: block;
@@ -28,8 +28,8 @@ export function Home() {
   return (
     <main id="main-content">
       <Hero />
-      <Anchor id="expertise" />
-      <Philosophy />
+      <BrandPromise />
+      <Expertise />
       <Anchor id="solutions" />
       <SkinNeeds />
       {plump && <RangeSystem range={plump} tint={theme.colors.plumpTint} />}
