@@ -252,3 +252,45 @@ Date: 2026-10-27
 
 - Documentation only. Phase 3 introduces no visual or behavioral change.
 - Tag `phase-3-candidate` created. The owner does the final tag.
+
+## Phase 4: Foundations and the global shell
+
+Date: 2026-10-27
+
+### Commits (on rebuild/brand-experience, none pushed)
+
+- `15fad94` feat(data): add redesign site, home and range copy
+- `891e457` feat(ui): add StandInImage, SnapRow and SectionHeader
+- `1758ecb` feat(layout): move header and footer, add range routes
+- `3c0cfc9` fix(home): add temporary anchor aliases for shell links
+- docs(phase-4) commit follows (this commit)
+
+### What changed
+
+- Data: added `src/data/site.ts` (nav, header CTA, footer groups, legal links, brand statement, social link registry), `src/data/home.ts` (every homepage copy id from plan 4.2 plus homepage labels), and `src/data/rangePages.ts` (plump and clear range copy, slugs, and all 4.3 labels). Strings are copied from the plan or reused from `content.ts`; `src/data/content.ts` was not modified.
+- Shared UI: added `StandInImage` (Picsum img wrapped in MediaFrame, `cmf-` seed guard, dev-only marker), `SnapRow` (mobile scroll-snap row with hidden scrollbar, keyboard focus, lg grid via `columns`), and `SectionHeader` (Eyebrow + Heading + Text). Exported from `src/components/ui/index.ts`. No tests added.
+- Layout: moved `Header` and `Footer` to `src/components/layout/<Name>/` (component and index). Updated `App.tsx` and the single test import. Deleted the old `src/sections/Header.tsx` and `src/sections/Footer.tsx` after confirming nothing imported them.
+- Header: kept sticky behavior, scroll-spy active link, Escape handling with focus return, resize close, and the skip-link target. Added transparent inverse text on `/` and valid range pages until 24px of scroll, solid cream elsewhere; nav and CTA from `site.ts`; full-screen mobile menu with focus trap, scroll lock, range shortcut cards, 44px targets, and focusInverse rings on dark.
+- Footer: rewritten dark with inverse tokens, links from `site.ts`, legal links, and a social row that renders only for real URLs. The previous placeholder socials (all `#`) are not rendered.
+- Routes: `/ranges/plump-it-up` and `/ranges/stay-clear` render a temporary minimal `RangePage` (h1 range name, range support copy, current `RangeSystem` reused as-is). Any other `/ranges/<x>` renders `NotFound`. `/_system` dev-only behavior is unchanged.
+- No theme tokens added; no dependencies added.
+- Home.tsx gained two zero-height anchor aliases (`#expertise`, `#solutions`) so the Phase 4 header and footer links land on the current homepage sections; they are removed when the redesigned sections arrive.
+
+### Validation
+
+- Each commit passed `npm run check` (typecheck, lint, Vitest 21 files / 88 tests, build, check:bundle).
+- `check:bundle`: PASS (2 files scanned in dist/); no `data-stand-in` and no picsum string in production output (StandInImage is unused until Phase 5, so it is tree-shaken).
+- Test edit: only the `Header` import path in `tests/accessibility.test.tsx` changed; no assertion changed.
+- `npm audit` (full): 1 high severity in `vite@8.3.2`, a devDependency. Not fixed in this phase.
+
+### UNVERIFIED (owner's manual checks)
+
+- Header transparency, sticky state, active link, mobile menu layout, focus trap, scroll lock, and 44px targets in a real browser.
+- Range page rendering at 360, 390, 430, 768, 1024, 1280 and 1440.
+- Footer appearance and link behavior on every page.
+- Focus rings on dark backgrounds.
+
+### Notes
+
+- `src/data/content.ts` is untouched; `navigation` and `footer` in it are now unused but retained.
+- Tag `phase-4-candidate` created. The owner does the final tag.

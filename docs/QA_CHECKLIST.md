@@ -12,6 +12,14 @@ The redesign runs in phases 4 to 12 (see `docs/REDESIGN_PLAN.md`). Each phase ap
 
 - [ ] Documentation only. There is no new UI to test in this phase; confirm the pre-redesign sections below still pass.
 
+### Phase 4: Foundations and global shell
+
+- [ ] Header at 1440: transparent over the hero, solid after scrolling; nav links scroll or navigate; the button works.
+- [ ] Header at 390: the menu opens full screen; links work; Escape or the close button closes it; focus returns to the toggle; the page does not scroll behind the menu.
+- [ ] `/ranges/plump-it-up` and `/ranges/stay-clear` load; `/ranges/nope` shows the 404 page.
+- [ ] Footer on every page; no social icon points to `#`.
+- [ ] Fonts are correct; no console errors.
+
 ## Homepage (desktop 1440, tablet 768, mobile 390)
 
 - [ ] Hero renders with the brand headline and both range badges; no broken image.
