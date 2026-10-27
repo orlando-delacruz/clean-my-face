@@ -1,12 +1,17 @@
 import styled from 'styled-components';
-import { footer } from '../data/content';
-import { Link } from '../router';
-import { Container } from '../components/ui';
-import { socialIcons } from '../components/icons';
+import { brand, footerGroups, legalLinks, socialLinks } from '../../../data/site';
+import { Link } from '../../../router';
+import { Container } from '../../ui';
+import { socialIcons } from '../../icons';
+
+// Placeholder "#" links are never rendered; only real profile URLs qualify.
+const realSocials = socialLinks.filter(
+  (social) => social.href !== '' && social.href !== '#',
+);
 
 const Bar = styled.footer`
-  background: ${({ theme }) => theme.colors.text};
-  color: ${({ theme }) => theme.colors.background};
+  background: ${({ theme }) => theme.colors.surfaceInverse};
+  color: ${({ theme }) => theme.colors.textInverse};
   border-top: 1px solid ${({ theme }) => theme.colors.gold};
   padding-block: 4rem 2rem;
 
@@ -44,36 +49,25 @@ const BrandName = styled.p`
   font-weight: 500;
   letter-spacing: -0.01em;
   line-height: 1.08;
-  text-wrap: balance;
 `;
 
-const Tagline = styled.p`
+const BrandSub = styled.p`
+  margin-top: 0.35rem;
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: ${({ theme }) => theme.colors.gold};
-  margin-block: 0.875rem 0;
+  color: ${({ theme }) => theme.colors.mutedInverse};
 `;
 
-const BrandRule = styled.span`
-  display: block;
-  width: 2.5rem;
-  height: 1px;
-  background: ${({ theme }) => theme.colors.gold};
-  opacity: 0.9;
-  margin-block: 1.125rem;
-`;
-
-const Blurb = styled.p`
-  font-size: 0.9375rem;
-  line-height: 1.65;
-  color: color-mix(
-    in srgb,
-    ${({ theme }) => theme.colors.background} 80%,
-    transparent
-  );
-  max-width: 36ch;
+const Statement = styled.p`
+  margin-top: 1.25rem;
+  font-family: ${({ theme }) => theme.fonts.display};
+  font-size: clamp(1.5rem, 1.25rem + 1vw, 2rem);
+  font-weight: 500;
+  line-height: 1.15;
+  color: ${({ theme }) => theme.colors.textInverse};
+  text-wrap: balance;
 `;
 
 const SocialRow = styled.div`
@@ -89,9 +83,9 @@ const SocialButton = styled(Link)`
   justify-content: center;
   width: 2.75rem;
   height: 2.75rem;
-  border: 1px solid ${({ theme }) => theme.colors.background28};
+  border: 1px solid ${({ theme }) => theme.colors.borderInverse};
   border-radius: 50%;
-  color: ${({ theme }) => theme.colors.background};
+  color: ${({ theme }) => theme.colors.textInverse};
   transition: color 160ms ease, border-color 160ms ease;
 
   &:hover {
@@ -100,8 +94,7 @@ const SocialButton = styled(Link)`
   }
 
   &:focus-visible {
-    outline: 2px solid ${({ theme }) => theme.colors.gold};
-    outline-offset: 3px;
+    outline-color: ${({ theme }) => theme.colors.focusInverse};
   }
 `;
 
@@ -119,11 +112,7 @@ const ColumnTitle = styled.h2`
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: color-mix(
-    in srgb,
-    ${({ theme }) => theme.colors.background} 62%,
-    transparent
-  );
+  color: ${({ theme }) => theme.colors.mutedInverse};
   margin-bottom: 1rem;
 `;
 
@@ -153,27 +142,25 @@ const FooterLink = styled(Link)`
   }
 
   &:focus-visible {
-    outline: 2px solid ${({ theme }) => theme.colors.gold};
-    outline-offset: 3px;
+    outline-color: ${({ theme }) => theme.colors.focusInverse};
   }
 `;
 
 const Legal = styled(Container)`
   margin-top: 3rem;
   padding-top: 1.5rem;
-  border-top: 1px solid ${({ theme }) => theme.colors.background16};
+  border-top: 1px solid ${({ theme }) => theme.colors.borderInverse};
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 0.75rem 2rem;
   font-size: 0.8125rem;
   line-height: 1.6;
-  color: color-mix(
-    in srgb,
-    ${({ theme }) => theme.colors.background} 70%,
-    transparent
-  );
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
+    justify-content: flex-end;
+  }
 `;
 
 const LegalLinks = styled.nav`
@@ -194,14 +181,12 @@ const LegalLink = styled(Link)`
   transition: color 160ms ease, text-decoration-color 160ms ease;
 
   &:hover {
-    color: ${({ theme }) => theme.colors.background};
     text-decoration: underline;
     text-decoration-color: ${({ theme }) => theme.colors.gold};
   }
 
   &:focus-visible {
-    outline: 2px solid ${({ theme }) => theme.colors.gold};
-    outline-offset: 3px;
+    outline-color: ${({ theme }) => theme.colors.focusInverse};
   }
 `;
 
@@ -210,27 +195,32 @@ export function Footer() {
     <Bar>
       <Grid>
         <BrandBlock>
-          <BrandName>CleanMyFace</BrandName>
-          <Tagline>{footer.tagline}</Tagline>
-          <BrandRule aria-hidden="true" />
-          <Blurb>{footer.blurb}</Blurb>
-          <SocialRow aria-label="Social and contact links">
-            {footer.socials.map((social) => {
-              const Icon = socialIcons[social.icon];
-              return (
-                <SocialButton key={social.label} to={social.href} aria-label={social.label}>
-                  <Icon size={18} />
-                </SocialButton>
-              );
-            })}
-          </SocialRow>
+          <BrandName>{brand.name}</BrandName>
+          <BrandSub>{brand.sub}</BrandSub>
+          <Statement>{brand.statement}</Statement>
+          {realSocials.length > 0 && (
+            <SocialRow aria-label="Social and contact links">
+              {realSocials.map((social) => {
+                const Icon = socialIcons[social.icon];
+                return (
+                  <SocialButton
+                    key={social.label}
+                    to={social.href}
+                    aria-label={social.label}
+                  >
+                    <Icon size={18} />
+                  </SocialButton>
+                );
+              })}
+            </SocialRow>
+          )}
         </BrandBlock>
-        {footer.columns.map((column) => (
-          <Nav key={column.title} aria-label={column.title}>
-            <ColumnTitle>{column.title}</ColumnTitle>
+        {footerGroups.map((group) => (
+          <Nav key={group.title} aria-label={group.title}>
+            <ColumnTitle>{group.title}</ColumnTitle>
             <LinkList>
-              {column.links.map((link) => (
-                <li key={link.label}>
+              {group.links.map((link) => (
+                <li key={link.href}>
                   <FooterLink to={link.href}>{link.label}</FooterLink>
                 </li>
               ))}
@@ -239,9 +229,8 @@ export function Footer() {
         ))}
       </Grid>
       <Legal>
-        <span>{footer.legal}</span>
         <LegalLinks aria-label="Legal">
-          {footer.legalLinks.map((link) => (
+          {legalLinks.map((link) => (
             <LegalLink key={link.href} to={link.href}>
               {link.label}
             </LegalLink>

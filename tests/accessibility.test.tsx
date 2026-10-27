@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { ThemeProvider } from 'styled-components';
 import { theme } from '../src/theme';
 import App from '../src/App';
-import { Header } from '../src/sections/Header';
+import { Header } from '../src/components/layout/Header';
 
 describe('accessibility basics', () => {
   it('has a skip link targeting an existing landmark id', () => {

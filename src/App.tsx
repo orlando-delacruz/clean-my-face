@@ -4,14 +4,16 @@ import { theme } from './theme';
 import { GlobalStyle } from './GlobalStyle';
 import { usePathname } from './router';
 import { SkipLink } from './components/ui';
-import { Header } from './sections/Header';
-import { Footer } from './sections/Footer';
+import { Header } from './components/layout/Header';
+import { Footer } from './components/layout/Footer';
 import { Home } from './pages/Home';
 import { LegalPage } from './pages/LegalPage';
 import { NotFound } from './pages/NotFound';
 import { ProductPage } from './pages/ProductPage';
+import { RangePage } from './pages/RangePage';
 import { privacyPolicy, termsConditions } from './data/legal';
-import { findProductBySlug } from './data/content';
+import { findProductBySlug, ranges } from './data/content';
+import { findRangePageBySlug } from './data/rangePages';
 
 const SystemPage = import.meta.env.DEV
   ? lazy(() => import('./pages/SystemPage'))
@@ -22,7 +24,18 @@ function App() {
   const productMatch = path.startsWith('/products/')
     ? findProductBySlug(path.slice('/products/'.length))
     : null;
-  const showSystem = path === '/_system' && import.meta.env.DEV && SystemPage !== null;
+  const rangeSlug = path.startsWith('/ranges/')
+    ? path.slice('/ranges/'.length)
+    : '';
+  const rangePageMatch =
+    rangeSlug === '' ? null : findRangePageBySlug(rangeSlug);
+  const range =
+    rangePageMatch === null
+      ? undefined
+      : ranges.find((item) => item.id === rangePageMatch.id);
+  const hasRangePage = rangePageMatch !== null && range !== undefined;
+  const showSystem =
+    path === '/_system' && import.meta.env.DEV && SystemPage !== null;
 
   return (
     <ThemeProvider theme={theme}>
@@ -45,11 +58,19 @@ function App() {
             product={productMatch.product}
           />
         )}
+        {rangePageMatch !== null && range !== undefined && (
+          <RangePage
+            key={rangePageMatch.id}
+            page={rangePageMatch.page}
+            range={range}
+          />
+        )}
         {path !== '/' &&
           !showSystem &&
           path !== privacyPolicy.slug &&
           path !== termsConditions.slug &&
-          productMatch === null && <NotFound />}
+          productMatch === null &&
+          !hasRangePage && <NotFound />}
         <Footer />
       </div>
     </ThemeProvider>

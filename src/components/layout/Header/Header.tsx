@@ -1,42 +1,47 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import styled, { css } from 'styled-components';
-import { navigation } from '../data/content';
-import { Link, usePathname } from '../router';
-import { Container } from '../components/ui';
-import { ArrowRightIcon, CloseIcon, MenuIcon } from '../components/icons';
+import { brand, headerCta, navItems } from '../../../data/site';
+import { findRangePageBySlug } from '../../../data/rangePages';
+import { Link, usePathname } from '../../../router';
+import { Container } from '../../ui';
+import { ArrowRightIcon, CloseIcon, MenuIcon } from '../../icons';
 
-const Bar = styled.header<{ $scrolled: boolean; $open: boolean; $transparent: boolean }>`
+const isRangeHref = (href: string): boolean => href.startsWith('/ranges/');
+const primaryNav = navItems.filter((item) => !isRangeHref(item.href));
+const rangeNav = navItems.filter((item) => isRangeHref(item.href));
+
+function hashOf(href: string): string {
+  const index = href.indexOf('#');
+  return index === -1 ? '' : href.slice(index + 1);
+}
+
+const Bar = styled.header<{ $transparent: boolean; $scrolled: boolean }>`
   position: sticky;
   top: 0;
-  z-index: 50;
+  z-index: ${({ theme }) => theme.zIndex.modal};
   color: ${({ theme, $transparent }) =>
-    $transparent ? theme.colors.surface : theme.colors.text};
-  background: ${({ theme, $transparent, $scrolled, $open }) =>
-    $transparent
-      ? 'transparent'
-      : `color-mix(in srgb, ${theme.colors.background} ${$scrolled || $open ? 96 : 86}%, transparent)`};
-  backdrop-filter: ${({ $transparent }) =>
-    $transparent ? 'none' : 'blur(14px) saturate(1.15)'};
-  -webkit-backdrop-filter: ${({ $transparent }) =>
-    $transparent ? 'none' : 'blur(14px) saturate(1.15)'};
+    $transparent ? theme.colors.textInverse : theme.colors.text};
+  background: ${({ theme, $transparent }) =>
+    $transparent ? 'transparent' : theme.colors.background};
   border-bottom: 1px solid
     ${({ theme, $transparent }) =>
       $transparent ? 'transparent' : theme.colors.border};
   transition: background-color 280ms cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 280ms cubic-bezier(0.22, 1, 0.36, 1),
     border-color 280ms cubic-bezier(0.22, 1, 0.36, 1),
     color 220ms cubic-bezier(0.22, 1, 0.36, 1);
 
-  ${({ theme, $scrolled, $open, $transparent }) =>
-    ($scrolled || $open) &&
+  ${({ theme, $scrolled, $transparent }) =>
+    $scrolled &&
     !$transparent &&
     css`
       box-shadow: 0 1px 0 ${theme.colors.border},
-        0 18px 36px -24px ${({ theme }) => theme.colors.text28};
+        0 18px 36px -24px ${theme.colors.text28};
     `}
 `;
 
 const Inner = styled(Container)`
+  position: relative;
+  z-index: ${({ theme }) => theme.zIndex.raised};
   display: flex;
   align-items: center;
   gap: 1.5rem;
@@ -49,11 +54,17 @@ const Inner = styled(Container)`
   }
 `;
 
-const Brand = styled(Link)`
+const Brand = styled(Link)<{ $onDark: boolean }>`
   text-decoration: none;
   line-height: 1.15;
   margin-right: auto;
   padding-block: 0.25rem;
+  border-radius: ${({ theme }) => theme.radius.sm};
+
+  &:focus-visible {
+    outline-color: ${({ theme, $onDark }) =>
+      $onDark ? theme.colors.focusInverse : theme.colors.focus};
+  }
 
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
     margin-right: 0;
@@ -94,7 +105,10 @@ const Nav = styled.nav`
 
 const NavLink = styled(Link)<{ $active: boolean; $onDark: boolean }>`
   position: relative;
-  padding-block: 0.625rem;
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding-block: 0;
   font-size: 0.775rem;
   font-weight: 600;
   letter-spacing: 0.14em;
@@ -127,6 +141,11 @@ const NavLink = styled(Link)<{ $active: boolean; $onDark: boolean }>`
   &:focus-visible::after {
     transform: scaleX(1);
   }
+
+  &:focus-visible {
+    outline-color: ${({ theme, $onDark }) =>
+      $onDark ? theme.colors.focusInverse : theme.colors.focus};
+  }
 `;
 
 const Actions = styled.div`
@@ -153,7 +172,7 @@ const HeaderCta = styled(Link)<{ $onDark: boolean }>`
   text-decoration: none;
   white-space: nowrap;
   border: 1px solid transparent;
-  border-radius: 999px;
+  border-radius: ${({ theme }) => theme.radius.pill};
   background: ${({ theme, $onDark }) =>
     $onDark ? theme.colors.surface : theme.colors.plumpDeep};
   color: ${({ theme, $onDark }) =>
@@ -182,6 +201,11 @@ const HeaderCta = styled(Link)<{ $onDark: boolean }>`
   &:active {
     transform: none;
     box-shadow: none;
+  }
+
+  &:focus-visible {
+    outline-color: ${({ theme, $onDark }) =>
+      $onDark ? theme.colors.focusInverse : theme.colors.focus};
   }
 
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
@@ -214,50 +238,70 @@ const MenuButton = styled.button<{ $onDark: boolean }>`
       $onDark ? theme.colors.surface : theme.colors.text};
   }
 
+  &:focus-visible {
+    outline-color: ${({ theme, $onDark }) =>
+      $onDark ? theme.colors.focusInverse : theme.colors.focus};
+  }
+
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
     display: none;
   }
 `;
 
 const MobilePanel = styled.nav`
-  border-top: 1px solid ${({ theme }) => theme.colors.border};
+  position: fixed;
+  inset: 0;
+  z-index: ${({ theme }) => theme.zIndex.base};
+  display: flex;
+  flex-direction: column;
+  padding: 5.25rem 1.25rem 2rem;
   background: ${({ theme }) => theme.colors.background};
-  padding: 0.75rem 1.25rem 1.5rem;
+  color: ${({ theme }) => theme.colors.text};
+  overflow-y: auto;
+  overscroll-behavior: contain;
 
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
     display: none;
   }
 `;
 
+const MobileList = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
 const MobileLink = styled(Link)`
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  padding: 1.05rem 0.15rem;
+  min-height: 3.75rem;
+  padding-block: 0.75rem;
   font-family: ${({ theme }) => theme.fonts.display};
-  font-size: 1.45rem;
-  font-weight: 500;
-  letter-spacing: -0.01em;
-  line-height: 1.2;
+  font-size: clamp(2rem, 9vw, 3rem);
+  font-weight: ${({ theme }) => theme.fontWeights.medium};
+  line-height: 1.05;
   text-decoration: none;
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
   animation: mobile-rise 480ms cubic-bezier(0.22, 1, 0.36, 1) both;
 
   svg {
     flex: none;
-    align-self: center;
     color: ${({ theme }) => theme.colors.muted};
   }
 
   &:hover {
     color: ${({ theme }) => theme.colors.plumpDeep};
     text-decoration: underline;
-    text-underline-offset: 0.25em;
+    text-underline-offset: 0.2em;
   }
 
   &:hover svg {
     color: ${({ theme }) => theme.colors.plumpDeep};
+  }
+
+  &:focus-visible {
+    outline-color: ${({ theme }) => theme.colors.focus};
   }
 
   @keyframes mobile-rise {
@@ -282,15 +326,13 @@ const MobileCta = styled(Link)`
   justify-content: center;
   gap: 0.6rem;
   width: 100%;
-  min-height: 3rem;
-  margin-top: 1.25rem;
-  padding: 0.8rem 1.5rem;
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.11em;
-  text-transform: uppercase;
+  min-height: 3.25rem;
+  margin-top: 1.5rem;
+  padding: 0.85rem 1.5rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
   text-decoration: none;
-  border-radius: 999px;
+  border-radius: ${({ theme }) => theme.radius.pill};
   background: ${({ theme }) => theme.colors.plumpDeep};
   color: ${({ theme }) => theme.colors.surface};
 
@@ -301,12 +343,44 @@ const MobileCta = styled(Link)`
       ${({ theme }) => theme.colors.text}
     );
   }
+
+  &:focus-visible {
+    outline-color: ${({ theme }) => theme.colors.focus};
+  }
 `;
 
-function hashOf(href: string): string {
-  const index = href.indexOf('#');
-  return index === -1 ? '' : href.slice(index + 1);
-}
+const MobileRanges = styled.div`
+  display: grid;
+  gap: 0.625rem;
+  margin-top: 2rem;
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.sm}) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+`;
+
+const ShortcutLink = styled(Link)`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  min-height: 3.25rem;
+  padding: 0.75rem 1rem;
+  font-family: ${({ theme }) => theme.fonts.display};
+  font-size: 1.375rem;
+  font-weight: ${({ theme }) => theme.fontWeights.medium};
+  text-decoration: none;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: ${({ theme }) => theme.radius.sm};
+
+  &:hover {
+    border-color: ${({ theme }) => theme.colors.text};
+  }
+
+  &:focus-visible {
+    outline-color: ${({ theme }) => theme.colors.focus};
+  }
+`;
 
 export function Header() {
   const path = usePathname();
@@ -315,13 +389,25 @@ export function Header() {
   const [hash, setHash] = useState(() =>
     typeof window === 'undefined' ? '' : window.location.hash.replace('#', ''),
   );
-  // Transparent only over the homepage hero: solid everywhere else, and solid
-  // on the homepage once scrolled or when the mobile menu is open.
-  const transparent = path === '/' && !scrolled && !open;
+  const toggleRef = useRef<HTMLButtonElement>(null);
+  const panelRef = useRef<HTMLElement>(null);
+
+  const rangeSlug = path.startsWith('/ranges/')
+    ? path.slice('/ranges/'.length)
+    : '';
+  const onRangePage = findRangePageBySlug(rangeSlug) !== null;
+  // Transparent over the homepage hero and range heroes; solid elsewhere and
+  // once scrolled or when the mobile menu is open.
+  const transparent = (path === '/' || onRangePage) && !scrolled && !open;
+
+  const closeMenu = useCallback(() => {
+    setOpen(false);
+    toggleRef.current?.focus();
+  }, []);
 
   useEffect(() => {
     function onScroll() {
-      setScrolled(window.scrollY > 8);
+      setScrolled(window.scrollY > 24);
     }
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
@@ -342,14 +428,13 @@ export function Header() {
 
   // Scroll-spy: highlight the nav link for the section currently in view.
   // Visual only: the URL hash is left untouched so scrolling never pollutes
-  // history. Untacked sections (philosophy, ranges detail, featured) keep
-  // the last active link instead of clearing it.
+  // history. Untracked sections keep the last active link instead of clearing.
   useEffect(() => {
     if (path !== '/') {
       setHash('');
       return;
     }
-    const ids = navigation.links
+    const ids = navItems
       .map((link) => hashOf(link.href))
       .filter((id) => id !== '');
     const observer = new IntersectionObserver(
@@ -369,12 +454,42 @@ export function Header() {
 
   useEffect(() => {
     if (!open) return;
+    const panel = panelRef.current;
+    panel?.querySelector<HTMLElement>('a[href]')?.focus();
+  }, [open]);
+
+  useEffect(() => {
+    if (!open) return;
     function onKeyDown(event: KeyboardEvent) {
-      if (event.key === 'Escape') setOpen(false);
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        closeMenu();
+        return;
+      }
+      if (event.key !== 'Tab') return;
+      const panel = panelRef.current;
+      const toggle = toggleRef.current;
+      if (panel === null || toggle === null) return;
+      const focusable = [
+        toggle,
+        ...Array.from(
+          panel.querySelectorAll<HTMLElement>('a[href], button:not([disabled])'),
+        ),
+      ];
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (first === undefined || last === undefined) return;
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
     }
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [open]);
+  }, [open, closeMenu]);
 
   useEffect(() => {
     if (!open) return;
@@ -383,25 +498,25 @@ export function Header() {
     return () => {
       document.body.style.overflow = previous;
     };
-  }, [open ]);
+  }, [open]);
 
   useEffect(() => {
     function onResize() {
-      if (window.innerWidth >= 768) setOpen(false);
+      if (window.innerWidth >= 768 && panelRef.current !== null) setOpen(false);
     }
     window.addEventListener('resize', onResize);
     return () => window.removeEventListener('resize', onResize);
   }, []);
 
   return (
-    <Bar $scrolled={scrolled} $open={open} $transparent={transparent}>
+    <Bar $transparent={transparent} $scrolled={scrolled}>
       <Inner>
-        <Brand to="/" aria-label="CleanMyFace home">
-          <BrandName>{navigation.brandMark}</BrandName>
-          <BrandSub $onDark={transparent}>{navigation.brandSub}</BrandSub>
+        <Brand to="/" aria-label="CleanMyFace home" $onDark={transparent}>
+          <BrandName>{brand.name}</BrandName>
+          <BrandSub $onDark={transparent}>{brand.sub}</BrandSub>
         </Brand>
         <Nav aria-label="Primary">
-          {navigation.links.map((link) => {
+          {navItems.map((link) => {
             const target = hashOf(link.href);
             const active = target !== '' && target === hash;
             return (
@@ -418,39 +533,50 @@ export function Header() {
           })}
         </Nav>
         <Actions>
-          <HeaderCta to={navigation.cta.href} $onDark={transparent}>
-            {navigation.cta.label}
+          <HeaderCta to={headerCta.href} $onDark={transparent}>
+            {headerCta.label}
             <ArrowRightIcon size={15} />
           </HeaderCta>
           <MenuButton
+            ref={toggleRef}
             type="button"
             $onDark={transparent}
             aria-expanded={open}
             aria-controls="mobile-menu"
             aria-label={open ? 'Close menu' : 'Open menu'}
-            onClick={() => setOpen((v) => !v)}
+            onClick={() => setOpen((value) => !value)}
           >
             {open ? <CloseIcon /> : <MenuIcon />}
           </MenuButton>
         </Actions>
       </Inner>
       {open && (
-        <MobilePanel id="mobile-menu" aria-label="Mobile">
-          {navigation.links.map((link, index) => (
-            <MobileLink
-              key={link.href}
-              to={link.href}
-              onClick={() => setOpen(false)}
-              style={{ animationDelay: `${index * 55}ms` }}
-            >
-              {link.label}
-              <ArrowRightIcon size={18} />
-            </MobileLink>
-          ))}
-          <MobileCta to={navigation.cta.href} onClick={() => setOpen(false)}>
-            {navigation.cta.label}
+        <MobilePanel id="mobile-menu" aria-label="Mobile" ref={panelRef}>
+          <MobileList>
+            {primaryNav.map((link, index) => (
+              <MobileLink
+                key={link.href}
+                to={link.href}
+                onClick={closeMenu}
+                style={{ animationDelay: `${index * 55}ms` }}
+              >
+                {link.label}
+                <ArrowRightIcon size={20} />
+              </MobileLink>
+            ))}
+          </MobileList>
+          <MobileCta to={headerCta.href} onClick={closeMenu}>
+            {headerCta.label}
             <ArrowRightIcon size={16} />
           </MobileCta>
+          <MobileRanges role="group" aria-label="Ranges">
+            {rangeNav.map((link) => (
+              <ShortcutLink key={link.href} to={link.href} onClick={closeMenu}>
+                {link.label}
+                <ArrowRightIcon size={16} />
+              </ShortcutLink>
+            ))}
+          </MobileRanges>
         </MobilePanel>
       )}
     </Bar>
