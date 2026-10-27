@@ -82,7 +82,7 @@ Do not introduce pnpm, yarn, Bun, or another package manager.
 | ----------------- | ----------- | ------------------------------- | ----------------------------------------------------------------- |
 | React             | UI          | Required                        | Core frontend framework                                           |
 | TypeScript        | Type safety | Required                        | Safer and clearer component/data contracts                        |
-| Vite              | Build tool  | Required                        | Fast and simple React development/build environment               |
+| Vite              | Build tool  | Required (8.3.3)                | Fast and simple React development/build environment; 8.3.3 patches dev-server advisories (dev dependency only) |
 | Styled Components | Styling     | Required                        | Strong control over the premium visual system                     |
 | Motion for React  | Animation   | Required                        | Declarative reveals and entrances (installed Phase 0 baseline)    |
 | Fontsource Inter  | Fonts       | Required                        | Self-hosted Inter variable latin subset (Phase 1, no Google Fonts request) |
@@ -102,6 +102,8 @@ GSAP and Zod should **not** be added to `package.json` until a concrete requirem
 sharp (devDependency, 0.35.5) is approved for the Phase 2 image pipeline only: build-time derivative generation. No runtime dependency on sharp ships to the browser.
 
 Playwright: REMOVED (2026-10-26). Project owner performs manual QA; automated browser tests were removed. Do not re-add without an explicit requirement and a TECH_STACK row in the same commit.
+
+Vite: 8.3.3 (patched from 8.3.2, 2026-10-27) — patches dev-server advisories (GHSA-698v-4r3x-3vcv, GHSA-r825-w8mm-5pxw, GHSA-587h-7wmj-h5pm, GHSA-9jrq-w75r-8gcw, GHSA-rq7h-c2jc-7f22, GHSA-vfpm-58rq-9qcg); dev dependency only, no runtime impact.
 
 Likewise, do not add backend, database, authentication, or email dependencies unless the relevant functionality is actually required.
 
